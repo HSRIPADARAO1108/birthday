@@ -2,23 +2,21 @@ import streamlit as st
 import streamlit.components.v1 as components
 
 # =========================================================================
-# 📸 CUSTOMIZE YOUR PHOTOS HERE!
-# Just replace these URLs with your own direct image links (from postimages.org etc.)
+# 📸 ENTER YOUR GITHUB INFORMATION HERE!
+# Just replace these two values with your actual GitHub details.
 # =========================================================================
 
-# 1. The main background image/GIF for your login page (currently a lo-fi tape player)
-LOGIN_BACKGROUND_IMAGE = "https://media.giphy.com/media/v1.Y2lkPTZjMDliOTUyeG12eTF0YW41N3B4ajgycDZzZnRwNmxia3pkaDV0NTRndzRndWZwayZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/3o85xGocUH8TCQDDry/giphy.gif"
-
-# 2. The photo revealed behind the stage curtains
-BEHIND_CURTAIN_IMAGE = "http://googleusercontent.com/image_collection/image_retrieval/1284883510777631583_0"
-
-# 3. The photo that gets sliced into a 3x3 puzzle (must be square for best results)
-PUZZLE_IMAGE = "http://googleusercontent.com/image_collection/image_retrieval/13614872020698065159_0"
-
-# 4. The circular profile picture displayed on the final greeting card
-FINAL_PROFILE_IMAGE = "http://googleusercontent.com/image_collection/image_retrieval/1284883510777631583_0"
+GITHUB_USERNAME = "YOUR_GITHUB_USERNAME"  # Replace with your GitHub Username
+GITHUB_REPO = "YOUR_REPO_NAME"            # Replace with your GitHub Repository Name
+GITHUB_BRANCH = "main"                    # Change to "master" if your default branch is master
 
 # =========================================================================
+# This automatically builds the correct raw links for your uploaded images!
+# =========================================================================
+LOGIN_BACKGROUND_IMAGE = f"https://raw.githubusercontent.com/{GITHUB_USERNAME}/{GITHUB_REPO}/{GITHUB_BRANCH}/LOGIN_BACKGROUND_IMAGE.jpeg"
+BEHIND_CURTAIN_IMAGE = f"https://raw.githubusercontent.com/{GITHUB_USERNAME}/{GITHUB_REPO}/{GITHUB_BRANCH}/BEHIND_CURTAIN_IMAGE.jpeg"
+PUZZLE_IMAGE = f"https://raw.githubusercontent.com/{GITHUB_USERNAME}/{GITHUB_REPO}/{GITHUB_BRANCH}/PUZZLE_IMAGE.jpeg"
+FINAL_PROFILE_IMAGE = f"https://raw.githubusercontent.com/{GITHUB_USERNAME}/{GITHUB_REPO}/{GITHUB_BRANCH}/FINAL_PROFILE_IMAGE.jpeg"
 
 st.set_page_config(
     page_title="Happy Birthday, Gorgeous! 💖",
@@ -27,6 +25,7 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 
+# Inject custom CSS to force the app component to render in absolute fullscreen
 st.markdown("""
     <style>
     /* Hide top header bar, side menu and default margins */
@@ -54,6 +53,7 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
+# Main web-component package carrying optimized HTML/CSS/JS states
 interactive_birthday_experience = """
 <!DOCTYPE html>
 <html lang="en">
@@ -64,7 +64,7 @@ interactive_birthday_experience = """
     <!-- Fonts and Icons -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght=700&family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
@@ -90,6 +90,7 @@ interactive_birthday_experience = """
             transition: all 0.8s ease-in-out;
         }
 
+        /* Screen 1: Login Page with Tape Record Video/GIF Background */
         .screen-login {
             position: absolute;
             width: 100%;
@@ -270,6 +271,7 @@ interactive_birthday_experience = """
             box-shadow: 0 6px 20px rgba(17, 202, 160, 0.5);
         }
 
+        /* PowerPoint Realistic Curtains Effect CSS */
         .curtain-overlay {
             position: absolute;
             top: 0;
@@ -424,6 +426,7 @@ interactive_birthday_experience = """
             text-align: center;
         }
 
+        /* 3x3 Swap Grid layout */
         .puzzle-grid {
             display: grid;
             grid-template-columns: repeat(3, 110px);
