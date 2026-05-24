@@ -62,7 +62,7 @@ interactive_birthday_experience = """
             height: 100%;
             overflow: hidden;
             font-family: 'Quicksand', sans-serif;
-            background-color: #121212;
+            background-color: #0d0407;
             color: #ffffff;
         }
 
@@ -74,13 +74,14 @@ interactive_birthday_experience = """
             transition: all 0.8s ease-in-out;
         }
 
-        /* Screen 1: Login Page with Tape Record Video Background */
+        /* Screen 1: Login Page with Tape Record Video/GIF Background */
         .screen-login {
             position: absolute;
             width: 100%;
             height: 100%;
-            background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.55)), 
-                        url("http://googleusercontent.com/image_collection/image_retrieval/11614782345063205063_0") no-repeat center center;
+            /* High-fidelity lofi looping cassette tape player background */
+            background: linear-gradient(rgba(13, 4, 7, 0.45), rgba(13, 4, 7, 0.7)), 
+                        url("https://media.giphy.com/media/v1.Y2lkPTZjMDliOTUyeG12eTF0YW41N3B4ajgycDZzZnRwNmxia3pkaDV0NTRndzRndWZwayZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/3o85xGocUH8TCQDDry/giphy.gif") no-repeat center center;
             background-size: cover;
             display: flex;
             align-items: center;
@@ -90,16 +91,16 @@ interactive_birthday_experience = """
         }
 
         .login-card {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            background: rgba(13, 4, 7, 0.65);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 2px solid rgba(255, 133, 162, 0.4);
             padding: 40px;
             border-radius: 24px;
             text-align: center;
             max-width: 420px;
             width: 90%;
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.35);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
             animation: floatCard 4s ease-in-out infinite;
         }
 
@@ -120,17 +121,18 @@ interactive_birthday_experience = """
             font-size: 15px;
             color: #f1f1f1;
             margin-bottom: 25px;
+            line-height: 1.4;
         }
 
         .input-group {
             position: relative;
-            margin-bottom: 20px;
+            margin-bottom: 25px;
         }
 
         .input-group input {
             width: 100%;
             padding: 14px 20px 14px 45px;
-            background: rgba(0, 0, 0, 0.3);
+            background: rgba(0, 0, 0, 0.6);
             border: 2px solid rgba(255, 133, 162, 0.3);
             border-radius: 30px;
             color: white;
@@ -564,7 +566,7 @@ interactive_birthday_experience = """
 
     <div class="page-container">
 
-        <!-- SCREEN 1: LOGIN -->
+        <!-- SCREEN 1: LOGIN WITH NEW BEAUTIFUL retro looping tape background -->
         <div class="screen-login" id="loginScreen">
             <div class="login-card">
                 <h2>🌹 Private Audio Vault 🌹</h2>
