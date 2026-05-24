@@ -9,7 +9,7 @@ LOGIN_BACKGROUND_IMAGE = f"https://raw.githubusercontent.com/{GITHUB_USERNAME}/{
 BEHIND_CURTAIN_IMAGE = f"https://raw.githubusercontent.com/{GITHUB_USERNAME}/{GITHUB_REPO}/{GITHUB_BRANCH}/BEHIND_CURTAIN_IMAGE.jpeg"
 PUZZLE_IMAGE = f"https://raw.githubusercontent.com/{GITHUB_USERNAME}/{GITHUB_REPO}/{GITHUB_BRANCH}/PUZZLE_IMAGE.jpeg"
 FINAL_PROFILE_IMAGE = f"https://raw.githubusercontent.com/{GITHUB_USERNAME}/{GITHUB_REPO}/{GITHUB_BRANCH}/FINAL_PROFILE_IMAGE.jpeg"
-SONG_FILENAME = "januma-dinavidu-birthday-song-in-kannada-anuradha-bhat-pramod-aravind-vi_lk1Ob9t4.mp3"
+SONG_FILENAME = "Januma Dinavidu _ Birthday Song in Kannada _ Anuradha Bhat _ Pramod Aravind _ Vijay Krishna __.mp3"
 SONG_URL = f"https://raw.githubusercontent.com/{GITHUB_USERNAME}/{GITHUB_REPO}/{GITHUB_BRANCH}/{SONG_FILENAME.replace(' ', '%20')}"
 
 st.set_page_config(
@@ -66,7 +66,7 @@ interactive_birthday_experience = """
 
         .page-container { position: relative; width: 100%; height: 100%; }
 
-        /* ── WATERMARK ── */
+        /* WATERMARK */
         .watermark {
             position: fixed;
             bottom: 10px;
@@ -83,7 +83,7 @@ interactive_birthday_experience = """
             text-shadow: 0 0 8px rgba(255,133,162,0.3);
         }
 
-        /* ── SCREEN 1: LOGIN ── */
+        /* SCREEN 1: LOGIN */
         .screen-login {
             position: absolute; width: 100%; height: 100%;
             background: linear-gradient(rgba(13,4,7,0.45), rgba(13,4,7,0.7)),
@@ -167,10 +167,9 @@ interactive_birthday_experience = """
         }
 
         .login-btn:active { transform: scale(0.97); }
-
         .error-msg { color: #ff4b4b; font-size: 13px; margin-top: 10px; display: none; }
 
-        /* ── SCREEN 2: STAGE / CURTAINS ── */
+        /* SCREEN 2: STAGE */
         .screen-stage {
             position: absolute; width: 100%; height: 100%;
             display: none; background-color: #0d0407; z-index: 5;
@@ -181,9 +180,7 @@ interactive_birthday_experience = """
             background: radial-gradient(circle, #2c0e16 0%, #0d0407 100%);
             display: flex; flex-direction: column;
             align-items: center; justify-content: center;
-            z-index: 1;
-            padding: 16px;
-            overflow-y: auto;
+            z-index: 1; padding: 16px; overflow-y: auto;
         }
 
         .surprise-photo-container {
@@ -228,7 +225,7 @@ interactive_birthday_experience = """
 
         .next-puzzle-btn:active { transform: scale(0.97); }
 
-        /* Curtains */
+        /* CURTAINS */
         .curtain-overlay {
             position: absolute; top: 0; left: 0;
             width: 100%; height: 100%;
@@ -288,17 +285,15 @@ interactive_birthday_experience = """
         }
 
         .curtain-prompt p { font-size: clamp(12px, 3vw, 14px); color: #fff; }
-
         .curtains-open .curtain-prompt { opacity: 0; pointer-events: none; }
 
-        /* ── SCREEN 3: PUZZLE ── */
+        /* SCREEN 3: PUZZLE */
         .screen-puzzle {
             position: absolute; width: 100%; height: 100%;
             display: none;
             background: linear-gradient(135deg, #0f0c1b 0%, #20132b 50%, #0d0407 100%);
             align-items: center; justify-content: center;
-            z-index: 4; padding: 16px;
-            overflow-y: auto;
+            z-index: 4; padding: 16px; overflow-y: auto;
         }
 
         .puzzle-window {
@@ -323,7 +318,6 @@ interactive_birthday_experience = """
             color: #b3b3b3; margin-bottom: 20px; text-align: center;
         }
 
-        /* Responsive puzzle grid — tiles scale with viewport */
         .puzzle-grid {
             display: grid;
             grid-template-columns: repeat(3, var(--tile-size, 100px));
@@ -346,8 +340,7 @@ interactive_birthday_experience = """
             box-shadow: 0 2px 5px rgba(0,0,0,0.15);
             position: relative; display: flex;
             align-items: flex-end; justify-content: flex-end;
-            padding: 3px;
-            touch-action: manipulation;
+            padding: 3px; touch-action: manipulation;
         }
 
         .puzzle-tile::after {
@@ -369,14 +362,12 @@ interactive_birthday_experience = """
         }
 
         .solve-btn {
-            width: 100%;
-            padding: 13px;
+            width: 100%; padding: 13px;
             background: rgba(255,255,255,0.1);
             border: 1.5px solid #ff758c;
             border-radius: 30px; color: white;
             font-size: clamp(13px, 3.5vw, 15px);
             font-weight: bold; cursor: pointer;
-            box-shadow: none;
             transition: transform 0.2s;
             font-family: 'Quicksand', sans-serif;
             touch-action: manipulation;
@@ -384,7 +375,7 @@ interactive_birthday_experience = """
 
         .solve-btn:active { transform: scale(0.97); }
 
-        /* ── FINAL CARD ── */
+        /* FINAL CARD */
         .final-card-overlay {
             position: fixed; top: 0; left: 0;
             width: 100%; height: 100%;
@@ -395,12 +386,13 @@ interactive_birthday_experience = """
         }
 
         .final-card {
-            background: radial-gradient(circle at top left, #fff1f4 0%, #ffe0e6 100%);
-            border-radius: 28px;
-            padding: clamp(28px, 6vw, 45px) clamp(20px, 5vw, 35px);
+            background: linear-gradient(160deg, #fff1f4 0%, #ffd6e0 60%, #ffb3c6 100%);
+            border-radius: 32px;
+            padding: clamp(24px, 5vw, 40px) clamp(20px, 5vw, 35px);
             max-width: 460px; width: 100%;
             text-align: center;
-            box-shadow: 0 25px 55px rgba(255,117,140,0.3);
+            box-shadow: 0 30px 70px rgba(255,117,140,0.4),
+                        0 0 0 2px rgba(255,133,162,0.3);
             color: #4a1521;
             transform: scale(0.85); opacity: 0;
             transition: all 0.6s cubic-bezier(0.175,0.885,0.32,1.275);
@@ -409,41 +401,71 @@ interactive_birthday_experience = """
 
         .final-card.show { transform: scale(1); opacity: 1; }
 
-        .final-card h1 {
-            font-family: 'Dancing Script', cursive;
-            font-size: clamp(30px, 8vw, 46px);
-            color: #d11a5b; margin-bottom: 16px;
+        /* BIG profile photo */
+        .profile-photo-wrap {
+            width: clamp(140px, 38vw, 190px);
+            height: clamp(140px, 38vw, 190px);
+            border-radius: 50%;
+            margin: 0 auto 18px;
+            padding: 4px;
+            background: linear-gradient(135deg, #ff758c, #ff85a2, #ffb3c6);
+            box-shadow: 0 10px 30px rgba(209,26,91,0.35);
         }
 
-        .final-card img {
-            width: clamp(80px, 22vw, 120px);
-            height: clamp(80px, 22vw, 120px);
+        .profile-photo-wrap img {
+            width: 100%; height: 100%;
             object-fit: cover; border-radius: 50%;
             border: 4px solid #fff;
-            box-shadow: 0 8px 20px rgba(209,26,91,0.2);
-            margin-bottom: 20px;
+            display: block;
         }
 
-        .final-card p {
-            font-size: clamp(13px, 3.5vw, 16px);
-            line-height: 1.6; margin-bottom: 20px;
+        .final-card h1 {
+            font-family: 'Dancing Script', cursive;
+            font-size: clamp(28px, 7.5vw, 44px);
+            color: #d11a5b;
+            margin-bottom: 6px;
+            line-height: 1.2;
+            text-shadow: 0 2px 8px rgba(209,26,91,0.15);
+        }
+
+        .name-tag {
+            font-family: 'Dancing Script', cursive;
+            font-size: clamp(26px, 7vw, 40px);
+            color: #b5004e;
+            margin-bottom: 18px;
+            display: block;
+            text-shadow: 0 2px 6px rgba(181,0,78,0.2);
+        }
+
+        .divider {
+            width: 60px; height: 3px;
+            background: linear-gradient(90deg, #ff758c, #ffb3c6);
+            border-radius: 2px;
+            margin: 0 auto 18px;
+        }
+
+        .final-card p.wish-text {
+            font-size: clamp(13px, 3.5vw, 15px);
+            line-height: 1.7; margin-bottom: 18px;
             color: #5c353f; font-weight: 600;
         }
 
         .final-card .signature {
             font-family: 'Dancing Script', cursive;
             font-size: clamp(22px, 5vw, 28px);
-            color: #d11a5b; margin-top: 12px;
+            color: #d11a5b; margin-top: 8px;
+            margin-bottom: 22px;
+            display: block;
         }
 
         .close-gift-btn {
-            padding: 12px 32px;
+            padding: 13px 36px;
             background: linear-gradient(45deg, #d11a5b, #ff758c);
-            border: none; border-radius: 25px;
+            border: none; border-radius: 30px;
             color: white; font-weight: bold;
             cursor: pointer;
-            box-shadow: 0 5px 15px rgba(209,26,91,0.3);
-            transition: transform 0.2s;
+            box-shadow: 0 6px 20px rgba(209,26,91,0.4);
+            transition: transform 0.2s, box-shadow 0.2s;
             font-family: 'Quicksand', sans-serif;
             font-size: clamp(13px, 3.5vw, 15px);
             touch-action: manipulation;
@@ -451,7 +473,7 @@ interactive_birthday_experience = """
 
         .close-gift-btn:active { transform: scale(0.97); }
 
-        /* ── MUSIC PLAYER ── */
+        /* MUSIC PLAYER */
         .retro-player-card {
             position: fixed;
             top: 12px; right: 12px;
@@ -464,7 +486,6 @@ interactive_birthday_experience = """
             padding: 10px 14px;
             width: clamp(160px, 45vw, 240px);
             box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-            transition: transform 0.3s ease;
         }
 
         .player-header {
@@ -476,8 +497,7 @@ interactive_birthday_experience = """
             font-size: clamp(10px, 2.5vw, 12px);
             font-weight: 700; color: #ff85a2;
             white-space: nowrap; overflow: hidden;
-            text-overflow: ellipsis;
-            max-width: 75%;
+            text-overflow: ellipsis; max-width: 75%;
         }
 
         .player-status {
@@ -501,8 +521,7 @@ interactive_birthday_experience = """
 
         .music-icon-wrap {
             display: flex; align-items: center;
-            justify-content: center;
-            height: 36px;
+            justify-content: center; height: 36px;
         }
 
         .player-instruction {
@@ -511,7 +530,7 @@ interactive_birthday_experience = """
             margin-top: 6px; font-weight: 600;
         }
 
-        /* ── FLOATING DECOR ── */
+        /* FLOATING DECOR */
         .decor {
             position: absolute; pointer-events: none;
             z-index: 15; opacity: 0.8;
@@ -525,7 +544,6 @@ interactive_birthday_experience = """
             100% { transform: translateY(-10vh) rotate(360deg); opacity: 0; }
         }
 
-        /* ── MOBILE TWEAKS ── */
         @media (max-width: 480px) {
             .login-card { border-radius: 18px; }
             .retro-player-card { top: 8px; right: 8px; }
@@ -536,6 +554,7 @@ interactive_birthday_experience = """
             .login-card h2 { font-size: 24px; margin-bottom: 6px; }
             .login-card p  { margin-bottom: 12px; }
             .input-group   { margin-bottom: 12px; }
+            .profile-photo-wrap { width: 110px; height: 110px; }
         }
     </style>
 </head>
@@ -566,7 +585,7 @@ interactive_birthday_experience = """
     <!-- SCREEN 1: LOGIN -->
     <div class="screen-login" id="loginScreen">
         <div class="login-card">
-            <h2>🌹 BirthDay Card 🌹</h2>
+            <h2>🌹 Private Audio Vault 🌹</h2>
             <p>Welcome, gorgeous! Enter the password on your tape record invitation to begin.</p>
             <div class="input-group">
                 <i class="fa-solid fa-lock"></i>
@@ -612,10 +631,25 @@ interactive_birthday_experience = """
     <!-- FINAL CARD -->
     <div class="final-card-overlay" id="finalOverlay">
         <div class="final-card" id="finalCard">
-            <img src="__FINAL_PROFILE_URL__" alt="Gorgeous Girl Profile">
-            <h1>Happy Birthday, Beautiful!</h1>
-            <p>May every little dream you hold in your heart find its way into reality. You are incredibly rare, charming, and make this world so much brighter just by existing in it. Thank you for being yourself!</p>
-            <p class="signature">Forever yours ❤️</p>
+
+            <!-- BIG profile photo with gradient ring -->
+            <div class="profile-photo-wrap">
+                <img src="__FINAL_PROFILE_URL__" alt="Varshini">
+            </div>
+
+            <h1>Happy Birthday,</h1>
+            <span class="name-tag">Beautiful Girl Varshini! 🌸</span>
+
+            <div class="divider"></div>
+
+            <p class="wish-text">
+                May every little dream you hold in your heart find its way into reality.
+                You are incredibly rare, charming, and make this world so much brighter
+                just by existing in it. Thank you for being yourself, Varshini! 💖
+            </p>
+
+            <span class="signature">Forever yours ❤️</span>
+
             <button class="close-gift-btn" onclick="resetApp()">Close &amp; Replay 🔄</button>
         </div>
     </div>
@@ -625,22 +659,21 @@ interactive_birthday_experience = """
 <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
 <script>
-    /* ── CONFIG ── */
     const correctPassword = "varshu";
     let puzzleState = [2,0,1,5,3,4,8,6,7];
     let selectedTileIndex = null;
     let musicIsPlaying = false;
 
-    /* ── RESPONSIVE TILE SIZE ── */
+    /* Responsive tile size */
     function setTileSize() {
         const maxGrid = Math.min(window.innerWidth - 80, window.innerHeight - 280, 360);
         const tile = Math.floor((maxGrid - 16) / 3);
         document.documentElement.style.setProperty('--tile-size', tile + 'px');
     }
     setTileSize();
-    window.addEventListener('resize', () => { setTileSize(); if (puzzleState) buildPuzzleBoard(); });
+    window.addEventListener('resize', () => { setTileSize(); buildPuzzleBoard(); });
 
-    /* ── AUDIO ── */
+    /* Audio */
     function playChime() {
         try {
             const AudioContext = window.AudioContext || window.webkitAudioContext;
@@ -675,7 +708,7 @@ interactive_birthday_experience = """
     document.addEventListener('click',      () => { if (!musicIsPlaying) playMusicStream(); }, { once: true });
     document.addEventListener('touchstart', () => { if (!musicIsPlaying) playMusicStream(); }, { once: true, passive: true });
 
-    /* ── LOGIN ── */
+    /* Login */
     function checkPassword() {
         const val = document.getElementById("passwordField").value.trim().toLowerCase();
         const err = document.getElementById("errorMsg");
@@ -692,13 +725,12 @@ interactive_birthday_experience = """
         }
     }
 
-    /* allow Enter key on mobile keyboards */
     document.addEventListener('DOMContentLoaded', () => {
         const field = document.getElementById('passwordField');
         if (field) field.addEventListener('keydown', e => { if (e.key === 'Enter') checkPassword(); });
     });
 
-    /* ── CURTAIN ── */
+    /* Curtain */
     function openStageCurtain() {
         playChime();
         document.getElementById("stageScreen").classList.add("curtains-open");
@@ -713,23 +745,22 @@ interactive_birthday_experience = """
         document.getElementById("stageScreen").style.opacity = "0";
         setTimeout(() => {
             document.getElementById("stageScreen").style.display = "none";
-            const ps = document.getElementById("puzzleScreen");
-            ps.style.display = "flex";
+            document.getElementById("puzzleScreen").style.display = "flex";
             setTileSize();
             buildPuzzleBoard();
         }, 800);
     }
 
-    /* ── PUZZLE ── */
+    /* Puzzle */
     function buildPuzzleBoard() {
         const grid = document.getElementById("puzzleGrid");
+        if (!grid) return;
         grid.innerHTML = "";
         const tileSize = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--tile-size')) || 100;
 
         puzzleState.forEach((pieceId, index) => {
             const tile = document.createElement("div");
             tile.className = "puzzle-tile";
-            tile.setAttribute("data-index", index);
             const row = Math.floor(pieceId / 3);
             const col = pieceId % 3;
             tile.style.backgroundPosition = `-${col * tileSize}px -${row * tileSize}px`;
@@ -739,7 +770,7 @@ interactive_birthday_experience = """
             label.innerText = pieceId + 1;
             tile.appendChild(label);
 
-            tile.addEventListener('click',      () => handleTileClick(index));
+            tile.addEventListener('click', () => handleTileClick(index));
             tile.addEventListener('touchstart', (e) => { e.preventDefault(); handleTileClick(index); }, { passive: false });
             grid.appendChild(tile);
         });
@@ -771,19 +802,19 @@ interactive_birthday_experience = """
     function checkWin() {
         if (puzzleState.every((v,i) => v === i)) {
             triggerConfetti();
-            const overlay = document.getElementById("finalOverlay");
-            overlay.style.display = "flex";
+            document.getElementById("finalOverlay").style.display = "flex";
             setTimeout(() => document.getElementById("finalCard").classList.add("show"), 100);
         }
     }
 
     function triggerConfetti() {
-        confetti({ particleCount: 150, spread: 80, origin: { y: 0.6 } });
+        confetti({ particleCount: 200, spread: 90, origin: { y: 0.5 } });
+        setTimeout(() => confetti({ particleCount: 100, spread: 70, origin: { y: 0.3 } }), 600);
     }
 
     function spawnFloatingHearts() {
-        const symbols = ["❤️","💖","✨","🌸","🎈"];
-        for (let i = 0; i < 20; i++) {
+        const symbols = ["❤️","💖","✨","🌸","🎈","🌹","💕"];
+        for (let i = 0; i < 22; i++) {
             setTimeout(() => {
                 const icon = document.createElement("div");
                 icon.className = "decor";
@@ -793,7 +824,7 @@ interactive_birthday_experience = """
                 icon.style.animationDuration = Math.random() * 5 + 5 + "s";
                 document.body.appendChild(icon);
                 setTimeout(() => icon.remove(), 10000);
-            }, i * 400);
+            }, i * 350);
         }
     }
 
@@ -805,7 +836,7 @@ interactive_birthday_experience = """
 
 final_experience_rendered = (
     interactive_birthday_experience
-    .replace("__LOGIN_BG_URL__",      LOGIN_BACKGROUND_IMAGE)
+    .replace("__LOGIN_BG_URL__",       LOGIN_BACKGROUND_IMAGE)
     .replace("__BEHIND_CURTAIN_URL__", BEHIND_CURTAIN_IMAGE)
     .replace("__PUZZLE_IMG_URL__",     PUZZLE_IMAGE)
     .replace("__FINAL_PROFILE_URL__",  FINAL_PROFILE_IMAGE)
