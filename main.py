@@ -1,7 +1,25 @@
 import streamlit as st
 import streamlit.components.v1 as components
 
-# Set responsive layout configurations
+# =========================================================================
+# 📸 CUSTOMIZE YOUR PHOTOS HERE!
+# Just replace these URLs with your own direct image links (from postimages.org etc.)
+# =========================================================================
+
+# 1. The main background image/GIF for your login page (currently a lo-fi tape player)
+LOGIN_BACKGROUND_IMAGE = "https://media.giphy.com/media/v1.Y2lkPTZjMDliOTUyeG12eTF0YW41N3B4ajgycDZzZnRwNmxia3pkaDV0NTRndzRndWZwayZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/3o85xGocUH8TCQDDry/giphy.gif"
+
+# 2. The photo revealed behind the stage curtains
+BEHIND_CURTAIN_IMAGE = "http://googleusercontent.com/image_collection/image_retrieval/1284883510777631583_0"
+
+# 3. The photo that gets sliced into a 3x3 puzzle (must be square for best results)
+PUZZLE_IMAGE = "http://googleusercontent.com/image_collection/image_retrieval/13614872020698065159_0"
+
+# 4. The circular profile picture displayed on the final greeting card
+FINAL_PROFILE_IMAGE = "http://googleusercontent.com/image_collection/image_retrieval/1284883510777631583_0"
+
+# =========================================================================
+
 st.set_page_config(
     page_title="Happy Birthday, Gorgeous! 💖",
     page_icon="🌸",
@@ -9,7 +27,6 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 
-# Inject custom CSS to force the app component to render in absolute fullscreen
 st.markdown("""
     <style>
     /* Hide top header bar, side menu and default margins */
@@ -37,7 +54,6 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-# Main web-component package carrying optimized HTML/CSS/JS states
 interactive_birthday_experience = """
 <!DOCTYPE html>
 <html lang="en">
@@ -74,14 +90,13 @@ interactive_birthday_experience = """
             transition: all 0.8s ease-in-out;
         }
 
-        /* Screen 1: Login Page with Tape Record Video/GIF Background */
         .screen-login {
             position: absolute;
             width: 100%;
             height: 100%;
-            /* High-fidelity lofi looping cassette tape player background */
+            /* High-fidelity lofi looping cassette tape player background replaced dynamically */
             background: linear-gradient(rgba(13, 4, 7, 0.45), rgba(13, 4, 7, 0.7)), 
-                        url("https://media.giphy.com/media/v1.Y2lkPTZjMDliOTUyeG12eTF0YW41N3B4ajgycDZzZnRwNmxia3pkaDV0NTRndzRndWZwayZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/3o85xGocUH8TCQDDry/giphy.gif") no-repeat center center;
+                        url("__LOGIN_BG_URL__") no-repeat center center;
             background-size: cover;
             display: flex;
             align-items: center;
@@ -255,7 +270,6 @@ interactive_birthday_experience = """
             box-shadow: 0 6px 20px rgba(17, 202, 160, 0.5);
         }
 
-        /* PowerPoint Realistic Curtains Effect CSS */
         .curtain-overlay {
             position: absolute;
             top: 0;
@@ -410,7 +424,6 @@ interactive_birthday_experience = """
             text-align: center;
         }
 
-        /* 3x3 Swap Grid layout */
         .puzzle-grid {
             display: grid;
             grid-template-columns: repeat(3, 110px);
@@ -429,7 +442,7 @@ interactive_birthday_experience = """
             height: 110px;
             border-radius: 6px;
             cursor: pointer;
-            background-image: url("http://googleusercontent.com/image_collection/image_retrieval/13614872020698065159_0");
+            background-image: url("__PUZZLE_IMG_URL__");
             background-size: 330px 330px;
             transition: all 0.2s ease-in-out;
             box-shadow: 0 2px 5px rgba(0,0,0,0.15);
@@ -566,7 +579,7 @@ interactive_birthday_experience = """
 
     <div class="page-container">
 
-        <!-- SCREEN 1: LOGIN WITH NEW BEAUTIFUL retro looping tape background -->
+        <!-- SCREEN 1: LOGIN WITH RETRO LOOPING TAPE BACKGROUND -->
         <div class="screen-login" id="loginScreen">
             <div class="login-card">
                 <h2>🌹 Private Audio Vault 🌹</h2>
@@ -588,7 +601,7 @@ interactive_birthday_experience = """
             <div class="stage-backdrop">
                 <div class="surprise-photo-container" id="photoReveal">
                     <h3>🌹 Behind the Stage 🌹</h3>
-                    <img src="http://googleusercontent.com/image_collection/image_retrieval/1284883510777631583_0" alt="Special Girl Birthday" class="surprise-photo">
+                    <img src="__BEHIND_CURTAIN_URL__" alt="Special Girl Birthday" class="surprise-photo">
                     <p style="margin-bottom: 20px; font-size: 15px;">Wishing you a beautiful year ahead filled with magic and smiles! ✨</p>
                     <button class="next-puzzle-btn" onclick="goToPuzzle()">Unlock Birthday Challenge 🧩</button>
                 </div>
@@ -625,7 +638,7 @@ interactive_birthday_experience = """
         <!-- FINAL GIFT CARD DISPLAY OVERLAY -->
         <div class="final-card-overlay" id="finalOverlay">
             <div class="final-card" id="finalCard">
-                <img src="http://googleusercontent.com/image_collection/image_retrieval/1284883510777631583_0" alt="Gorgeous Girl Profile">
+                <img src="__FINAL_PROFILE_URL__" alt="Gorgeous Girl Profile">
                 <h1>Happy Birthday, Beautiful!</h1>
                 <p>May every little dream you hold in your heart find its way into reality. You are incredibly rare, charming, and make this world so much brighter just by existing in it. Thank you for being yourself!</p>
                 <p class="signature">Forever yours ❤️</p>
@@ -635,7 +648,6 @@ interactive_birthday_experience = """
 
     </div>
 
-    <!-- Confetti / Particle Generator Layer -->
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <script>
         // Setup state variables
@@ -646,7 +658,7 @@ interactive_birthday_experience = """
         let puzzleState = [2, 0, 1, 5, 3, 4, 8, 6, 7]; // Scrambled indices initial
         let selectedTileIndex = null;
 
-        // Custom chime audio synthethiser using browser web API
+        // Custom chime audio synthesizer using browser web API
         function playChime() {
             try {
                 const AudioContext = window.AudioContext || window.webkitAudioContext;
@@ -710,7 +722,6 @@ interactive_birthday_experience = """
             }, 1000);
         }
 
-        // Transition Screen 2 to Puzzle Grid Screen
         function goToPuzzle() {
             document.getElementById("stageScreen").style.opacity = "0";
             setTimeout(() => {
@@ -783,7 +794,6 @@ interactive_birthday_experience = """
             setTimeout(checkWin, 200);
         }
 
-        // Validation order match checks
         function checkWin() {
             const isSolved = puzzleState.every((val, index) => val === index);
             if (isSolved) {
@@ -836,5 +846,10 @@ interactive_birthday_experience = """
 </html>
 """
 
+final_experience_rendered = interactive_birthday_experience.replace("__LOGIN_BG_URL__", LOGIN_BACKGROUND_IMAGE) \
+                                                          .replace("__BEHIND_CURTAIN_URL__", BEHIND_CURTAIN_IMAGE) \
+                                                          .replace("__PUZZLE_IMG_URL__", PUZZLE_IMAGE) \
+                                                          .replace("__FINAL_PROFILE_URL__", FINAL_PROFILE_IMAGE)
+
 # Render full screen responsive viewport within Streamlit iframe
-components.html(interactive_birthday_experience, height=720, scrolling=False)
+components.html(final_experience_rendered, height=720, scrolling=False)
