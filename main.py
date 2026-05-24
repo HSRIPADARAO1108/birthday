@@ -561,6 +561,47 @@ interactive_birthday_experience = """
             transform: translateY(-2px);
         }
 
+        /* Glowing Spinning Vinyl Record Player Audio button styling */
+        .music-controller {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 10000;
+            background: rgba(13, 4, 7, 0.8);
+            border: 2px solid #ff85a2;
+            border-radius: 50%;
+            width: 54px;
+            height: 54px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 0 15px rgba(255, 133, 162, 0.6);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .music-controller:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 25px rgba(255, 133, 162, 0.9);
+        }
+
+        .music-controller i {
+            color: #ff85a2;
+            font-size: 28px;
+        }
+
+        .record-spinning {
+            animation: spinRecord 3.5s linear infinite;
+        }
+
+        .record-paused {
+            animation-play-state: paused !important;
+        }
+
+        @keyframes spinRecord {
+            100% { transform: rotate(360deg); }
+        }
+
         /* Floating decoration objects */
         .decor {
             position: absolute;
@@ -581,6 +622,14 @@ interactive_birthday_experience = """
 <body>
 
     <div class="page-container">
+
+        <!-- Floating Music Controller Widget -->
+        <div class="music-controller" id="musicCtrl" onclick="toggleMusic()">
+            <i class="fa-solid fa-compact-disc record-spinning record-paused" id="discIcon"></i>
+        </div>
+
+        <!-- Hidden YouTube Audio Streaming Iframe Target Container -->
+        <div id="yt-player" style="position: absolute; width: 0; height: 0; opacity: 0; pointer-events: none;"></div>
 
         <!-- SCREEN 1: LOGIN WITH RETRO LOOPING TAPE BACKGROUND -->
         <div class="screen-login" id="loginScreen">
@@ -652,6 +701,7 @@ interactive_birthday_experience = """
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    
     <script>
         // Setup state variables
         const correctPassword = "taperecord";
@@ -690,6 +740,66 @@ interactive_birthday_experience = """
             }
         }
 
+        // YouTube API Hidden Integration Layer
+        var tag = document.createElement('script');
+        tag.src = "https://www.youtube.com/iframe_api";
+        var firstScriptTag = document.getElementsByTagName('script')[0];
+        firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+        var player;
+        var musicIsPlaying = false;
+
+        function onYouTubeIframeAPIReady() {
+            player = new YT.Player('yt-player', {
+                height: '0',
+                width: '0',
+                videoId: 'WNL9yedU25g',
+                playerVars: {
+                    'autoplay': 0,
+                    'start': 41,        // Starts at exact request point (41s)
+                    'controls': 0,
+                    'loop': 1,
+                    'playlist': 'WNL9yedU25g',
+                    'disablekb': 1,
+                    'fs': 0,
+                    'modestbranding': 1,
+                    'rel': 0,
+                    'showinfo': 0
+                },
+                events: {
+                    'onReady': onPlayerReady
+                }
+            });
+        }
+
+        function onPlayerReady(event) {
+            console.log("Audio stream loaded successfully.");
+        }
+
+        function playMusicStream() {
+            if (player && typeof player.playVideo === 'function') {
+                player.playVideo();
+                musicIsPlaying = true;
+                document.getElementById('discIcon').classList.remove('record-paused');
+            }
+        }
+
+        function pauseMusicStream() {
+            if (player && typeof player.pauseVideo === 'function') {
+                player.pauseVideo();
+                musicIsPlaying = false;
+                document.getElementById('discIcon').classList.add('record-paused');
+            }
+        }
+
+        function toggleMusic() {
+            if (musicIsPlaying) {
+                pauseMusicStream();
+            } else {
+                playMusicStream();
+            }
+        }
+
         // Login Page check input
         function checkPassword() {
             const val = document.getElementById("passwordField").value.trim().toLowerCase();
@@ -698,6 +808,10 @@ interactive_birthday_experience = """
             if (val === correctPassword) {
                 error.style.display = "none";
                 document.getElementById("loginScreen").style.opacity = "0";
+                
+                // Trigger customized song streaming safely on user action click
+                playMusicStream();
+                
                 setTimeout(() => {
                     document.getElementById("loginScreen").style.display = "none";
                     document.getElementById("stageScreen").style.display = "block";
@@ -849,6 +963,7 @@ interactive_birthday_experience = """
 </html>
 """
 
+# Dynamic template replacement rendering matching correct raw link formats
 final_experience_rendered = interactive_birthday_experience.replace("__LOGIN_BG_URL__", LOGIN_BACKGROUND_IMAGE) \
                                                           .replace("__BEHIND_CURTAIN_URL__", BEHIND_CURTAIN_IMAGE) \
                                                           .replace("__PUZZLE_IMG_URL__", PUZZLE_IMAGE) \
