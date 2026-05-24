@@ -1,23 +1,14 @@
 import streamlit as st
 import streamlit.components.v1 as components
 
-# =========================================================================
-# 📸 ENTER YOUR GITHUB INFORMATION HERE!
-# Just replace these two values with your actual GitHub details.
-# =========================================================================
+GITHUB_USERNAME = "HSRIPADARAO1108"
+GITHUB_REPO = "birthday"
+GITHUB_BRANCH = "main"
 
-GITHUB_USERNAME = "HSRIPADARAO1108"  # Replace with your GitHub Username
-GITHUB_REPO = "birthday"            # Replace with your GitHub Repository Name
-GITHUB_BRANCH = "main"              # Change to "master" if your default branch is master
-
-# =========================================================================
-# This automatically builds the correct raw links for your uploaded images!
-# =========================================================================
 LOGIN_BACKGROUND_IMAGE = f"https://raw.githubusercontent.com/{GITHUB_USERNAME}/{GITHUB_REPO}/{GITHUB_BRANCH}/LOGIN_BACKGROUND_IMAGE.jpeg"
 BEHIND_CURTAIN_IMAGE = f"https://raw.githubusercontent.com/{GITHUB_USERNAME}/{GITHUB_REPO}/{GITHUB_BRANCH}/BEHIND_CURTAIN_IMAGE.jpeg"
 PUZZLE_IMAGE = f"https://raw.githubusercontent.com/{GITHUB_USERNAME}/{GITHUB_REPO}/{GITHUB_BRANCH}/PUZZLE_IMAGE.jpeg"
 FINAL_PROFILE_IMAGE = f"https://raw.githubusercontent.com/{GITHUB_USERNAME}/{GITHUB_REPO}/{GITHUB_BRANCH}/FINAL_PROFILE_IMAGE.jpeg"
-# ADDED: Your song file configuration
 SONG_FILENAME = "Januma Dinavidu _ Birthday Song in Kannada _ Anuradha Bhat _ Pramod Aravind _ Vijay Krishna __.mp3"
 SONG_URL = f"https://raw.githubusercontent.com/{GITHUB_USERNAME}/{GITHUB_REPO}/{GITHUB_BRANCH}/{SONG_FILENAME.replace(' ', '%20')}"
 
@@ -28,10 +19,8 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 
-# Inject custom CSS to force the app component to render in absolute fullscreen
 st.markdown("""
     <style>
-    /* Hide top header bar, side menu and default margins */
     [data-testid="stHeader"] {
         display: none !important;
     }
@@ -56,7 +45,6 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-# Main web-component package carrying optimized HTML/CSS/JS states
 interactive_birthday_experience = """
 <!DOCTYPE html>
 <html lang="en">
@@ -64,7 +52,6 @@ interactive_birthday_experience = """
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Birthday Wishes</title>
-    <!-- Fonts and Icons -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght=700&family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
@@ -85,7 +72,6 @@ interactive_birthday_experience = """
             color: #ffffff;
         }
 
-        /* Interactive screens transitions container */
         .page-container {
             position: relative;
             width: 100%;
@@ -93,12 +79,10 @@ interactive_birthday_experience = """
             transition: all 0.8s ease-in-out;
         }
 
-        /* Screen 1: Login Page with Tape Record Video/GIF Background */
         .screen-login {
             position: absolute;
             width: 100%;
             height: 100%;
-            /* High-fidelity background replaced dynamically */
             background: linear-gradient(rgba(13, 4, 7, 0.45), rgba(13, 4, 7, 0.7)), 
                         url("__LOGIN_BG_URL__") no-repeat center center;
             background-size: cover;
@@ -199,7 +183,6 @@ interactive_birthday_experience = """
             display: none;
         }
 
-        /* Screen 2: Curtains Transition Stage Area */
         .screen-stage {
             position: absolute;
             width: 100%;
@@ -209,7 +192,6 @@ interactive_birthday_experience = """
             z-index: 5;
         }
 
-        /* Stage Backdrop Behind Curtains */
         .stage-backdrop {
             position: absolute;
             width: 100%;
@@ -274,7 +256,6 @@ interactive_birthday_experience = """
             box-shadow: 0 6px 20px rgba(17, 202, 160, 0.5);
         }
 
-        /* PowerPoint Realistic Curtains Effect CSS */
         .curtain-overlay {
             position: absolute;
             top: 0;
@@ -287,7 +268,6 @@ interactive_birthday_experience = """
             pointer-events: auto;
         }
 
-        /* Drapery shadow effects to look realistic */
         .curtain-half {
             position: absolute;
             top: 0;
@@ -317,7 +297,6 @@ interactive_birthday_experience = """
             transform-origin: right center;
         }
 
-        /* The valance structure on top */
         .curtain-valance {
             position: absolute;
             top: 0;
@@ -336,7 +315,6 @@ interactive_birthday_experience = """
             transition: transform 3s ease-in-out;
         }
 
-        /* PPT scrunches the curtains outward on click */
         .curtains-open .curtain-left {
             transform: scaleX(0.08) translateX(-10%);
         }
@@ -349,7 +327,6 @@ interactive_birthday_experience = """
             transform: translateY(-100%);
         }
 
-        /* Instruction prompt overlaid on curtain */
         .curtain-prompt {
             position: absolute;
             top: 50%;
@@ -388,7 +365,6 @@ interactive_birthday_experience = """
             pointer-events: none;
         }
 
-        /* Screen 3: Happy Birthday Tape Record Puzzle Area */
         .screen-puzzle {
             position: absolute;
             width: 100%;
@@ -429,7 +405,6 @@ interactive_birthday_experience = """
             text-align: center;
         }
 
-        /* 3x3 Swap Grid layout */
         .puzzle-grid {
             display: grid;
             grid-template-columns: repeat(3, 110px);
@@ -476,14 +451,12 @@ interactive_birthday_experience = """
             font-weight: bold;
         }
 
-        /* Selection styling */
         .puzzle-tile.selected {
             transform: scale(0.96);
             filter: brightness(1.2);
             box-shadow: 0 0 12px #ff85a2;
         }
 
-        /* Final Wish Reveal Overlay Card */
         .final-card-overlay {
             position: fixed;
             top: 0;
@@ -564,7 +537,6 @@ interactive_birthday_experience = """
             transform: translateY(-2px);
         }
 
-        /* Glassmorphic Retro Cassette Tape Player CSS */
         .retro-player-card {
             position: fixed;
             top: 20px;
@@ -643,7 +615,6 @@ interactive_birthday_experience = """
             font-weight: 600;
         }
 
-        /* Floating decoration objects */
         .decor {
             position: absolute;
             pointer-events: none;
@@ -664,7 +635,6 @@ interactive_birthday_experience = """
 
     <div class="page-container">
 
-        <!-- Floating Retro Player Widget containing actual Youtube Embed -->
         <div class="retro-player-card" id="retroPlayer">
             <div class="player-header">
                 <span class="player-title">🎵 Januma Dinavidu</span>
@@ -683,7 +653,6 @@ interactive_birthday_experience = """
             <p class="player-instruction">👉 Tap anywhere on screen to start audio!</p>
         </div>
 
-        <!-- SCREEN 1: LOGIN WITH RETRO LOOPING TAPE BACKGROUND -->
         <div class="screen-login" id="loginScreen">
             <div class="login-card">
                 <h2>🌹 Private Audio Vault 🌹</h2>
@@ -691,7 +660,7 @@ interactive_birthday_experience = """
                 
                 <div class="input-group">
                     <i class="fa-solid fa-lock"></i>
-                    <input type="password" id="passwordField" placeholder="Password (Hint: taperecord)">
+                    <input type="password" id="passwordField" placeholder="Password (Hint: varshu)">
                 </div>
                 
                 <button class="login-btn" onclick="checkPassword()">Unlock Birthday surprise ▶️</button>
@@ -699,9 +668,7 @@ interactive_birthday_experience = """
             </div>
         </div>
 
-        <!-- SCREEN 2: REALISTIC STAGE WITH PPT CURTAINS -->
         <div class="screen-stage" id="stageScreen">
-            <!-- Stage Background containing target reveal image -->
             <div class="stage-backdrop">
                 <div class="surprise-photo-container" id="photoReveal">
                     <h3>🌹 Behind the Stage 🌹</h3>
@@ -711,13 +678,11 @@ interactive_birthday_experience = """
                 </div>
             </div>
 
-            <!-- Curtains Layers and Puller Prompt Overlay -->
             <div class="curtain-overlay" id="curtainOverlay">
                 <div class="curtain-valance"></div>
                 <div class="curtain-half curtain-left"></div>
                 <div class="curtain-half curtain-right"></div>
                 
-                <!-- Curtain Prompt Trigger Box -->
                 <div class="curtain-prompt" onclick="openStageCurtain()">
                     <h3>🎭 Click Curtain to Pull Back 🎭</h3>
                     <p>Open up your birthday presentation experience</p>
@@ -725,21 +690,18 @@ interactive_birthday_experience = """
             </div>
         </div>
 
-        <!-- SCREEN 3: BIRTHDAY SLIDING CASSETTE PUZZLE -->
         <div class="screen-puzzle" id="puzzleScreen">
             <div class="puzzle-window">
                 <h2>🎁 Cassette Box Puzzle 🎁</h2>
                 <p>Click two segments of the birthday card image to swap them into numerical order (1 to 9) to unlock your card!</p>
                 
                 <div class="puzzle-grid" id="puzzleGrid">
-                    <!-- Javascript populates 3x3 tiles dynamic positions -->
                 </div>
                 
                 <button class="login-btn" style="background: rgba(255,255,255,0.1); border: 1.5px solid #ff758c; box-shadow: none;" onclick="quickSolve()">Auto-Solve (Instant Card) ✨</button>
             </div>
         </div>
 
-        <!-- FINAL GIFT CARD DISPLAY OVERLAY -->
         <div class="final-card-overlay" id="finalOverlay">
             <div class="final-card" id="finalCard">
                 <img src="__FINAL_PROFILE_URL__" alt="Gorgeous Girl Profile">
@@ -755,15 +717,12 @@ interactive_birthday_experience = """
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     
     <script>
-        // Setup state variables
         const correctPassword = "varshu";
         
-        // Puzzle pieces tracking state
-        let puzzleState = [2, 0, 1, 5, 3, 4, 8, 6, 7]; // Scrambled indices initial
+        let puzzleState = [2, 0, 1, 5, 3, 4, 8, 6, 7];
         let selectedTileIndex = null;
         let musicIsPlaying = false;
 
-        // Custom chime audio synthesizer using browser web API
         function playChime() {
             try {
                 const AudioContext = window.AudioContext || window.webkitAudioContext;
@@ -791,7 +750,6 @@ interactive_birthday_experience = """
             }
         }
 
-        // Bypass security restrictions on initial taps/clicks anywhere on screen
         window.addEventListener('load', playMusicStream);
 
         document.addEventListener('click', function() {
@@ -818,7 +776,6 @@ interactive_birthday_experience = """
             }
         }
 
-        // Login Page check input
         function checkPassword() {
             const val = document.getElementById("passwordField").value.trim().toLowerCase();
             const error = document.getElementById("errorMsg");
@@ -827,7 +784,6 @@ interactive_birthday_experience = """
                 error.style.display = "none";
                 document.getElementById("loginScreen").style.opacity = "0";
                 
-                // Keep the music running or fire it up
                 playMusicStream();
                 
                 setTimeout(() => {
@@ -839,18 +795,15 @@ interactive_birthday_experience = """
             }
         }
 
-        // Action Trigger for Stage PowerPoint Curtain Transition
         function openStageCurtain() {
             playChime();
             const stage = document.getElementById("stageScreen");
             stage.classList.add("curtains-open");
             
-            // Remove the interaction barrier to click items behind curtains
             setTimeout(() => {
                 document.getElementById("curtainOverlay").style.pointerEvents = "none";
             }, 3000);
 
-            // Display revealed card content container
             setTimeout(() => {
                 document.getElementById("photoReveal").classList.add("show");
                 spawnFloatingHearts();
@@ -866,7 +819,6 @@ interactive_birthday_experience = """
             }, 800);
         }
 
-        // Render dynamic puzzle card slicing with coordinate positions
         function buildPuzzleBoard() {
             const grid = document.getElementById("puzzleGrid");
             grid.innerHTML = "";
@@ -877,12 +829,10 @@ interactive_birthday_experience = """
                 tile.setAttribute("data-index", index);
                 tile.setAttribute("data-piece-id", pieceId);
                 
-                // Calculate correct background slicing position coordinates
                 const row = Math.floor(pieceId / 3);
                 const col = pieceId % 3;
                 tile.style.backgroundPosition = `-${col * 110}px -${row * 110}px`;
                 
-                // Add sub-text layout sequence label
                 const label = document.createElement("span");
                 label.className = "tile-number";
                 label.innerText = (pieceId + 1);
@@ -893,20 +843,16 @@ interactive_birthday_experience = """
             });
         }
 
-        // Logic for puzzle pieces click and swap actions
         function handleTileClick(index) {
             const tiles = document.getElementsByClassName("puzzle-tile");
             
             if (selectedTileIndex === null) {
-                // First tile selected
                 selectedTileIndex = index;
                 tiles[index].classList.add("selected");
             } else {
-                // Second tile selected - perform array swapping
                 const firstIndex = selectedTileIndex;
                 const secondIndex = index;
                 
-                // Clear state selection style
                 tiles[firstIndex].classList.remove("selected");
                 
                 if (firstIndex !== secondIndex) {
@@ -922,7 +868,6 @@ interactive_birthday_experience = """
             }
         }
 
-        // Auto completion helper for easily exploring outcomes
         function quickSolve() {
             puzzleState = [0, 1, 2, 3, 4, 5, 6, 7, 8];
             buildPuzzleBoard();
@@ -932,7 +877,6 @@ interactive_birthday_experience = """
         function checkWin() {
             const isSolved = puzzleState.every((val, index) => val === index);
             if (isSolved) {
-                // Launch beautiful full-screen celebration
                 triggerConfetti();
                 const overlay = document.getElementById("finalOverlay");
                 const card = document.getElementById("finalCard");
@@ -944,7 +888,6 @@ interactive_birthday_experience = """
             }
         }
 
-        // Confetti script engine trigger
         function triggerConfetti() {
             confetti({
                 particleCount: 150,
@@ -953,7 +896,6 @@ interactive_birthday_experience = """
             });
         }
 
-        // Spawns beautiful floating hearts upon curtain release
         function spawnFloatingHearts() {
             const symbols = ["❤️", "💖", "✨", "🌸", "🎈"];
             for (let i = 0; i < 20; i++) {
@@ -966,13 +908,11 @@ interactive_birthday_experience = """
                     icon.style.animationDuration = Math.random() * 5 + 5 + "s";
                     document.body.appendChild(icon);
                     
-                    // Cleanup out of bounds
                     setTimeout(() => icon.remove(), 10000);
                 }, i * 400);
             }
         }
 
-        // Hard Reset App States
         function resetApp() {
             window.location.reload();
         }
@@ -981,12 +921,10 @@ interactive_birthday_experience = """
 </html>
 """
 
-# Render dynamically replaced media paths securely
 final_experience_rendered = interactive_birthday_experience.replace("__LOGIN_BG_URL__", LOGIN_BACKGROUND_IMAGE) \
                                                           .replace("__BEHIND_CURTAIN_URL__", BEHIND_CURTAIN_IMAGE) \
                                                           .replace("__PUZZLE_IMG_URL__", PUZZLE_IMAGE) \
                                                           .replace("__FINAL_PROFILE_URL__", FINAL_PROFILE_IMAGE) \
                                                           .replace("__SONG_URL__", SONG_URL)
 
-# Render full screen responsive viewport within Streamlit iframe
 components.html(final_experience_rendered, height=720, scrolling=False)
