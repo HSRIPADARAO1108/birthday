@@ -566,7 +566,7 @@ interactive_birthday_experience = """
     <!-- SCREEN 1: LOGIN -->
     <div class="screen-login" id="loginScreen">
         <div class="login-card">
-            <h2>🌹 Private Audio Vault 🌹</h2>
+            <h2>🌹 BirthDay Card 🌹</h2>
             <p>Welcome, gorgeous! Enter the password on your tape record invitation to begin.</p>
             <div class="input-group">
                 <i class="fa-solid fa-lock"></i>
