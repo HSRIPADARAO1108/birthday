@@ -6,8 +6,8 @@ import streamlit.components.v1 as components
 # Just replace these two values with your actual GitHub details.
 # =========================================================================
 
-GITHUB_USERNAME = "YOUR_GITHUB_USERNAME"  # Replace with your GitHub Username
-GITHUB_REPO = "YOUR_REPO_NAME"            # Replace with your GitHub Repository Name
+GITHUB_USERNAME = "HSRIPADARAO1108"  # Replace with your GitHub Username
+GITHUB_REPO = "birtday"            # Replace with your GitHub Repository Name
 GITHUB_BRANCH = "main"                    # Change to "master" if your default branch is master
 
 # =========================================================================
