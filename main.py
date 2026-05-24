@@ -95,7 +95,7 @@ interactive_birthday_experience = """
             position: absolute;
             width: 100%;
             height: 100%;
-            /* High-fidelity lofi looping cassette tape player background replaced dynamically */
+            /* High-fidelity background replaced dynamically */
             background: linear-gradient(rgba(13, 4, 7, 0.45), rgba(13, 4, 7, 0.7)), 
                         url("__LOGIN_BG_URL__") no-repeat center center;
             background-size: cover;
@@ -561,45 +561,83 @@ interactive_birthday_experience = """
             transform: translateY(-2px);
         }
 
-        /* Glowing Spinning Vinyl Record Player Audio button styling */
-        .music-controller {
+        /* Glassmorphic Retro Cassette Tape Player CSS */
+        .retro-player-card {
             position: fixed;
             top: 20px;
             right: 20px;
             z-index: 10000;
-            background: rgba(13, 4, 7, 0.8);
-            border: 2px solid #ff85a2;
-            border-radius: 50%;
-            width: 54px;
-            height: 54px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            box-shadow: 0 0 15px rgba(255, 133, 162, 0.6);
+            background: rgba(13, 4, 7, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 2px solid rgba(255, 133, 162, 0.4);
+            border-radius: 20px;
+            padding: 15px;
+            width: 270px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
             transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
 
-        .music-controller:hover {
-            transform: scale(1.1);
-            box-shadow: 0 0 25px rgba(255, 133, 162, 0.9);
+        .retro-player-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 35px rgba(255, 133, 162, 0.3);
         }
 
-        .music-controller i {
+        .player-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+
+        .player-title {
+            font-size: 12px;
+            font-weight: 700;
             color: #ff85a2;
-            font-size: 28px;
+            text-shadow: 0 0 5px rgba(255, 133, 162, 0.3);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 170px;
         }
 
-        .record-spinning {
-            animation: spinRecord 3.5s linear infinite;
+        .player-status {
+            font-size: 11px;
+            color: #11caa0;
+            display: flex;
+            align-items: center;
+            gap: 5px;
         }
 
-        .record-paused {
-            animation-play-state: paused !important;
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            background-color: #11caa0;
+            border-radius: 50%;
+            animation: pulseDot 1.5s infinite;
         }
 
-        @keyframes spinRecord {
-            100% { transform: rotate(360deg); }
+        @keyframes pulseDot {
+            0% { transform: scale(0.9); opacity: 0.6; }
+            50% { transform: scale(1.25); opacity: 1; }
+            100% { transform: scale(0.9); opacity: 0.6; }
+        }
+
+        .iframe-wrapper {
+            width: 240px;
+            height: 140px;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: #000;
+        }
+
+        .player-instruction {
+            font-size: 10px;
+            color: #b3b3b3;
+            text-align: center;
+            margin-top: 8px;
+            font-weight: 600;
         }
 
         /* Floating decoration objects */
@@ -623,13 +661,21 @@ interactive_birthday_experience = """
 
     <div class="page-container">
 
-        <!-- Floating Music Controller Widget -->
-        <div class="music-controller" id="musicCtrl" onclick="toggleMusic()">
-            <i class="fa-solid fa-compact-disc record-spinning record-paused" id="discIcon"></i>
+        <!-- Floating Retro Player Widget containing actual Youtube Embed -->
+        <div class="retro-player-card" id="retroPlayer">
+            <div class="player-header">
+                <span class="player-title">🎵 Januma Dinavidu</span>
+                <span class="player-status" id="playerStatus">
+                    <span class="status-dot"></span> Playing
+                </span>
+            </div>
+            
+            <div class="iframe-wrapper">
+                <div id="yt-player"></div>
+            </div>
+            
+            <p class="player-instruction">👉 Tap play/unmute above if audio is blocked!</p>
         </div>
-
-        <!-- Hidden YouTube Audio Streaming Iframe Target Container -->
-        <div id="yt-player" style="position: absolute; width: 0; height: 0; opacity: 0; pointer-events: none;"></div>
 
         <!-- SCREEN 1: LOGIN WITH RETRO LOOPING TAPE BACKGROUND -->
         <div class="screen-login" id="loginScreen">
@@ -707,7 +753,6 @@ interactive_birthday_experience = """
         const correctPassword = "taperecord";
         
         // Puzzle pieces tracking state
-        // Dynamic target index representation for 3x3 layout
         let puzzleState = [2, 0, 1, 5, 3, 4, 8, 6, 7]; // Scrambled indices initial
         let selectedTileIndex = null;
 
@@ -717,7 +762,6 @@ interactive_birthday_experience = """
                 const AudioContext = window.AudioContext || window.webkitAudioContext;
                 const ctx = new AudioContext();
                 
-                // Magical chime note array frequencies
                 const notes = [523.25, 659.25, 783.99, 1046.50];
                 notes.forEach((freq, index) => {
                     setTimeout(() => {
@@ -740,6 +784,7 @@ interactive_birthday_experience = """
             }
         }
 
+        // Load YouTube Iframe Player API asynchronously
         var tag = document.createElement('script');
         tag.src = "https://www.youtube.com/iframe_api";
         var firstScriptTag = document.getElementsByTagName('script')[0];
@@ -750,33 +795,51 @@ interactive_birthday_experience = """
 
         function onYouTubeIframeAPIReady() {
             player = new YT.Player('yt-player', {
-                height: '0',
-                width: '0',
+                height: '140',
+                width: '240',
                 videoId: 'WNL9yedU25g',
                 playerVars: {
-                    'autoplay': 1,      // Force autoplay on load
-                    'start': 41,        // Starts at exact request point (41s)
-                    'controls': 0,
-                    'loop': 1,
-                    'playlist': 'WNL9yedU25g',
-                    'disablekb': 1,
-                    'fs': 0,
+                    'autoplay': 1,      // Autoplay requested
+                    'start': 41,        // Start at 41 seconds
+                    'controls': 1,      // Keep controls visible so she can manually play/unmute if Chrome blocks it
                     'modestbranding': 1,
                     'rel': 0,
-                    'showinfo': 0
+                    'origin': window.location.origin
                 },
                 events: {
-                    'onReady': onPlayerReady
+                    'onReady': onPlayerReady,
+                    'onStateChange': onPlayerStateChange
                 }
             });
         }
 
         function onPlayerReady(event) {
-            console.log("Audio stream loaded successfully.");
+            console.log("YouTube Stream Ready.");
+            
+            // Apply permission policies explicitly to satisfy modern sandbox rules
+            const iframe = document.getElementById('yt-player');
+            if (iframe) {
+                iframe.setAttribute('allow', 'autoplay; encrypted-media');
+            }
+            
+            // Attempt play
             playMusicStream();
         }
 
-        // If browser blocks initial silent autoplay, touch/click anywhere on screen starts it immediately
+        function onPlayerStateChange(event) {
+            const statusLabel = document.getElementById('playerStatus');
+            if (event.data === YT.PlayerState.PLAYING) {
+                musicIsPlaying = true;
+                statusLabel.innerHTML = '<span class="status-dot"></span> Playing';
+                statusLabel.style.color = '#11caa0';
+            } else {
+                musicIsPlaying = false;
+                statusLabel.innerHTML = '<span class="status-dot" style="background-color: #ff4b4b;"></span> Paused';
+                statusLabel.style.color = '#ff4b4b';
+            }
+        }
+
+        // Bypass security restrictions on initial taps/clicks anywhere on screen
         document.addEventListener('click', function() {
             if (!musicIsPlaying) {
                 playMusicStream();
@@ -792,24 +855,6 @@ interactive_birthday_experience = """
         function playMusicStream() {
             if (player && typeof player.playVideo === 'function') {
                 player.playVideo();
-                musicIsPlaying = true;
-                document.getElementById('discIcon').classList.remove('record-paused');
-            }
-        }
-
-        function pauseMusicStream() {
-            if (player && typeof player.pauseVideo === 'function') {
-                player.pauseVideo();
-                musicIsPlaying = false;
-                document.getElementById('discIcon').classList.add('record-paused');
-            }
-        }
-
-        function toggleMusic() {
-            if (musicIsPlaying) {
-                pauseMusicStream();
-            } else {
-                playMusicStream();
             }
         }
 
@@ -822,7 +867,7 @@ interactive_birthday_experience = """
                 error.style.display = "none";
                 document.getElementById("loginScreen").style.opacity = "0";
                 
-                // Guarantee music is playing on password submit too
+                // Keep the music running or fire it up
                 playMusicStream();
                 
                 setTimeout(() => {
@@ -976,7 +1021,7 @@ interactive_birthday_experience = """
 </html>
 """
 
-# Dynamic template replacement rendering matching correct raw link formats
+# Render dynamically replaced media paths securely
 final_experience_rendered = interactive_birthday_experience.replace("__LOGIN_BG_URL__", LOGIN_BACKGROUND_IMAGE) \
                                                           .replace("__BEHIND_CURTAIN_URL__", BEHIND_CURTAIN_IMAGE) \
                                                           .replace("__PUZZLE_IMG_URL__", PUZZLE_IMAGE) \
