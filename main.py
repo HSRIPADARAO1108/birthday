@@ -17,6 +17,9 @@ LOGIN_BACKGROUND_IMAGE = f"https://raw.githubusercontent.com/{GITHUB_USERNAME}/{
 BEHIND_CURTAIN_IMAGE = f"https://raw.githubusercontent.com/{GITHUB_USERNAME}/{GITHUB_REPO}/{GITHUB_BRANCH}/BEHIND_CURTAIN_IMAGE.jpeg"
 PUZZLE_IMAGE = f"https://raw.githubusercontent.com/{GITHUB_USERNAME}/{GITHUB_REPO}/{GITHUB_BRANCH}/PUZZLE_IMAGE.jpeg"
 FINAL_PROFILE_IMAGE = f"https://raw.githubusercontent.com/{GITHUB_USERNAME}/{GITHUB_REPO}/{GITHUB_BRANCH}/FINAL_PROFILE_IMAGE.jpeg"
+# ADDED: Your song file configuration
+SONG_FILENAME = "Januma Dinavidu _ Birthday Song in Kannada _ Anuradha Bhat _ Pramod Aravind _ Vijay Krishna __.mp3"
+SONG_URL = f"https://raw.githubusercontent.com/{GITHUB_USERNAME}/{GITHUB_REPO}/{GITHUB_BRANCH}/{SONG_FILENAME.replace(' ', '%20')}"
 
 st.set_page_config(
     page_title="Happy Birthday, Gorgeous! 💖",
@@ -666,15 +669,18 @@ interactive_birthday_experience = """
             <div class="player-header">
                 <span class="player-title">🎵 Januma Dinavidu</span>
                 <span class="player-status" id="playerStatus">
-                    <span class="status-dot"></span> Playing
+                    <span class="status-dot"></span> Paused
                 </span>
             </div>
             
-            <div class="iframe-wrapper">
-                <div id="yt-player"></div>
+            <div class="iframe-wrapper" style="display: flex; align-items: center; justify-content: center;">
+                <audio id="birthday-audio" autoplay loop>
+                    <source src="__SONG_URL__" type="audio/mpeg">
+                </audio>
+                <i class="fa-solid fa-music" style="font-size: 40px; color: #ff85a2;"></i>
             </div>
             
-            <p class="player-instruction">👉 Tap play/unmute above if audio is blocked!</p>
+            <p class="player-instruction">👉 Tap anywhere on screen to start audio!</p>
         </div>
 
         <!-- SCREEN 1: LOGIN WITH RETRO LOOPING TAPE BACKGROUND -->
@@ -755,6 +761,7 @@ interactive_birthday_experience = """
         // Puzzle pieces tracking state
         let puzzleState = [2, 0, 1, 5, 3, 4, 8, 6, 7]; // Scrambled indices initial
         let selectedTileIndex = null;
+        let musicIsPlaying = false;
 
         // Custom chime audio synthesizer using browser web API
         function playChime() {
@@ -784,62 +791,9 @@ interactive_birthday_experience = """
             }
         }
 
-        // Load YouTube Iframe Player API asynchronously
-        var tag = document.createElement('script');
-        tag.src = "https://www.youtube.com/iframe_api";
-        var firstScriptTag = document.getElementsByTagName('script')[0];
-        firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
-
-        var player;
-        var musicIsPlaying = false;
-
-        function onYouTubeIframeAPIReady() {
-            player = new YT.Player('yt-player', {
-                height: '140',
-                width: '240',
-                videoId: 'WNL9yedU25g',
-                playerVars: {
-                    'autoplay': 1,      // Autoplay requested
-                    'start': 41,        // Start at 41 seconds
-                    'controls': 1,      // Keep controls visible so she can manually play/unmute if Chrome blocks it
-                    'modestbranding': 1,
-                    'rel': 0,
-                    'origin': window.location.origin
-                },
-                events: {
-                    'onReady': onPlayerReady,
-                    'onStateChange': onPlayerStateChange
-                }
-            });
-        }
-
-        function onPlayerReady(event) {
-            console.log("YouTube Stream Ready.");
-            
-            // Apply permission policies explicitly to satisfy modern sandbox rules
-            const iframe = document.getElementById('yt-player');
-            if (iframe) {
-                iframe.setAttribute('allow', 'autoplay; encrypted-media');
-            }
-            
-            // Attempt play
-            playMusicStream();
-        }
-
-        function onPlayerStateChange(event) {
-            const statusLabel = document.getElementById('playerStatus');
-            if (event.data === YT.PlayerState.PLAYING) {
-                musicIsPlaying = true;
-                statusLabel.innerHTML = '<span class="status-dot"></span> Playing';
-                statusLabel.style.color = '#11caa0';
-            } else {
-                musicIsPlaying = false;
-                statusLabel.innerHTML = '<span class="status-dot" style="background-color: #ff4b4b;"></span> Paused';
-                statusLabel.style.color = '#ff4b4b';
-            }
-        }
-
         // Bypass security restrictions on initial taps/clicks anywhere on screen
+        window.addEventListener('load', playMusicStream);
+
         document.addEventListener('click', function() {
             if (!musicIsPlaying) {
                 playMusicStream();
@@ -853,8 +807,14 @@ interactive_birthday_experience = """
         }, { once: true });
 
         function playMusicStream() {
-            if (player && typeof player.playVideo === 'function') {
-                player.playVideo();
+            const audio = document.getElementById('birthday-audio');
+            if (audio) {
+                audio.play().then(() => {
+                    musicIsPlaying = true;
+                    const statusLabel = document.getElementById('playerStatus');
+                    statusLabel.innerHTML = '<span class="status-dot"></span> Playing';
+                    statusLabel.style.color = '#11caa0';
+                }).catch(e => console.log("Autoplay blocked, waiting for user click"));
             }
         }
 
@@ -1025,7 +985,8 @@ interactive_birthday_experience = """
 final_experience_rendered = interactive_birthday_experience.replace("__LOGIN_BG_URL__", LOGIN_BACKGROUND_IMAGE) \
                                                           .replace("__BEHIND_CURTAIN_URL__", BEHIND_CURTAIN_IMAGE) \
                                                           .replace("__PUZZLE_IMG_URL__", PUZZLE_IMAGE) \
-                                                          .replace("__FINAL_PROFILE_URL__", FINAL_PROFILE_IMAGE)
+                                                          .replace("__FINAL_PROFILE_URL__", FINAL_PROFILE_IMAGE) \
+                                                          .replace("__SONG_URL__", SONG_URL)
 
 # Render full screen responsive viewport within Streamlit iframe
 components.html(final_experience_rendered, height=720, scrolling=False)
