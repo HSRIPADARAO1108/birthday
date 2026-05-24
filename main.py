@@ -756,7 +756,7 @@ interactive_birthday_experience = """
     
     <script>
         // Setup state variables
-        const correctPassword = "taperecord";
+        const correctPassword = "varshu";
         
         // Puzzle pieces tracking state
         let puzzleState = [2, 0, 1, 5, 3, 4, 8, 6, 7]; // Scrambled indices initial
