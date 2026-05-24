@@ -1,180 +1,110 @@
 import streamlit as st
-import time
-import base64
-import os
+import urllib.parse
 
-# --- Page Configuration ---
-st.set_page_config(
-    page_title="Happy Birthday!",
-    page_icon="🎂",
-    layout="centered",
-)
+# Set up page styling and title
+st.set_page_config(page_title="Interactive Birthday Wish 🎉", page_icon="🎂", layout="centered")
 
-# 🛠️ HARDCODE YOUR FILE PATH HERE
-# Example paths: "my_photo.jpg" or "C:/Users/Name/Pictures/birthday_bg.png"
-BACKGROUND_IMAGE_PATH = "your_photo_here.jpg" 
-
-# --- State Management Initialization ---
-if 'step' not in st.session_state:
-    st.session_state.step = 1
-if 'wrong_password' not in st.session_state:
-    st.session_state.wrong_password = False
-
-# --- Core Background Logic ---
-bg_style = ""
-
-# Check if the hardcoded image file path actually exists on your machine
-if os.path.exists(BACKGROUND_IMAGE_PATH):
-    with open(BACKGROUND_IMAGE_PATH, "rb") as image_file:
-        bytes_data = image_file.read()
-        b64_bg = base64.b64encode(bytes_data).decode()
-        
-    # Apply full screen background image only during step 1 (Login Screen)
-    if st.session_state.step == 1:
-        bg_style = f"""
-        .stApp {{
-            background: url("data:image/png;base64,{b64_bg}") no-repeat center center fixed !important;
-            background-size: cover !important;
-        }}
-        """
-    else:
-        # Subtle celebration background transition once they log in
-        bg_style = """
-        .stApp {
-            background: linear-gradient(135deg, #2c3e50 0%, #000000 100%) !important;
-        }
-        """
-else:
-    # Fallback to original pink gradient if the file path is incorrect or missing
-    bg_style = """
-    .stApp {
-        background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 99%, #fecfef 100%) !important;
-    }
-    """
-
-# --- Global CSS Styling ---
-st.markdown(f"""
-<style>
-    {bg_style}
-    
-    /* Hide the top Streamlit decoration bar and main menu button */
-    #MainMenu, header {{ visibility: hidden; }}
-    footer {{ visibility: hidden; }}
-    
-    /* Frosted glass container card */
-    .card {{
-        background: rgba(255, 255, 255, 0.12);
-        box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
-        backdrop-filter: blur(16px);
-        -webkit-backdrop-filter: blur(16px);
-        border-radius: 20px;
-        border: 1px solid rgba(255, 255, 255, 0.2);
-        padding: 40px;
+# Custom CSS to make it look festive and clean
+st.markdown("""
+    <style>
+    .birthday-header {
         text-align: center;
-        color: #ffffff;
-        margin-top: 60px;
-        text-shadow: 1px 1px 3px rgba(0,0,0,0.6);
-    }}
-    
-    .card h1, .card h2, .card h3, .card p {{
-        color: #ffffff !important;
-    }}
-    
-    /* Neon Text for Cake Screen */
-    .neon-text {{
-        font-family: 'Courier New', Courier, monospace;
-        color: #ff4b4b !important;
-        text-shadow: 0 0 10px rgba(255,75,75,0.5), 0 0 20px rgba(255,75,75,0.3);
-        font-weight: bold;
-    }}
-    
-    /* Floating Animations */
-    @keyframes float {{
-        0% {{ transform: translateY(0px); }}
-        50% {{ transform: translateY(-10px); }}
-        100% {{ transform: translateY(0px); }}
-    }}
-    .floating-cake {{
-        font-size: 80px;
-        animation: float 3s ease-in-out infinite;
-    }}
-</style>
-""", unsafe_allow_html=True)
+        color: #ff4b4b;
+        font-family: 'Comic Sans MS', cursive, sans-serif;
+    }
+    .cake-emoji {
+        font-size: 100px;
+        text-align: center;
+        display: block;
+        margin: 20px auto;
+    }
+    .wishes-box {
+        background-color: #fff0f0;
+        padding: 30px;
+        border-radius: 15px;
+        border: 2px dashed #ff4b4b;
+        text-align: center;
+        margin-top: 20px;
+    }
+    </style>
+""", unsafe_style_allowed=True)
 
+# Check if URL parameters exist (meaning a friend opened a shared link)
+query_params = st.query_params
 
-# --- App Navigation Logic ---
+if "name" in query_params:
+    # --- RECIPIENT MODE ---
+    # Extract data from the URL safely
+    friend_name = query_params.get("name")
+    friend_age = query_params.get("age", "")
+    secret_message = query_params.get("msg", "Happy Birthday!")
+    
+    st.markdown(f"<h1 class='birthday-header'>For You, {friend_name}! ✨</h1>", unsafe_style_allowed=True)
+    
+    # Session state tracking to check if candles are blown
+    if "blown" not in st.session_state:
+        st.session_state.blown = False
 
-# STEP 1: The Sweet Login Panel (Displays your custom image background)
-if st.session_state.step == 1:
-    st.markdown('<div class="card">', unsafe_allow_html=True)
-    st.markdown("<h1>🔒 Sweet Login</h1>", unsafe_allow_html=True)
-    st.markdown("<p>Enter the secret key to unlock your surprise.</p>", unsafe_allow_html=True)
-    
-    password = st.text_input("Secret Password", type="password", key="login_pass", label_visibility="collapsed")
-    
-    if st.button("Let's Go ✨", use_container_width=True):
-        if password.lower() == "birthday":
-            st.session_state.step = 2
-            st.session_state.wrong_password = False
-            st.rerun()
-        else:
-            st.session_state.wrong_password = True
-            
-    if st.session_state.wrong_password:
-        st.error("Oops! Wrong password. Hint: Try 'birthday'")
-    
-    # Simple alert block if your file path isn't pointing to a valid photo yet
-    if not os.path.exists(BACKGROUND_IMAGE_PATH):
-        st.info(f"💡 Developer Note: Place your photo at '{BACKGROUND_IMAGE_PATH}' or update line 12 in the script to view your custom background image.")
+    if not st.session_state.blown:
+        # Display cake with lit candle emoji
+        st.markdown("<span class='cake-emoji'>🎂🎂🎂<br>🎂🕯️🎂</span>", unsafe_style_allowed=True)
+        st.write("")
+        st.info(f"Hey {friend_name}! You have a secret birthday wish waiting for your {friend_age if friend_age else ''} birthday! Make a wish and blow out the candle below.")
         
-    st.markdown('</div>', unsafe_allow_html=True)
+        # Interactive action button to "blow" the candle
+        if st.button("💨 Click to Blow Out the Candle! 💨", use_container_width=True):
+            st.session_state.blown = True
+            st.rerun()
+            
+    else:
+        # Show celebration animations!
+        st.balloons()
+        st.snow() # Creates a magical confetti/sparkle overlay effect
+        
+        # Display cake with blown out candle
+        st.markdown("<span class='cake-emoji'>🎂🎂🎂<br>🎂✨🎂</span>", unsafe_style_allowed=True)
+        
+        # Reveal the secret message in a styled card container
+        st.markdown(f"""
+            <div class='wishes-box'>
+                <h2 style='color: #ff4b4b; margin-bottom: 10px;'>🎉 HAPPY BIRTHDAY 🎉</h2>
+                <p style='font-size: 24px; font-weight: bold; color: #333;'>{secret_message}</p>
+            </div>
+        """, unsafe_style_allowed=True)
+        
+        # Option to create their own link
+        if st.button("Create a wish for someone else 👈"):
+            st.query_params.clear()
+            st.session_state.blown = False
+            st.rerun()
 
-
-# STEP 2: The Gateway / Transition Message
-elif st.session_state.step == 2:
-    st.markdown('<div class="card" style="background: rgba(79, 172, 254, 0.4); border: 1px solid rgba(255,255,255,0.3);">', unsafe_allow_html=True)
-    st.markdown("<h3>💝 System Notification</h3>", unsafe_allow_html=True)
-    st.markdown("<h2>There is a special surprise waiting just for you! 🌸✨</h2>", unsafe_allow_html=True)
-    st.markdown("<p>Are you ready to see what's inside?</p>", unsafe_allow_html=True)
+else:
+    # --- CREATOR MODE ---
+    st.markdown("<h1 class='birthday-header'>🎂 Birthday Wish Link Generator 🎁</h1>", unsafe_style_allowed=True)
+    st.write("Create a unique interactive experience for your friends. Fill out the details below to generate their card link!")
     
-    if st.button("Open the Door 🎉", use_container_width=True):
-        st.session_state.step = 3
-        st.rerun()
-    st.markdown('</div>', unsafe_allow_html=True)
-
-
-# STEP 3: Magical Interactive Cake Time
-elif st.session_state.step == 3:
-    st.markdown('<div class="card" style="background: rgba(17, 17, 17, 0.85); border: 1px solid #ff4b4b;">', unsafe_allow_html=True)
-    st.markdown('<h2 class="neon-text">✨ Magical Cake Time! ✨</h2>', unsafe_allow_html=True)
-    
-    st.markdown('<div class="floating-cake">🎂</div>', unsafe_allow_html=True)
-    st.markdown("<p>Make a wish and click below to blow out the virtual candles!</p>", unsafe_allow_html=True)
-    
-    if st.button("Blow out Candles 🌬️", use_container_width=True):
-        with st.spinner("Lighting up the skies..."):
-            time.sleep(1.5)
-        st.session_state.step = 4
-        st.rerun()
-    st.markdown('</div>', unsafe_allow_html=True)
-
-
-# STEP 4: The Grand Finale Celebration
-elif st.session_state.step == 4:
-    st.balloons()
-    st.snow()
-    
-    st.markdown('<div class="card" style="background: rgba(0,0,0,0.85); border: 2px solid #ff4b4b;">', unsafe_allow_html=True)
-    st.markdown('<h1 style="color: #ff4b4b !important; font-size: 3rem;">✨ HAPPY BIRTHDAY! ✨</h1>', unsafe_allow_html=True)
-    
-    st.markdown("""
-    <p style="font-size: 1.2rem; line-height: 1.6; color: #fecfef !important;">
-        May your year ahead be filled with endless laughter, incredible adventures, 
-        and spectacular joy. You deserve the absolute best today and every day! 🥂🍰
-    </p>
-    """, unsafe_allow_html=True)
-    
-    if st.button("Replay Surprise 🔄", type="secondary"):
-        st.session_state.step = 1
-        st.rerun()
-    st.markdown('</div>', unsafe_allow_html=True)
+    with st.form("wish_generator"):
+        name = st.text_input("Friend's Name", placeholder="e.g. Rahul")
+        age = st.text_input("Age (Optional)", placeholder="e.g. 25")
+        message = st.text_area("Your Secret Birthday Message", placeholder="Happy Birthday buddy! Hope you have an awesome year ahead!")
+        
+        submit_btn = st.form_submit_button("Generate Magical Link ✨")
+        
+    if submit_btn:
+        if name and message:
+            # Safely encode strings to be URL-friendly
+            encoded_name = urllib.parse.quote(name)
+            encoded_age = urllib.parse.quote(age)
+            encoded_msg = urllib.parse.quote(message)
+            
+            # Construct base host URL dynamically or use a fallback local link structure
+            base_url = "http://localhost:8501/" # Change this to your deployed Streamlit Cloud URL later!
+            
+            # Formulate the custom shareable link
+            share_url = f"{base_url}?name={encoded_name}&age={encoded_age}&msg={encoded_msg}"
+            
+            st.success("🎉 Link successfully created! Copy it below and send it to your friend.")
+            st.code(share_url, language="text")
+            st.caption("Pro-tip: If you deploy this app on Streamlit Community Cloud, swap 'localhost:8501' with your public app web address!")
+        else:
+            st.error("Please fill out at least the Name and Secret Message fields to generate a link.")
