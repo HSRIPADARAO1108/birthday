@@ -648,7 +648,7 @@ interactive_birthday_experience = """
                 just by existing in it. Thank you for being yourself, Varshini! 💖
             </p>
 
-            <span class="signature">Forever yours ❤️</span>
+            <span class="signature">❤️</span>
 
             <button class="close-gift-btn" onclick="resetApp()">Close &amp; Replay 🔄</button>
         </div>
