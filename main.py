@@ -1,199 +1,838 @@
 import streamlit as st
 import streamlit.components.v1 as components
 
-# --- PAGE CONFIGURATION ---
-st.set_page_config(page_title="For Someone Special ✨", page_icon="💖", layout="centered")
+# Set responsive layout configurations
+st.set_page_config(
+    page_title="Happy Birthday, Gorgeous! 💖",
+    page_icon="🌸",
+    layout="wide",
+    initial_sidebar_state="collapsed"
+)
 
-# Initialize session states to track user progression
-if "logged_in" not in st.session_state:
-    st.session_state.logged_in = False
-if "curtain_opened" not in st.session_state:
-    st.session_state.curtain_opened = False
-
-# --- PHASE 1: ROMANTIC LOGIN PAGE WITH RETRO TAPE BACKGROUND ---
-if not st.session_state.logged_in:
-    # Custom CSS injecting an aesthetic retro tape recorder looping background
-    st.markdown("""
-        <style>
-        .stApp {
-            background: url("https://cdn.dribbble.com/users/2095460/screenshots/16843477/media/64b5952d4faef49e81b674e7ca3e7e9a.gif") no-repeat center center fixed;
-            background-size: cover;
-        }
-        .login-box {
-            background-color: rgba(255, 240, 245, 0.85); /* Soft pinkish transparent background */
-            padding: 35px;
-            border-radius: 20px;
-            border: 2px solid #ff758c;
-            text-align: center;
-            box-shadow: 0px 10px 30px rgba(0,0,0,0.2);
-            margin-top: 15%;
-        }
-        h1 { color: #ff4b72 !important; font-family: 'Georgia', serif; }
-        p { color: #555555 !important; font-size: 16px; }
-        </style>
-    """, unsafe_allow_html=True)
-
-    # Centered container for login fields
-    st.markdown('<div class="login-box">', unsafe_allow_html=True)
-    st.title("📼 A Secret Tape for You...")
-    st.write("I recorded something special. Enter the password to play it:")
-    
-    password = st.text_input("Password", type="password", placeholder="Hint: taperecord", label_visibility="collapsed")
-    login_btn = st.button("Press Play ▶️")
-    
-    if login_btn:
-        if password == "taperecord":
-            st.session_state.logged_in = True
-            st.rerun()
-        else:
-            st.error("❌ That's not the secret key, try again gorgeous!")
-    st.markdown('</div>', unsafe_allow_html=True)
-
-# --- PHASE 2: THE REVEAL & INTERACTIVE RED STAGE CURTAIN ---
-elif st.session_state.logged_in and not st.session_state.curtain_opened:
-    st.title("🎬 Your Birthday Special Screen...")
-    st.write("A beautiful world is waiting behind this curtain. Click below to slide them open! 👇")
-
-    # Embedded HTML/CSS/JS stage curtain execution
-    curtain_html = """
+# Inject custom CSS to force the app component to render in absolute fullscreen
+st.markdown("""
     <style>
-        .curtain-container {
+    /* Hide top header bar, side menu and default margins */
+    [data-testid="stHeader"] {
+        display: none !important;
+    }
+    .main .block-container {
+        padding: 0 !important;
+        margin: 0 !important;
+        max-width: 100% !important;
+        height: 100vh !important;
+        overflow: hidden !important;
+    }
+    iframe {
+        position: fixed !important;
+        top: 0 !important;
+        left: 0 !important;
+        width: 100vw !important;
+        height: 100vh !important;
+        border: none !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        z-index: 999999 !important;
+    }
+    </style>
+""", unsafe_allow_html=True)
+
+# Main web-component package carrying optimized HTML/CSS/JS states
+interactive_birthday_experience = """
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Birthday Wishes</title>
+    <!-- Fonts and Icons -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body, html {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            font-family: 'Quicksand', sans-serif;
+            background-color: #121212;
+            color: #ffffff;
+        }
+
+        /* Interactive screens transitions container */
+        .page-container {
             position: relative;
             width: 100%;
-            height: 450px;
-            overflow: hidden;
-            background: url('https://images.unsplash.com/photo-1492684223066-81342ee5ff30?q=80&w=1000') no-repeat center; /* Fairy lights under curtain */
-            background-size: cover;
-            border-radius: 15px;
-            box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+            height: 100%;
+            transition: all 0.8s ease-in-out;
         }
-        .curtain-left, .curtain-right {
+
+        /* Screen 1: Login Page with Tape Record Video Background */
+        .screen-login {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.55)), 
+                        url("http://googleusercontent.com/image_collection/image_retrieval/11614782345063205063_0") no-repeat center center;
+            background-size: cover;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10;
+            transition: opacity 1s ease-in-out;
+        }
+
+        .login-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 40px;
+            border-radius: 24px;
+            text-align: center;
+            max-width: 420px;
+            width: 90%;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.35);
+            animation: floatCard 4s ease-in-out infinite;
+        }
+
+        @keyframes floatCard {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .login-card h2 {
+            font-family: 'Dancing Script', cursive;
+            font-size: 38px;
+            color: #ff85a2;
+            margin-bottom: 10px;
+            text-shadow: 0 0 10px rgba(255, 133, 162, 0.4);
+        }
+
+        .login-card p {
+            font-size: 15px;
+            color: #f1f1f1;
+            margin-bottom: 25px;
+        }
+
+        .input-group {
+            position: relative;
+            margin-bottom: 20px;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 14px 20px 14px 45px;
+            background: rgba(0, 0, 0, 0.3);
+            border: 2px solid rgba(255, 133, 162, 0.3);
+            border-radius: 30px;
+            color: white;
+            font-size: 16px;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        .input-group input:focus {
+            border-color: #ff85a2;
+            box-shadow: 0 0 8px rgba(255, 133, 162, 0.3);
+        }
+
+        .input-group i {
+            position: absolute;
+            left: 18px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #ff85a2;
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(45deg, #ff758c, #ff7eb3);
+            border: none;
+            border-radius: 30px;
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 6px 20px rgba(255, 117, 140, 0.4);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .login-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(255, 117, 140, 0.6);
+        }
+
+        .error-msg {
+            color: #ff4b4b;
+            font-size: 13px;
+            margin-top: 10px;
+            display: none;
+        }
+
+        /* Screen 2: Curtains Transition Stage Area */
+        .screen-stage {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            display: none;
+            background-color: #0d0407;
+            z-index: 5;
+        }
+
+        /* Stage Backdrop Behind Curtains */
+        .stage-backdrop {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, #2c0e16 0%, #0d0407 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 1;
+        }
+
+        .surprise-photo-container {
+            text-align: center;
+            max-width: 500px;
+            width: 85%;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid #ff758c33;
+            border-radius: 24px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+            opacity: 0;
+            transform: scale(0.9);
+            transition: all 1s ease 1s;
+        }
+
+        .surprise-photo-container.show {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .surprise-photo {
+            width: 100%;
+            border-radius: 16px;
+            border: 3px solid #ff85a2;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+            margin-bottom: 20px;
+        }
+
+        .surprise-photo-container h3 {
+            font-family: 'Dancing Script', cursive;
+            font-size: 34px;
+            color: #ff85a2;
+            margin-bottom: 15px;
+        }
+
+        .next-puzzle-btn {
+            padding: 12px 30px;
+            background: linear-gradient(45deg, #11caa0, #005088);
+            border: none;
+            border-radius: 25px;
+            color: white;
+            font-weight: bold;
+            font-size: 15px;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(17, 202, 160, 0.3);
+        }
+
+        .next-puzzle-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(17, 202, 160, 0.5);
+        }
+
+        /* PowerPoint Realistic Curtains Effect CSS */
+        .curtain-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 10;
+            overflow: hidden;
+            display: flex;
+            pointer-events: auto;
+        }
+
+        /* Drapery shadow effects to look realistic */
+        .curtain-half {
             position: absolute;
             top: 0;
             width: 50%;
             height: 100%;
-            background: url('https://i.giphy.com/media/v1.Y2lkPTZjMDliOTUyM2FmNGphYXowZjdvOHVwOHI1ajU2cm40Y2U3eG80N3Q0MGV0ZmtzMiZlcD12MV9naWZzX3NlYXJjaCZjdD1n/hR5V1fYtBDMowv5OIu/giphy.gif') no-repeat;
-            background-size: 200% 100%;
-            transition: transform 2.5s ease-in-out;
-            z-index: 2;
+            background-color: #b3001e;
+            background-image: repeating-linear-gradient(
+                to right,
+                #800014 0%,
+                #a3001a 4%,
+                #b3001e 8%,
+                #d60024 12%,
+                #b3001e 16%,
+                #a3001a 20%
+            );
+            box-shadow: inset 0 0 50px rgba(0,0,0,0.65);
+            transition: transform 3.8s cubic-bezier(0.25, 1, 0.3, 1), opacity 3.5s ease;
         }
-        .curtain-left { left: 0; background-position: 0 0; }
-        .curtain-right { right: 0; background-position: 100% 0; }
-        
-        /* Class triggered by javascript to smoothly pull curtains open */
-        .curtain-container.open .curtain-left { transform: translateX(-100%); }
-        .curtain-container.open .curtain-right { transform: translateX(100%); }
 
-        .reveal-message {
+        .curtain-left {
+            left: 0;
+            transform-origin: left center;
+        }
+
+        .curtain-right {
+            right: 0;
+            transform-origin: right center;
+        }
+
+        /* The valance structure on top */
+        .curtain-valance {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 80px;
+            background-image: repeating-linear-gradient(
+                to right,
+                #800014,
+                #b3001e 10%,
+                #800014 20%
+            );
+            border-bottom: 4px solid #ffcc00;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.5);
+            z-index: 12;
+            transition: transform 3s ease-in-out;
+        }
+
+        /* PPT scrunches the curtains outward on click */
+        .curtains-open .curtain-left {
+            transform: scaleX(0.08) translateX(-10%);
+        }
+
+        .curtains-open .curtain-right {
+            transform: scaleX(0.08) translateX(10%);
+        }
+
+        .curtains-open .curtain-valance {
+            transform: translateY(-100%);
+        }
+
+        /* Instruction prompt overlaid on curtain */
+        .curtain-prompt {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 11;
+            text-align: center;
+            background: rgba(0,0,0,0.7);
+            padding: 20px 40px;
+            border-radius: 50px;
+            border: 2px solid #ffcc00;
+            cursor: pointer;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            transition: transform 0.3s, opacity 1.5s ease;
+        }
+
+        .curtain-prompt:hover {
+            transform: translate(-50%, -52%) scale(1.05);
+        }
+
+        .curtain-prompt h3 {
+            font-size: 22px;
+            color: #ffcc00;
+            margin-bottom: 5px;
+            letter-spacing: 1px;
+            font-weight: 700;
+        }
+
+        .curtain-prompt p {
+            font-size: 14px;
+            color: #fff;
+        }
+
+        .curtains-open .curtain-prompt {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        /* Screen 3: Happy Birthday Tape Record Puzzle Area */
+        .screen-puzzle {
             position: absolute;
             width: 100%;
+            height: 100%;
+            display: none;
+            background: linear-gradient(135deg, #0f0c1b 0%, #20132b 50%, #0d0407 100%);
+            align-items: center;
+            justify-content: center;
+            z-index: 4;
+            padding: 20px;
+        }
+
+        .puzzle-window {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1.5px solid rgba(255, 255, 255, 0.1);
+            border-radius: 24px;
+            padding: 30px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            max-width: 500px;
+            width: 100%;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
+        }
+
+        .puzzle-window h2 {
+            font-family: 'Dancing Script', cursive;
+            font-size: 34px;
+            color: #ff85a2;
+            margin-bottom: 5px;
             text-align: center;
-            top: 45%;
+        }
+
+        .puzzle-window p {
+            font-size: 14px;
+            color: #b3b3b3;
+            margin-bottom: 25px;
+            text-align: center;
+        }
+
+        /* 3x3 Swap Grid layout */
+        .puzzle-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 110px);
+            grid-template-rows: repeat(3, 110px);
+            gap: 6px;
+            border-radius: 12px;
+            overflow: hidden;
+            background: rgba(0, 0, 0, 0.2);
+            padding: 6px;
+            box-shadow: inset 0 0 15px rgba(0,0,0,0.4);
+            margin-bottom: 25px;
+        }
+
+        .puzzle-tile {
+            width: 110px;
+            height: 110px;
+            border-radius: 6px;
+            cursor: pointer;
+            background-image: url("http://googleusercontent.com/image_collection/image_retrieval/13614872020698065159_0");
+            background-size: 330px 330px;
+            transition: all 0.2s ease-in-out;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.15);
+            position: relative;
+            display: flex;
+            align-items: flex-end;
+            justify-content: flex-end;
+            padding: 4px;
+        }
+
+        .puzzle-tile::after {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            border: 1.5px solid rgba(255,255,255,0.12);
+            border-radius: 6px;
+        }
+
+        .tile-number {
+            font-size: 11px;
+            background: rgba(0,0,0,0.55);
             color: white;
-            font-family: 'Georgia', sans-serif;
-            font-size: 30px;
+            padding: 2px 6px;
+            border-radius: 4px;
             font-weight: bold;
-            text-shadow: 2px 2px 10px rgba(255, 75, 114, 0.8);
-            z-index: 1;
+        }
+
+        /* Selection styling */
+        .puzzle-tile.selected {
+            transform: scale(0.96);
+            filter: brightness(1.2);
+            box-shadow: 0 0 12px #ff85a2;
+        }
+
+        /* Final Wish Reveal Overlay Card */
+        .final-card-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(13, 4, 7, 0.95);
+            z-index: 100;
+            display: none;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .final-card {
+            background: radial-gradient(circle at top left, #fff1f4 0%, #ffe0e6 100%);
+            border-radius: 28px;
+            padding: 45px 35px;
+            max-width: 480px;
+            width: 90%;
+            text-align: center;
+            box-shadow: 0 25px 55px rgba(255, 117, 140, 0.3);
+            color: #4a1521;
+            transform: scale(0.85);
+            opacity: 0;
+            transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .final-card.show {
+            transform: scale(1);
+            opacity: 1;
+        }
+
+        .final-card h1 {
+            font-family: 'Dancing Script', cursive;
+            font-size: 46px;
+            color: #d11a5b;
+            margin-bottom: 20px;
+        }
+
+        .final-card img {
+            width: 120px;
+            height: 120px;
+            object-fit: cover;
+            border-radius: 50%;
+            border: 4px solid #fff;
+            box-shadow: 0 8px 20px rgba(209, 26, 91, 0.2);
+            margin-bottom: 25px;
+        }
+
+        .final-card p {
+            font-size: 16px;
+            line-height: 1.6;
+            margin-bottom: 25px;
+            color: #5c353f;
+            font-weight: 600;
+        }
+
+        .final-card .signature {
+            font-family: 'Dancing Script', cursive;
+            font-size: 28px;
+            color: #d11a5b;
+            margin-top: 15px;
+        }
+
+        .close-gift-btn {
+            padding: 12px 35px;
+            background: linear-gradient(45deg, #d11a5b, #ff758c);
+            border: none;
+            border-radius: 25px;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(209, 26, 91, 0.3);
+            transition: transform 0.2s;
+        }
+
+        .close-gift-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        /* Floating decoration objects */
+        .decor {
+            position: absolute;
+            pointer-events: none;
+            z-index: 15;
+            opacity: 0.8;
+            animation: floatUp 8s linear infinite;
+        }
+
+        @keyframes floatUp {
+            0% { transform: translateY(105vh) rotate(0deg); opacity: 0; }
+            10% { opacity: 0.8; }
+            90% { opacity: 0.8; }
+            100% { transform: translateY(-10vh) rotate(360deg); opacity: 0; }
         }
     </style>
+</head>
+<body>
 
-    <div class="curtain-container" id="curtainStage">
-        <div class="curtain-left"></div>
-        <div class="curtain-right"></div>
-        <div class="reveal-message">🌹 For the Most Beautiful Girl... 🌹</div>
-    </div>
-    """
-    
-    components.html(curtain_html, height=460)
-    
-    if st.button("💝 Open the Curtains 💝", use_container_width=True):
-        st.session_state.curtain_opened = True
-        st.rerun()
+    <div class="page-container">
 
-# --- PHASE 3: BIRTHDAY REVEAL & ROMANTIC PUZZLE GAME ---
-else:
-    st.balloons()
-    st.snow() # Adds a magical aesthetic floating effect
-    
-    st.title("👑 Happy Birthday, Beautiful! 🎉")
-    st.markdown("""
-    ### 🎂 Wishing you the happiest, brightest day ever!
-    You mean the absolute world to me. To celebrate your special day, I have hidden a final birthday sweet note inside this mini-puzzle.
-    
-    **💖 Your Task:** Drag and rearrange the blocks into their right numbers ($1$ to $9$) to reveal the final message!
-    """)
-
-    # Interactive Drag-and-Drop Puzzle Widget styled in Rose Gold theme
-    puzzle_html = """
-    <div style="display: flex; flex-direction: column; align-items: center; background: #fff0f5; padding: 25px; border-radius: 20px; border: 3px dashed #ff758c; box-shadow: 0 8px 16px rgba(0,0,0,0.1);">
-        <div id="puzzle-board" style="display: grid; grid-template-columns: repeat(3, 100px); gap: 8px; margin-bottom: 15px;">
-            <!-- Generated dynamically -->
+        <!-- SCREEN 1: LOGIN -->
+        <div class="screen-login" id="loginScreen">
+            <div class="login-card">
+                <h2>🌹 Private Audio Vault 🌹</h2>
+                <p>Welcome, gorgeous! Enter the password on your tape record invitation to begin.</p>
+                
+                <div class="input-group">
+                    <i class="fa-solid fa-lock"></i>
+                    <input type="password" id="passwordField" placeholder="Password (Hint: taperecord)">
+                </div>
+                
+                <button class="login-btn" onclick="checkPassword()">Unlock Birthday surprise ▶️</button>
+                <p class="error-msg" id="errorMsg">❌ That's not the secret code, gorgeous!</p>
+            </div>
         </div>
-        <p id="win-status" style="color: #d11a5b; font-weight: bold; font-size: 20px; font-family: 'Georgia', serif; text-align: center;"></p>
+
+        <!-- SCREEN 2: REALISTIC STAGE WITH PPT CURTAINS -->
+        <div class="screen-stage" id="stageScreen">
+            <!-- Stage Background containing target reveal image -->
+            <div class="stage-backdrop">
+                <div class="surprise-photo-container" id="photoReveal">
+                    <h3>🌹 Behind the Stage 🌹</h3>
+                    <img src="http://googleusercontent.com/image_collection/image_retrieval/1284883510777631583_0" alt="Special Girl Birthday" class="surprise-photo">
+                    <p style="margin-bottom: 20px; font-size: 15px;">Wishing you a beautiful year ahead filled with magic and smiles! ✨</p>
+                    <button class="next-puzzle-btn" onclick="goToPuzzle()">Unlock Birthday Challenge 🧩</button>
+                </div>
+            </div>
+
+            <!-- Curtains Layers and Puller Prompt Overlay -->
+            <div class="curtain-overlay" id="curtainOverlay">
+                <div class="curtain-valance"></div>
+                <div class="curtain-half curtain-left"></div>
+                <div class="curtain-half curtain-right"></div>
+                
+                <!-- Curtain Prompt Trigger Box -->
+                <div class="curtain-prompt" onclick="openStageCurtain()">
+                    <h3>🎭 Click Curtain to Pull Back 🎭</h3>
+                    <p>Open up your birthday presentation experience</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- SCREEN 3: BIRTHDAY SLIDING CASSETTE PUZZLE -->
+        <div class="screen-puzzle" id="puzzleScreen">
+            <div class="puzzle-window">
+                <h2>🎁 Cassette Box Puzzle 🎁</h2>
+                <p>Click two segments of the birthday card image to swap them into numerical order (1 to 9) to unlock your card!</p>
+                
+                <div class="puzzle-grid" id="puzzleGrid">
+                    <!-- Javascript populates 3x3 tiles dynamic positions -->
+                </div>
+                
+                <button class="login-btn" style="background: rgba(255,255,255,0.1); border: 1.5px solid #ff758c; box-shadow: none;" onclick="quickSolve()">Auto-Solve (Instant Card) ✨</button>
+            </div>
+        </div>
+
+        <!-- FINAL GIFT CARD DISPLAY OVERLAY -->
+        <div class="final-card-overlay" id="finalOverlay">
+            <div class="final-card" id="finalCard">
+                <img src="http://googleusercontent.com/image_collection/image_retrieval/1284883510777631583_0" alt="Gorgeous Girl Profile">
+                <h1>Happy Birthday, Beautiful!</h1>
+                <p>May every little dream you hold in your heart find its way into reality. You are incredibly rare, charming, and make this world so much brighter just by existing in it. Thank you for being yourself!</p>
+                <p class="signature">Forever yours ❤️</p>
+                <button class="close-gift-btn" onclick="resetApp()">Close & Replay 🔄</button>
+            </div>
+        </div>
+
     </div>
 
+    <!-- Confetti / Particle Generator Layer -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <script>
-        const targetOrder = ["1", "2", "3", "4", "5", "6", "7", "8", "9"];
-        let currentOrder = ["4", "1", "2", "7", "3", "5", "9", "6", "8"]; // Scrambled initial state
-        const board = document.getElementById('puzzle-board');
+        // Setup state variables
+        const correctPassword = "taperecord";
+        
+        // Puzzle pieces tracking state
+        // Dynamic target index representation for 3x3 layout
+        let puzzleState = [2, 0, 1, 5, 3, 4, 8, 6, 7]; // Scrambled indices initial
+        let selectedTileIndex = null;
 
-        function renderPuzzle() {
-            board.innerHTML = '';
-            currentOrder.forEach((num, index) => {
-                let block = document.createElement('div');
-                block.innerText = "❤️ Piece " + num;
-                block.style.width = "100px";
-                block.style.height = "100px";
-                block.style.background = "linear-gradient(135deg, #ff758c, #ff7eb3)";
-                block.style.color = "white";
-                block.style.display = "flex";
-                block.style.alignItems = "center";
-                block.style.justifyContent = "center";
-                block.style.fontFamily = "sans-serif";
-                block.style.fontSize = "14px";
-                block.style.fontWeight = "bold";
-                block.style.borderRadius = "12px";
-                block.style.cursor = "grab";
-                block.setAttribute('draggable', true);
-                block.setAttribute('data-index', index);
+        // Custom chime audio synthethiser using browser web API
+        function playChime() {
+            try {
+                const AudioContext = window.AudioContext || window.webkitAudioContext;
+                const ctx = new AudioContext();
+                
+                // Magical chime note array frequencies
+                const notes = [523.25, 659.25, 783.99, 1046.50];
+                notes.forEach((freq, index) => {
+                    setTimeout(() => {
+                        const osc = ctx.createOscillator();
+                        const gain = ctx.createGain();
+                        osc.type = 'sine';
+                        osc.frequency.value = freq;
+                        
+                        gain.gain.setValueAtTime(0.1, ctx.currentTime);
+                        gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 1.2);
+                        
+                        osc.connect(gain);
+                        gain.connect(ctx.destination);
+                        osc.start();
+                        osc.stop(ctx.currentTime + 1.2);
+                    }, index * 150);
+                });
+            } catch(e) {
+                console.log("Audio not allowed yet");
+            }
+        }
 
-                block.addEventListener('dragstart', handleDragStart);
-                block.addEventListener('dragover', handleDragOver);
-                block.addEventListener('drop', handleDrop);
-                board.appendChild(block);
+        // Login Page check input
+        function checkPassword() {
+            const val = document.getElementById("passwordField").value.trim().toLowerCase();
+            const error = document.getElementById("errorMsg");
+            
+            if (val === correctPassword) {
+                error.style.display = "none";
+                document.getElementById("loginScreen").style.opacity = "0";
+                setTimeout(() => {
+                    document.getElementById("loginScreen").style.display = "none";
+                    document.getElementById("stageScreen").style.display = "block";
+                }, 1000);
+            } else {
+                error.style.display = "block";
+            }
+        }
+
+        // Action Trigger for Stage PowerPoint Curtain Transition
+        function openStageCurtain() {
+            playChime();
+            const stage = document.getElementById("stageScreen");
+            stage.classList.add("curtains-open");
+            
+            // Remove the interaction barrier to click items behind curtains
+            setTimeout(() => {
+                document.getElementById("curtainOverlay").style.pointerEvents = "none";
+            }, 3000);
+
+            // Display revealed card content container
+            setTimeout(() => {
+                document.getElementById("photoReveal").classList.add("show");
+                spawnFloatingHearts();
+            }, 1000);
+        }
+
+        // Transition Screen 2 to Puzzle Grid Screen
+        function goToPuzzle() {
+            document.getElementById("stageScreen").style.opacity = "0";
+            setTimeout(() => {
+                document.getElementById("stageScreen").style.display = "none";
+                document.getElementById("puzzleScreen").style.display = "flex";
+                buildPuzzleBoard();
+            }, 800);
+        }
+
+        // Render dynamic puzzle card slicing with coordinate positions
+        function buildPuzzleBoard() {
+            const grid = document.getElementById("puzzleGrid");
+            grid.innerHTML = "";
+            
+            puzzleState.forEach((pieceId, index) => {
+                const tile = document.createElement("div");
+                tile.className = "puzzle-tile";
+                tile.setAttribute("data-index", index);
+                tile.setAttribute("data-piece-id", pieceId);
+                
+                // Calculate correct background slicing position coordinates
+                const row = Math.floor(pieceId / 3);
+                const col = pieceId % 3;
+                tile.style.backgroundPosition = `-${col * 110}px -${row * 110}px`;
+                
+                // Add sub-text layout sequence label
+                const label = document.createElement("span");
+                label.className = "tile-number";
+                label.innerText = (pieceId + 1);
+                tile.appendChild(label);
+                
+                tile.onclick = () => handleTileClick(index);
+                grid.appendChild(tile);
             });
         }
 
-        let draggedIndex = null;
-        function handleDragStart(e) { draggedIndex = this.getAttribute('data-index'); }
-        function handleDragOver(e) { e.preventDefault(); }
-
-        function handleDrop(e) {
-            e.preventDefault();
-            const targetIndex = this.getAttribute('data-index');
-            let temp = currentOrder[draggedIndex];
-            currentOrder[draggedIndex] = currentOrder[targetIndex];
-            currentOrder[targetIndex] = temp;
+        // Logic for puzzle pieces click and swap actions
+        function handleTileClick(index) {
+            const tiles = document.getElementsByClassName("puzzle-tile");
             
-            renderPuzzle();
-            checkWinCondition();
-        }
-
-        function checkWinCondition() {
-            if (JSON.stringify(currentOrder) === JSON.stringify(targetOrder)) {
-                document.getElementById('win-status').innerHTML = "✨ You Solved It! ✨<br>💌 <i>'Happy Birthday! You make every day brighter just by being in it. May all your dreams come true today and forever!'</i> 🎁💝";
-                board.style.border = "3px solid #d11a5b";
+            if (selectedTileIndex === null) {
+                // First tile selected
+                selectedTileIndex = index;
+                tiles[index].classList.add("selected");
+            } else {
+                // Second tile selected - perform array swapping
+                const firstIndex = selectedTileIndex;
+                const secondIndex = index;
+                
+                // Clear state selection style
+                tiles[firstIndex].classList.remove("selected");
+                
+                if (firstIndex !== secondIndex) {
+                    const temp = puzzleState[firstIndex];
+                    puzzleState[firstIndex] = puzzleState[secondIndex];
+                    puzzleState[secondIndex] = temp;
+                    
+                    buildPuzzleBoard();
+                    checkWin();
+                }
+                
+                selectedTileIndex = null;
             }
         }
-        renderPuzzle();
-    </script>
-    """
-    components.html(puzzle_html, height=450)
 
-    # Let her replay if she wants to
-    st.write("---")
-    if st.button("🔄 Play Again"):
-        st.session_state.logged_in = False
-        st.session_state.curtain_opened = False
-        st.rerun()
+        // Auto completion helper for easily exploring outcomes
+        function quickSolve() {
+            puzzleState = [0, 1, 2, 3, 4, 5, 6, 7, 8];
+            buildPuzzleBoard();
+            setTimeout(checkWin, 200);
+        }
+
+        // Validation order match checks
+        function checkWin() {
+            const isSolved = puzzleState.every((val, index) => val === index);
+            if (isSolved) {
+                // Launch beautiful full-screen celebration
+                triggerConfetti();
+                const overlay = document.getElementById("finalOverlay");
+                const card = document.getElementById("finalCard");
+                
+                overlay.style.display = "flex";
+                setTimeout(() => {
+                    card.classList.add("show");
+                }, 100);
+            }
+        }
+
+        // Confetti script engine trigger
+        function triggerConfetti() {
+            confetti({
+                particleCount: 150,
+                spread: 80,
+                origin: { y: 0.6 }
+            });
+        }
+
+        // Spawns beautiful floating hearts upon curtain release
+        function spawnFloatingHearts() {
+            const symbols = ["❤️", "💖", "✨", "🌸", "🎈"];
+            for (let i = 0; i < 20; i++) {
+                setTimeout(() => {
+                    const icon = document.createElement("div");
+                    icon.className = "decor";
+                    icon.innerText = symbols[Math.floor(Math.random() * symbols.length)];
+                    icon.style.left = Math.random() * 95 + "vw";
+                    icon.style.fontSize = Math.random() * 20 + 15 + "px";
+                    icon.style.animationDuration = Math.random() * 5 + 5 + "s";
+                    document.body.appendChild(icon);
+                    
+                    // Cleanup out of bounds
+                    setTimeout(() => icon.remove(), 10000);
+                }, i * 400);
+            }
+        }
+
+        // Hard Reset App States
+        function resetApp() {
+            window.location.reload();
+        }
+    </script>
+</body>
+</html>
+"""
+
+# Render full screen responsive viewport within Streamlit iframe
+components.html(interactive_birthday_experience, height=720, scrolling=False)
