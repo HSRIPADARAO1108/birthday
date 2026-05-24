@@ -8,7 +8,7 @@ import streamlit.components.v1 as components
 
 GITHUB_USERNAME = "HSRIPADARAO1108"  # Replace with your GitHub Username
 GITHUB_REPO = "birthday"            # Replace with your GitHub Repository Name
-GITHUB_BRANCH = "main"                    # Change to "master" if your default branch is master
+GITHUB_BRANCH = "main"              # Change to "master" if your default branch is master
 
 # =========================================================================
 # This automatically builds the correct raw links for your uploaded images!
@@ -740,7 +740,6 @@ interactive_birthday_experience = """
             }
         }
 
-        // YouTube API Hidden Integration Layer
         var tag = document.createElement('script');
         tag.src = "https://www.youtube.com/iframe_api";
         var firstScriptTag = document.getElementsByTagName('script')[0];
@@ -755,7 +754,7 @@ interactive_birthday_experience = """
                 width: '0',
                 videoId: 'WNL9yedU25g',
                 playerVars: {
-                    'autoplay': 0,
+                    'autoplay': 1,      // Force autoplay on load
                     'start': 41,        // Starts at exact request point (41s)
                     'controls': 0,
                     'loop': 1,
@@ -774,7 +773,21 @@ interactive_birthday_experience = """
 
         function onPlayerReady(event) {
             console.log("Audio stream loaded successfully.");
+            playMusicStream();
         }
+
+        // If browser blocks initial silent autoplay, touch/click anywhere on screen starts it immediately
+        document.addEventListener('click', function() {
+            if (!musicIsPlaying) {
+                playMusicStream();
+            }
+        }, { once: true });
+
+        document.addEventListener('touchstart', function() {
+            if (!musicIsPlaying) {
+                playMusicStream();
+            }
+        }, { once: true });
 
         function playMusicStream() {
             if (player && typeof player.playVideo === 'function') {
@@ -809,7 +822,7 @@ interactive_birthday_experience = """
                 error.style.display = "none";
                 document.getElementById("loginScreen").style.opacity = "0";
                 
-                // Trigger customized song streaming safely on user action click
+                // Guarantee music is playing on password submit too
                 playMusicStream();
                 
                 setTimeout(() => {
