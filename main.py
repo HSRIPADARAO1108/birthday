@@ -58,7 +58,7 @@ html_layout = """<!DOCTYPE html>
     <title>Sreelakshmi's Birthday Special</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@500;700&family=Great+Vibes&family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght=500;700&family=Great+Vibes&family=Montserrat:wght=400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <style>
@@ -140,7 +140,6 @@ html_layout = """<!DOCTYPE html>
         }
         .glass-photo-frame.reveal { opacity: 1; transform: translateY(0); }
         
-        /* Adjusted frame alignment strategy */
         .frame-img { 
             width: 100%; height: 280px; object-fit: contain; object-position: center center;
             background: rgba(255,255,255,0.02);
@@ -207,7 +206,6 @@ html_layout = """<!DOCTYPE html>
             box-shadow: 0 10px 25px rgba(255,107,157,0.4);
             display: flex; align-items: center; justify-content: center; overflow: hidden;
         }
-        /* Fixed Avatar Face Position to ensure crisp alignment */
         .circle-avatar img { 
             width: 100%; height: 100%; object-fit: cover; object-position: center 20%;
             border-radius: 50%; border: 3px solid #06020b; 
@@ -232,7 +230,6 @@ html_layout = """<!DOCTYPE html>
             border-radius: 16px; overflow: hidden; border: 1px solid rgba(255,255,255,0.1);
         }
         
-        /* Adjusted to retain aspect ratio completely without cutting out limbs or clothes */
         .flip-front {
             background: rgba(255, 255, 255, 0.02);
             display: flex; align-items: center; justify-content: center;
@@ -270,8 +267,8 @@ html_layout = """<!DOCTYPE html>
         }
         .music-bar span { font-size: 10px; font-weight: bold; color: #e2d9eb; }
         .wave-container { display: flex; align-items: flex-end; gap: 2px; height: 11px; width: 16px; }
-        .wave-bar { width: 3px; height: 100%; background-color: #ff6b9d; border-radius: 2px; transform-origin: bottom; }
         .wave-active .wave-bar { animation: jumpWave 1.2s ease-in-out infinite alternate; }
+        .wave-bar { width: 3px; height: 100%; background-color: #ff6b9d; border-radius: 2px; transform-origin: bottom; }
         .wave-bar:nth-child(2) { animation-delay: 0.3s; }
         .wave-bar:nth-child(3) { animation-delay: 0.6s; }
         @keyframes jumpWave { 0% { transform: scaleY(0.2); } 100% { transform: scaleY(1); } }
@@ -481,6 +478,10 @@ html_layout = """<!DOCTYPE html>
             }
         }
 
+        document.getElementById('passCode').addEventListener('input', () => {
+            document.getElementById('errHint').style.display = 'none';
+        });
+
         function partCurtains() {
             document.getElementById('stageView').classList.add('curtains-parted');
             setTimeout(() => {
@@ -559,8 +560,15 @@ html_layout = """<!DOCTYPE html>
         function triggerCascadeReveal() {
             const cards = document.querySelectorAll('.flip-card');
             cards.forEach((card, index) => {
+                // Step 1: Flip to the back (text side)
                 setTimeout(() => {
                     card.classList.add('flipped');
+                    
+                    // Step 2: Automatically flip back to the front (photo side) after 1.5 seconds
+                    setTimeout(() => {
+                        card.classList.remove('flipped');
+                    }, 1500); 
+
                 }, 600 + (index * 400));
             });
         }
