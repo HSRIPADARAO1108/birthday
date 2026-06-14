@@ -53,7 +53,7 @@ special_layout_template = """
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Srilakshmi's Birthday Special</title>
+    <title>Sreelakshmi's Birthday Special</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@500;700&family=Great+Vibes&family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
@@ -267,7 +267,7 @@ special_layout_template = """
             <div class="wave-bar"></div>
             <div class="wave-bar"></div>
         </div>
-        <span id="musicText">Tap to Audio</span>
+        <span id="musicText">Tap for Audio</span>
         <audio id="bgAudio" loop autoplay>
             <source src="__SONG_URL__" type="audio/mpeg">
         </audio>
@@ -275,8 +275,8 @@ special_layout_template = """
 
     <div class="screen-login" id="loginView">
         <div class="neon-login-box">
-            <h2>Shirlu's Tape Record</h2>
-            <p>Unlock your custom-curated cinematic dynamic birthday invitation card room.</p>
+            <h2>Welcome Shirlu ✨</h2>
+            <p>Unlock your premium custom-curated cinematic dynamic birthday showcase room.</p>
             <div class="input-wrapper">
                 <i class="fa-solid fa-key"></i>
                 <input type="password" id="passCode" placeholder="Enter Magic Password (shirlu)" autocomplete="off">
@@ -307,7 +307,7 @@ special_layout_template = """
 
     <div class="screen-puzzle" id="puzzleView">
         <div class="puzzle-box">
-            <h2>The Cassette Box Challenge</h2>
+            <h2>The Special Challenge</h2>
             <p>Arrange the scrambled blocks into correct sequential structure to unleash the prize album.</p>
             <div class="grid-container" id="puzzGrid"></div>
             <button class="neon-btn" style="background: transparent; border: 1.5px solid #ff6b9d;" onclick="bypassPuzzle()">Instant Auto-Solve Layout ✨</button>
@@ -319,10 +319,10 @@ special_layout_template = """
             
             <div class="hero-profile-card">
                 <div class="circle-avatar">
-                    <img src="__FINAL_PROFILE_URL__" alt="Srilakshmi Profile">
+                    <img src="__FINAL_PROFILE_URL__" alt="Sreelakshmi Profile">
                 </div>
                 <h1>Happy Birthday,</h1>
-                <div class="subtitle">Beautiful Girl Srilakshmi! 🌸</div>
+                <div class="subtitle">Beautiful Girl Sreelakshmi! 🌸</div>
                 <p class="wishes">
                     May every little path you step on open up into beautifully rewarding journeys. 
                     You carry an incredibly elegant charm and positive spark that lights up environments effortlessly. 
@@ -396,6 +396,17 @@ special_layout_template = """
         let matrixOrder = [1, 2, 0, 4, 3, 5, 7, 6, 8];
         let baseSelectedIdx = null;
 
+        document.addEventListener('DOMContentLoaded', () => {
+            const codeField = document.getElementById('passCode');
+            if(codeField) {
+                codeField.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter') {
+                        validateKey();
+                    }
+                });
+            }
+        });
+
         function adaptTileLayout() {
             const boundary = Math.min(window.innerWidth - 60, window.innerHeight - 280, 330);
             const computedSize = Math.floor((boundary - 20) / 3);
@@ -416,7 +427,7 @@ special_layout_template = """
 
         function validateKey() {
             const code = document.getElementById('passCode').value.trim().toLowerCase();
-            if(code === 'shirlu' || code === 'srilakshmi') {
+            if(code === 'shirlu' || code === 'srilakshmi' || code === 'sreelakshmi') {
                 document.getElementById('loginView').style.opacity = '0';
                 forcePlayStream();
                 setTimeout(() => {
