@@ -19,7 +19,7 @@ SONG_URL = f"https://raw.githubusercontent.com/{GITHUB_USERNAME}/{GITHUB_REPO}/{
 
 # --- Page Setup configuration ---
 st.set_page_config(
-    page_title="Happy Birthday, Shirlu! 🌸✨",
+    page_title="Happy Birthday, Shirlu! 💖✨",
     page_icon="💖",
     layout="wide",
     initial_sidebar_state="collapsed"
@@ -141,15 +141,9 @@ special_layout_template = """
         }
         .glass-photo-frame.reveal { opacity: 1; transform: translateY(0); }
         
-        /* Fixed Focus Engine for Behind Curtain Frame */
         .frame-img { 
-            width: 100%; 
-            height: 280px; 
-            object-fit: cover; 
-            object-position: center top; /* Keeps focus on the upper/face region */
-            border-radius: 16px; 
-            margin-bottom: 15px; 
-            border: 1px solid rgba(255,255,255,0.2); 
+            width: 100%; height: 280px; object-fit: cover; object-position: center top;
+            border-radius: 16px; margin-bottom: 15px; border: 1px solid rgba(255,255,255,0.2); 
         }
         
         .glass-photo-frame h3 { font-family: 'Great Vibes', cursive; font-size: 36px; color: #ff6b9d; margin-bottom: 8px; }
@@ -212,9 +206,7 @@ special_layout_template = """
             box-shadow: 0 10px 25px rgba(255,107,157,0.4);
         }
         .circle-avatar img { 
-            width:100%; height:100%; 
-            object-fit:cover; 
-            object-position: center top; /* Ensures profile avatar targets the face perfectly */
+            width:100%; height:100%; object-fit:cover; object-position: center top;
             border-radius:50%; border: 3px solid #06020b; 
         }
         .hero-profile-card h1 { font-family: 'Great Vibes', cursive; font-size: 38px; color: #ff6b9d; margin-bottom: 5px; }
@@ -236,13 +228,7 @@ special_layout_template = """
             border-radius: 16px; overflow: hidden; border: 1px solid rgba(255,255,255,0.1);
         }
         
-        /* Gallery Image Layout Rule Alignment */
-        .flip-front img { 
-            width: 100%; 
-            height: 100%; 
-            object-fit: cover; 
-            object-position: center top; /* Aligns all gallery card frames to protect the face */
-        }
+        .flip-front img { width: 100%; height: 100%; object-fit: cover; object-position: center top; }
         
         .flip-back {
             background: linear-gradient(135deg, #200b30 0%, #0c0314 100%);
@@ -251,7 +237,19 @@ special_layout_template = """
         }
         .flip-back h4 { font-size: 15px; color: #ff6b9d; margin-bottom: 6px; }
         .flip-back p { font-family: 'Montserrat', sans-serif; font-size: 11px; color: #dcd1e5; line-height: 1.4; }
-        .hint-touch { position: absolute; bottom: 8px; right: 12px; background: rgba(0,0,0,0.6); padding: 3px 8px; border-radius: 10px; font-size: 9px; color: #ff6b9d; }
+        
+        /* Pulse Hint Badge styling to explicitly guide users to interact */
+        .hint-touch { 
+            position: absolute; bottom: 12px; right: 12px; 
+            background: rgba(255, 107, 157, 0.85); padding: 4px 10px; 
+            border-radius: 20px; font-size: 10px; font-weight: bold; color: #fff;
+            box-shadow: 0 0 10px rgba(255,107,157,0.5);
+            animation: pulseBadge 1.5s infinite alternate;
+        }
+        @keyframes pulseBadge {
+            0% { transform: scale(1); opacity: 0.9; }
+            100% { transform: scale(1.06); opacity: 1; box-shadow: 0 0 15px rgba(255,107,157,0.8); }
+        }
 
         /* FLOATING MUSIC STATUS CAPSULE */
         .music-bar {
@@ -369,7 +367,7 @@ special_layout_template = """
                     <div class="flip-card-inner">
                         <div class="flip-front">
                             <img src="__LOGIN_BG_URL__" alt="Memory 1">
-                            <div class="hint-touch"><i class="fa-solid fa-rotate"></i> Tap</div>
+                            <div class="hint-touch"><i class="fa-solid fa-rotate"></i> Flip Me</div>
                         </div>
                         <div class="flip-back">
                             <h4>Enchanted Beginnings 🌟</h4>
@@ -382,7 +380,7 @@ special_layout_template = """
                     <div class="flip-card-inner">
                         <div class="flip-front">
                             <img src="__BEHIND_CURTAIN_URL__" alt="Memory 2">
-                            <div class="hint-touch"><i class="fa-solid fa-rotate"></i> Tap</div>
+                            <div class="hint-touch"><i class="fa-solid fa-rotate"></i> Flip Me</div>
                         </div>
                         <div class="flip-back">
                             <h4>Radiant Moments 💫</h4>
@@ -395,7 +393,7 @@ special_layout_template = """
                     <div class="flip-card-inner">
                         <div class="flip-front">
                             <img src="__PUZZLE_IMG_URL__" alt="Memory 3">
-                            <div class="hint-touch"><i class="fa-solid fa-rotate"></i> Tap</div>
+                            <div class="hint-touch"><i class="fa-solid fa-rotate"></i> Flip Me</div>
                         </div>
                         <div class="flip-back">
                             <h4>The Perfect Picture 🧩</h4>
@@ -408,7 +406,7 @@ special_layout_template = """
                     <div class="flip-card-inner">
                         <div class="flip-front">
                             <img src="__BONUS_MEMORY_URL__" alt="Memory 4">
-                            <div class="hint-touch"><i class="fa-solid fa-rotate"></i> Tap</div>
+                            <div class="hint-touch"><i class="fa-solid fa-rotate"></i> Flip Me</div>
                         </div>
                         <div class="flip-back">
                             <h4>Endless Celebrations 🎉</h4>
@@ -543,7 +541,20 @@ special_layout_template = """
                 confetti({ particleCount: 150, spread: 80, origin: { y: 0.4 } });
                 document.getElementById('puzzleView').style.display = 'none';
                 document.getElementById('showcaseView').style.display = 'flex';
+                
+                // --- NEW CASCADE AUTO-FLIP ENGINE ---
+                // Automatically triggers cascading flips so the user sees the cards turn open instantly
+                triggerCascadeReveal();
             }
+        }
+
+        function triggerCascadeReveal() {
+            const cards = document.querySelectorAll('.flip-card');
+            cards.forEach((card, index) => {
+                setTimeout(() => {
+                    card.classList.add('flipped');
+                }, 600 + (index * 400)); // Smooth staggered chain reaction open
+            });
         }
 
         function toggleFlip(cardElement) {
@@ -568,18 +579,3 @@ special_layout_template = """
     </script>
 </body>
 </html>
-"""
-
-# Compile and execute template natively matching full viewport sizing
-compiled_cinematic_experience = (
-    special_layout_template
-    .replace("__LOGIN_BG_URL__",       LOGIN_BACKGROUND_IMAGE)
-    .replace("__BEHIND_CURTAIN_URL__", BEHIND_CURTAIN_IMAGE)
-    .replace("__PUZZLE_IMG_URL__",      PUZZLE_IMAGE)
-    .replace("__FINAL_PROFILE_URL__",  FINAL_PROFILE_IMAGE)
-    .replace("__BONUS_MEMORY_URL__",   BONUS_MEMORY_IMAGE)
-    .replace("__SONG_URL__",           SONG_URL)
-)
-
-# Crucial Fix: Removed fixed height, passing execution structure into global iframe bounds via custom CSS overrides
-components.html(compiled_cinematic_experience, scrolling=False)
