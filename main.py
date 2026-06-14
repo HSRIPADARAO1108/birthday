@@ -81,12 +81,12 @@ html_layout = """<!DOCTYPE html>
         /* SCREEN 1: GLOWING LOGIN AREA */
         .screen-login {
             position: absolute; width: 100%; height: 100%;
-            background: linear-gradient(135deg, rgba(6,2,11,0.65), rgba(20,5,25,0.85)), url("__LOGIN_BG_URL__") no-repeat center top;
+            background: linear-gradient(135deg, rgba(6,2,11,0.65), rgba(20,5,25,0.85)), url("__LOGIN_BG_URL__") no-repeat center center;
             background-size: cover; display: flex; align-items: center; justify-content: center;
             z-index: 10; transition: all 1.2s cubic-bezier(0.4, 0, 0.2, 1); padding: 16px;
         }
         .neon-login-box {
-            background: rgba(255, 255, 255, 0.03);
+            background: rgba(6, 2, 11, 0.45);
             backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
             border: 1px solid rgba(255, 255, 255, 0.15);
             padding: 40px 24px; border-radius: 30px; text-align: center;
@@ -140,9 +140,11 @@ html_layout = """<!DOCTYPE html>
         }
         .glass-photo-frame.reveal { opacity: 1; transform: translateY(0); }
         
+        /* Adjusted frame alignment strategy */
         .frame-img { 
-            width: 100%; height: 280px; object-fit: cover; object-position: center top;
-            border-radius: 16px; margin-bottom: 15px; border: 1px solid rgba(255,255,255,0.2); 
+            width: 100%; height: 280px; object-fit: contain; object-position: center center;
+            background: rgba(255,255,255,0.02);
+            border-radius: 16px; margin-bottom: 15px; border: 1px solid rgba(255,255,255,0.15); 
         }
         
         .glass-photo-frame h3 { font-family: 'Great Vibes', cursive; font-size: 36px; color: #ff6b9d; margin-bottom: 8px; }
@@ -200,13 +202,15 @@ html_layout = """<!DOCTYPE html>
             box-shadow: 0 20px 50px rgba(0,0,0,0.4); display: flex; flex-direction: column; align-items: center;
         }
         .circle-avatar {
-            width: 130px; height: 130px; border-radius: 50%; padding: 4px;
+            width: 140px; height: 140px; border-radius: 50%; padding: 4px;
             background: linear-gradient(45deg, #ff6b9d, #bb6bff); margin-bottom: 16px;
             box-shadow: 0 10px 25px rgba(255,107,157,0.4);
+            display: flex; align-items: center; justify-content: center; overflow: hidden;
         }
+        /* Fixed Avatar Face Position to ensure crisp alignment */
         .circle-avatar img { 
-            width:100%; height:100%; object-fit:cover; object-position: center top;
-            border-radius:50%; border: 3px solid #06020b; 
+            width: 100%; height: 100%; object-fit: cover; object-position: center 20%;
+            border-radius: 50%; border: 3px solid #06020b; 
         }
         .hero-profile-card h1 { font-family: 'Great Vibes', cursive; font-size: 38px; color: #ff6b9d; margin-bottom: 5px; }
         .hero-profile-card .subtitle { font-size: 16px; color: #bb6bff; margin-bottom: 12px; font-weight: bold; letter-spacing: 0.5px; }
@@ -216,18 +220,26 @@ html_layout = """<!DOCTYPE html>
         .gallery-grid {
             display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; width: 100%;
         }
-        .flip-card { background-color: transparent; height: 240px; perspective: 1000px; cursor: pointer; }
+        .flip-card { background-color: transparent; height: 260px; perspective: 1000px; cursor: pointer; }
         .flip-card-inner {
             position: relative; width: 100%; height: 100%; text-align: center;
             transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275); transform-style: preserve-3d;
         }
         .flip-card.flipped .flip-card-inner { transform: rotateY(180deg); }
+        
         .flip-front, .flip-back {
             position: absolute; width: 100%; height: 100%; -webkit-backface-visibility: hidden; backface-visibility: hidden;
             border-radius: 16px; overflow: hidden; border: 1px solid rgba(255,255,255,0.1);
         }
         
-        .flip-front img { width: 100%; height: 100%; object-fit: cover; object-position: center top; }
+        /* Adjusted to retain aspect ratio completely without cutting out limbs or clothes */
+        .flip-front {
+            background: rgba(255, 255, 255, 0.02);
+            display: flex; align-items: center; justify-content: center;
+        }
+        .flip-front img { 
+            width: 100%; height: 100%; object-fit: contain; object-position: center center; 
+        }
         
         .flip-back {
             background: linear-gradient(135deg, #200b30 0%, #0c0314 100%);
@@ -237,13 +249,12 @@ html_layout = """<!DOCTYPE html>
         .flip-back h4 { font-size: 15px; color: #ff6b9d; margin-bottom: 6px; }
         .flip-back p { font-family: 'Montserrat', sans-serif; font-size: 11px; color: #dcd1e5; line-height: 1.4; }
         
-        /* Pulse Hint Badge styling to explicitly guide users to interact */
         .hint-touch { 
             position: absolute; bottom: 12px; right: 12px; 
             background: rgba(255, 107, 157, 0.85); padding: 4px 10px; 
             border-radius: 20px; font-size: 10px; font-weight: bold; color: #fff;
             box-shadow: 0 0 10px rgba(255,107,157,0.5);
-            animation: pulseBadge 1.5s infinite alternate;
+            animation: pulseBadge 1.5s infinite alternate; z-index: 5;
         }
         @keyframes pulseBadge {
             0% { transform: scale(1); opacity: 0.9; }
@@ -277,7 +288,7 @@ html_layout = """<!DOCTYPE html>
         /* RESPONSIVE RETINA SCALING */
         @media(max-width: 600px) {
             .gallery-grid { grid-template-columns: 1fr; }
-            .flip-card { height: 260px; }
+            .flip-card { height: 280px; }
             .hero-profile-card { padding: 25px 16px; }
             .hero-profile-card h1 { font-size: 32px; }
             .neon-login-box { padding: 35px 20px; }
