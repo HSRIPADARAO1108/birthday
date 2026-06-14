@@ -82,7 +82,7 @@ special_layout_template = """
         /* SCREEN 1: GLOWING LOGIN AREA */
         .screen-login {
             position: absolute; width: 100%; height: 100%;
-            background: linear-gradient(135deg, rgba(6,2,11,0.55), rgba(20,5,25,0.80)), url("__LOGIN_BG_URL__") no-repeat center center;
+            background: linear-gradient(135deg, rgba(6,2,11,0.65), rgba(20,5,25,0.85)), url("__LOGIN_BG_URL__") no-repeat center top;
             background-size: cover; display: flex; align-items: center; justify-content: center;
             z-index: 10; transition: all 1.2s cubic-bezier(0.4, 0, 0.2, 1); padding: 16px;
         }
@@ -140,7 +140,18 @@ special_layout_template = """
             transition: all 1.2s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
         .glass-photo-frame.reveal { opacity: 1; transform: translateY(0); }
-        .frame-img { width: 100%; max-height: 35vh; object-fit: cover; border-radius: 16px; margin-bottom: 15px; border: 1px solid rgba(255,255,255,0.2); }
+        
+        /* Fixed Focus Engine for Behind Curtain Frame */
+        .frame-img { 
+            width: 100%; 
+            height: 280px; 
+            object-fit: cover; 
+            object-position: center top; /* Keeps focus on the upper/face region */
+            border-radius: 16px; 
+            margin-bottom: 15px; 
+            border: 1px solid rgba(255,255,255,0.2); 
+        }
+        
         .glass-photo-frame h3 { font-family: 'Great Vibes', cursive; font-size: 36px; color: #ff6b9d; margin-bottom: 8px; }
         .glass-photo-frame p { font-family: 'Montserrat', sans-serif; font-size: 13px; color: #e2d9eb; margin-bottom: 20px; line-height: 1.5; }
 
@@ -196,11 +207,16 @@ special_layout_template = """
             box-shadow: 0 20px 50px rgba(0,0,0,0.4); display: flex; flex-direction: column; align-items: center;
         }
         .circle-avatar {
-            width: 120px; height: 120px; border-radius: 50%; padding: 4px;
+            width: 130px; height: 130px; border-radius: 50%; padding: 4px;
             background: linear-gradient(45deg, #ff6b9d, #bb6bff); margin-bottom: 16px;
             box-shadow: 0 10px 25px rgba(255,107,157,0.4);
         }
-        .circle-avatar img { width:100%; height:100%; object-fit:cover; border-radius:50%; border: 3px solid #06020b; }
+        .circle-avatar img { 
+            width:100%; height:100%; 
+            object-fit:cover; 
+            object-position: center top; /* Ensures profile avatar targets the face perfectly */
+            border-radius:50%; border: 3px solid #06020b; 
+        }
         .hero-profile-card h1 { font-family: 'Great Vibes', cursive; font-size: 38px; color: #ff6b9d; margin-bottom: 5px; }
         .hero-profile-card .subtitle { font-size: 16px; color: #bb6bff; margin-bottom: 12px; font-weight: bold; letter-spacing: 0.5px; }
         .hero-profile-card p.wishes { font-family: 'Montserrat', sans-serif; font-size: 13px; line-height: 1.7; color: #e2d9eb; max-width: 600px; }
@@ -209,7 +225,7 @@ special_layout_template = """
         .gallery-grid {
             display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; width: 100%;
         }
-        .flip-card { background-color: transparent; height: 180px; perspective: 1000px; cursor: pointer; }
+        .flip-card { background-color: transparent; height: 240px; perspective: 1000px; cursor: pointer; }
         .flip-card-inner {
             position: relative; width: 100%; height: 100%; text-align: center;
             transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275); transform-style: preserve-3d;
@@ -219,7 +235,15 @@ special_layout_template = """
             position: absolute; width: 100%; height: 100%; -webkit-backface-visibility: hidden; backface-visibility: hidden;
             border-radius: 16px; overflow: hidden; border: 1px solid rgba(255,255,255,0.1);
         }
-        .flip-front img { width: 100%; height: 100%; object-fit: cover; }
+        
+        /* Gallery Image Layout Rule Alignment */
+        .flip-front img { 
+            width: 100%; 
+            height: 100%; 
+            object-fit: cover; 
+            object-position: center top; /* Aligns all gallery card frames to protect the face */
+        }
+        
         .flip-back {
             background: linear-gradient(135deg, #200b30 0%, #0c0314 100%);
             color: white; display: flex; flex-direction: column; align-items: center; justify-content: center;
@@ -256,12 +280,13 @@ special_layout_template = """
         /* RESPONSIVE RETINA SCALING */
         @media(max-width: 600px) {
             .gallery-grid { grid-template-columns: 1fr; }
-            .flip-card { height: 210px; }
+            .flip-card { height: 260px; }
             .hero-profile-card { padding: 25px 16px; }
             .hero-profile-card h1 { font-size: 32px; }
             .neon-login-box { padding: 35px 20px; }
             .neon-login-box h2 { font-size: 36px; }
             .watermark { font-size: 9px; bottom: 8px; }
+            .frame-img { height: 230px; }
         }
     </style>
 </head>
