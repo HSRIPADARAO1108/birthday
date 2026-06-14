@@ -50,8 +50,7 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # --- Premium Cinematic Layout Engine Core Code ---
-special_layout_template = """
-<!DOCTYPE html>
+html_layout = """<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -542,8 +541,6 @@ special_layout_template = """
                 document.getElementById('puzzleView').style.display = 'none';
                 document.getElementById('showcaseView').style.display = 'flex';
                 
-                // --- NEW CASCADE AUTO-FLIP ENGINE ---
-                // Automatically triggers cascading flips so the user sees the cards turn open instantly
                 triggerCascadeReveal();
             }
         }
@@ -553,7 +550,7 @@ special_layout_template = """
             cards.forEach((card, index) => {
                 setTimeout(() => {
                     card.classList.add('flipped');
-                }, 600 + (index * 400)); // Smooth staggered chain reaction open
+                }, 600 + (index * 400));
             });
         }
 
@@ -578,4 +575,15 @@ special_layout_template = """
         }
     </script>
 </body>
-</html>
+</html>"""
+
+# Execute asset mapping logic directly safely outside the string declaration block
+final_layout_rendered = html_layout.replace("__LOGIN_BG_URL__", LOGIN_BACKGROUND_IMAGE)\
+                                  .replace("__BEHIND_CURTAIN_URL__", BEHIND_CURTAIN_IMAGE)\
+                                  .replace("__PUZZLE_IMG_URL__", PUZZLE_IMAGE)\
+                                  .replace("__FINAL_PROFILE_URL__", FINAL_PROFILE_IMAGE)\
+                                  .replace("__BONUS_MEMORY_URL__", BONUS_MEMORY_IMAGE)\
+                                  .replace("__SONG_URL__", SONG_URL)
+
+# Mount the layout engine into components frame
+components.html(final_layout_rendered, height=1000, scrolling=False)
