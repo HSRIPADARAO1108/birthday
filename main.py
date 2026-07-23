@@ -58,7 +58,7 @@ html_layout = """<!DOCTYPE html>
     <title>Pavaman's Birthday Special</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Montserrat:wght@400;600;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Montserrat:wght@400;600;800&family=Share+Tech+Mono&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <style>
@@ -77,6 +77,35 @@ html_layout = """<!DOCTYPE html>
             text-shadow: 0 0 10px rgba(255,199,44,0.4); pointer-events: none;
             white-space: nowrap;
         }
+
+        /* ===== STADIUM AMBIENCE LAYER (floodlights + ground strip + scoreboard) ===== */
+        .floodlights { position: fixed; inset: 0; z-index: 1; pointer-events: none; }
+        .floodlights span {
+            position: absolute; width: 340px; height: 340px; border-radius: 50%;
+            background: radial-gradient(circle, rgba(255,236,180,0.16) 0%, rgba(255,236,180,0.05) 40%, transparent 70%);
+        }
+        .floodlights .fl-1 { top: -140px; left: -80px; }
+        .floodlights .fl-2 { top: -140px; right: -80px; }
+        .floodlights .fl-3 { top: -170px; left: 45%; width: 420px; height: 420px; }
+
+        .ground-strip {
+            position: fixed; left: 0; right: 0; bottom: 0; height: 26px; z-index: 2; pointer-events: none;
+            background: repeating-linear-gradient(90deg, #163a1c 0px, #163a1c 22px, #1d4a24 22px, #1d4a24 44px);
+            border-top: 2px dashed rgba(255,255,255,0.55);
+            box-shadow: 0 -6px 18px rgba(0,0,0,0.5);
+        }
+
+        .scoreboard-badge {
+            position: fixed; top: 12px; left: 12px; z-index: 10000;
+            background: #050505; border: 1px solid rgba(255,199,44,0.4); border-radius: 8px;
+            padding: 6px 12px; box-shadow: 0 0 14px rgba(0,0,0,0.6);
+            font-family: 'Share Tech Mono', monospace; font-size: 11px; letter-spacing: 1px;
+            color: #7CFF6B; text-shadow: 0 0 8px rgba(124,255,107,0.7);
+        }
+        .scoreboard-badge .sb-label { color: #FFC72C; text-shadow: 0 0 8px rgba(255,199,44,0.6); }
+
+        /* All primary screens sit above the ambience layer */
+        .screen-login, .screen-stage, .screen-game, .screen-showcase { position: relative; z-index: 3; }
 
         /* SCREEN 1: STADIUM FLOODLIGHT LOGIN AREA */
         .screen-login {
@@ -164,24 +193,68 @@ html_layout = """<!DOCTYPE html>
         .curtains-parted .curtain-right { transform: translateX(100%); }
         .curtains-parted .curtain-trigger { opacity: 0; pointer-events: none; transform: translate(-50%, -50%) scale(0.7); }
 
-        /* SCREEN 3: HIGH TECH PIXEL PUZZLE */
-        .screen-puzzle { position: absolute; width:100%; height:100%; display:none; background:#0a0505; align-items:center; justify-content:center; padding:16px; }
-        .puzzle-box { max-width: 400px; width: 100%; text-align: center; }
-        .puzzle-box h2 { font-family: 'Bebas Neue', sans-serif; font-size: 40px; letter-spacing: 1px; color: #EC1C24; margin-bottom: 6px; }
-        .puzzle-box p { font-size: 13px; color: #bbb; margin-bottom: 20px; font-family: 'Montserrat', sans-serif; }
-        
-        .grid-container {
-            display: grid; grid-template-columns: repeat(3, var(--tile-dim, 85px)); grid-template-rows: repeat(3, var(--tile-dim, 85px));
-            gap: 5px; justify-content: center; background: rgba(255,255,255,0.03); padding: 8px; border-radius: 16px;
-            border: 1px solid rgba(255,199,44,0.15); margin: 0 auto 20px; width: fit-content;
+        /* SCREEN 3: NET PRACTICE — HIT THE SIX MINI GAME */
+        .screen-game {
+            position: absolute; width:100%; height:100%; display:none;
+            background: radial-gradient(ellipse at center, #123018 0%, #0a0505 75%);
+            align-items:center; justify-content:center; padding:16px 16px 40px;
         }
-        .tile {
-            width: var(--tile-dim, 85px); height: var(--tile-dim, 85px); border-radius: 8px; cursor: pointer;
-            background-image: url("__PUZZLE_IMG_URL__"); background-size: calc(var(--tile-dim, 85px) * 3) calc(var(--tile-dim, 85px) * 3);
-            position: relative; transition: all 0.2s ease; border: 1px solid rgba(255,255,255,0.1);
+        .game-box { max-width: 420px; width: 100%; text-align: center; }
+        .game-box h2 { font-family: 'Bebas Neue', sans-serif; font-size: 40px; letter-spacing: 1px; color: #EC1C24; margin-bottom: 4px; }
+        .game-box .game-sub { font-size: 12.5px; color: #cfcfcf; margin-bottom: 16px; font-family: 'Montserrat', sans-serif; }
+
+        .pitch-wrap {
+            position: relative; width: 100%; height: 200px; margin: 0 auto 18px;
+            background: linear-gradient(180deg, #2f7a35 0%, #245e29 100%);
+            border-radius: 14px; overflow: hidden;
+            border: 1px solid rgba(255,199,44,0.25);
+            box-shadow: inset 0 0 40px rgba(0,0,0,0.35), 0 10px 24px rgba(0,0,0,0.4);
         }
-        .tile.active-pick { transform: scale(0.94); border-color: #FFC72C; box-shadow: 0 0 15px #FFC72C; filter: brightness(1.2); }
-        .tile-hint-num { position: absolute; bottom: 4px; right: 4px; font-size: 9px; background: rgba(0,0,0,0.6); padding: 1px 4px; border-radius: 3px; font-weight: bold; color: #fff; }
+        .pitch-lane {
+            position: absolute; left: 50%; top: 0; bottom: 0; width: 34%; transform: translateX(-50%);
+            background: repeating-linear-gradient(180deg, rgba(212,177,106,0.9) 0px, rgba(212,177,106,0.9) 3px, rgba(196,158,88,0.9) 3px, rgba(196,158,88,0.9) 26px);
+        }
+        .crease-line { position: absolute; left: 50%; width: 46%; height: 2px; background: rgba(255,255,255,0.85); transform: translateX(-50%); }
+        .crease-top { top: 14px; }
+        .crease-bottom { bottom: 14px; }
+        .stump-set { position: absolute; left: 50%; transform: translateX(-50%); display: flex; gap: 3px; }
+        .stump-set span { width: 3px; height: 20px; background: #f3e4c0; border-radius: 1px; box-shadow: 0 0 4px rgba(0,0,0,0.5); }
+        .stump-top { top: 4px; }
+        .stump-bottom { bottom: 4px; }
+        .bowler-emoji, .batter-emoji { position: absolute; left: 50%; transform: translateX(-50%); font-size: 26px; filter: drop-shadow(0 2px 3px rgba(0,0,0,0.6)); }
+        .bowler-emoji { top: 10px; }
+        .batter-emoji { bottom: 6px; }
+        #gameBall {
+            position: absolute; left: 50%; top: 40px; width: 12px; height: 12px; border-radius: 50%;
+            background: radial-gradient(circle at 35% 35%, #ff6b5b, #b3121f); transform: translateX(-50%);
+            box-shadow: 0 0 8px rgba(255,80,60,0.7); transition: top 0.05s linear;
+        }
+        #gameBall.smashed { animation: ballFly 0.6s ease-out forwards; }
+        @keyframes ballFly {
+            0% { transform: translateX(-50%) scale(1); opacity: 1; }
+            100% { transform: translateX(140%) translateY(-90px) scale(0.4); opacity: 0; }
+        }
+
+        .power-meter { margin: 0 auto 16px; max-width: 340px; }
+        .meter-label { font-size: 11px; color: #FFC72C; font-family: 'Montserrat', sans-serif; margin-bottom: 6px; letter-spacing: 0.5px; }
+        .meter-track {
+            position: relative; height: 16px; border-radius: 10px; background: rgba(255,255,255,0.08);
+            border: 1px solid rgba(255,255,255,0.15); overflow: hidden;
+        }
+        .meter-zone { position: absolute; top: 0; bottom: 0; background: rgba(124,255,107,0.55); border-left: 1px solid #7CFF6B; border-right: 1px solid #7CFF6B; }
+        .meter-indicator {
+            position: absolute; top: -3px; width: 4px; height: 22px; background: #fff;
+            box-shadow: 0 0 8px rgba(255,255,255,0.9); border-radius: 2px;
+        }
+
+        .swing-btn { max-width: 260px; margin: 0 auto 14px; display: block; font-size: 16px; }
+        .game-status {
+            font-family: 'Share Tech Mono', monospace; font-size: 13px; color: #7CFF6B;
+            letter-spacing: 1px; margin-bottom: 10px; min-height: 18px;
+        }
+        .game-result { font-family: 'Bebas Neue', sans-serif; font-size: 26px; letter-spacing: 1px; min-height: 32px; margin-bottom: 6px; }
+        .game-result.six { color: #FFC72C; text-shadow: 0 0 12px rgba(255,199,44,0.7); }
+        .game-result.miss { color: #FF4C4C; }
 
         /* SCREEN 4: PREMIUM INTERACTIVE ALBUM SHOWCASE */
         .screen-showcase {
@@ -292,10 +365,16 @@ html_layout = """<!DOCTYPE html>
             .neon-login-box h2 { font-size: 40px; }
             .watermark { font-size: 9px; bottom: 8px; }
             .frame-img { height: 230px; }
+            .pitch-wrap { height: 170px; }
+            .scoreboard-badge { font-size: 9px; padding: 5px 9px; }
         }
     </style>
 </head>
 <body>
+
+    <div class="floodlights"><span class="fl-1"></span><span class="fl-2"></span><span class="fl-3"></span></div>
+    <div class="ground-strip"></div>
+    <div class="scoreboard-badge"><span class="sb-label">RCB</span> DUGOUT · LIVE</div>
 
     <div class="watermark">✨ Created by Sripada Rao H ✨</div>
 
@@ -330,7 +409,7 @@ html_layout = """<!DOCTYPE html>
                 <h3>BEFORE THE TOSS</h3>
                 <img src="__BEHIND_CURTAIN_URL__" class="frame-img" alt="Stage Reveal">
                 <p>Life is an incredible innings, and having you around makes every match more exciting. Cheers to another year of big hits, bold shots, and total victory! 🏏</p>
-                <button class="neon-btn" style="background: linear-gradient(45deg, #FFC72C, #FF9E1B); color:#1a0505;" onclick="moveNextToPuzzle()">Face the Final Over 🧩</button>
+                <button class="neon-btn" style="background: linear-gradient(45deg, #FFC72C, #FF9E1B); color:#1a0505;" onclick="moveNextToGame()">Head to the Nets 🏏</button>
             </div>
         </div>
         <div id="curtainShell">
@@ -343,12 +422,34 @@ html_layout = """<!DOCTYPE html>
         </div>
     </div>
 
-    <div class="screen-puzzle" id="puzzleView">
-        <div class="puzzle-box">
-            <h2>THE FINAL OVER CHALLENGE</h2>
-            <p>Arrange the scrambled blocks into correct sequential order to unlock the winning trophy album.</p>
-            <div class="grid-container" id="puzzGrid"></div>
-            <button class="neon-btn" style="background: transparent; border: 1.5px solid #EC1C24;" onclick="bypassPuzzle()">Quick Single (Auto-Solve) ✨</button>
+    <div class="screen-game" id="gameView">
+        <div class="game-box">
+            <h2>NET PRACTICE</h2>
+            <p class="game-sub">Time your swing as the ball reaches the crease. Land the white marker in the green zone to smash a SIX. Get 3 sixes to unlock the trophy album!</p>
+
+            <div class="pitch-wrap">
+                <div class="pitch-lane"></div>
+                <div class="crease-line crease-top"></div>
+                <div class="crease-line crease-bottom"></div>
+                <div class="stump-set stump-top"><span></span><span></span><span></span></div>
+                <div class="stump-set stump-bottom"><span></span><span></span><span></span></div>
+                <div class="bowler-emoji">🤾</div>
+                <div class="batter-emoji">🏏</div>
+                <div id="gameBall"></div>
+            </div>
+
+            <div class="power-meter">
+                <div class="meter-label">TIMING METER</div>
+                <div class="meter-track">
+                    <div class="meter-zone" id="meterZone"></div>
+                    <div class="meter-indicator" id="meterIndicator"></div>
+                </div>
+            </div>
+
+            <div class="game-result" id="gameResult">&nbsp;</div>
+            <button class="neon-btn swing-btn" id="swingBtn" onclick="swingBat()">🏏 SWING!</button>
+            <div class="game-status" id="gameStatus">SIXES: 0 / 3</div>
+            <button class="neon-btn" style="background: transparent; border: 1.5px solid #EC1C24; max-width:260px; margin: 4px auto 0;" onclick="bypassGame()">Retire Not Out (Skip) ✨</button>
         </div>
     </div>
 
@@ -431,8 +532,6 @@ html_layout = """<!DOCTYPE html>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <script>
         let tracksRunning = false;
-        let matrixOrder = [1, 2, 0, 4, 3, 5, 7, 6, 8];
-        let baseSelectedIdx = null;
 
         document.addEventListener('DOMContentLoaded', () => {
             const codeField = document.getElementById('passCode');
@@ -443,15 +542,7 @@ html_layout = """<!DOCTYPE html>
                     }
                 });
             }
-            adaptTileLayout();
         });
-
-        function adaptTileLayout() {
-            const boundary = Math.min(window.innerWidth - 48, window.innerHeight - 260, 320);
-            const computedSize = Math.floor((boundary - 16) / 3);
-            document.documentElement.style.setProperty('--tile-dim', computedSize + 'px');
-        }
-        window.addEventListener('resize', () => { adaptTileLayout(); renderMatrix(); });
 
         function forcePlayStream() {
             const player = document.getElementById('bgAudio');
@@ -490,85 +581,138 @@ html_layout = """<!DOCTYPE html>
             }, 1200);
         }
 
-        function moveNextToPuzzle() {
+        function moveNextToGame() {
             document.getElementById('stageView').style.opacity = '0';
             setTimeout(() => {
                 document.getElementById('stageView').style.display = 'none';
-                document.getElementById('puzzleView').style.display = 'flex';
-                adaptTileLayout();
-                renderMatrix();
+                document.getElementById('gameView').style.display = 'flex';
+                startNetPractice();
             }, 800);
         }
 
-        function renderMatrix() {
-            const board = document.getElementById('puzzGrid');
-            if(!board) return;
-            board.innerHTML = '';
-            const dim = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--tile-dim')) || 85;
+        /* ===================== NET PRACTICE MINI GAME ===================== */
+        const SIXES_NEEDED = 3;
+        const PITCH_HEIGHT = 200;      // must roughly match .pitch-wrap height
+        const BALL_TOP_MIN = 32;
+        const BALL_TOP_MAX = 168;
+        let sixesScored = 0;
+        let ballAnimId = null;
+        let ballDir = 1;
+        let ballPos = 0; // 0..1
+        let meterAnimId = null;
+        let meterDir = 1;
+        let meterPos = 0; // 0..1
+        let zoneStart = 0.4;
+        let zoneWidth = 0.2;
+        let gameActive = false;
 
-            matrixOrder.forEach((val, idx) => {
-                const element = document.createElement('div');
-                element.className = 'tile';
-                const r = Math.floor(val / 3);
-                const c = val % 3;
-                element.style.backgroundPosition = `-${c * dim}px -${r * dim}px`;
-                element.style.backgroundSize = `${dim * 3}px ${dim * 3}px`;
-
-                const numeric = document.createElement('span');
-                numeric.className = 'tile-hint-num';
-                numeric.innerText = val + 1;
-                element.appendChild(numeric);
-
-                element.addEventListener('click', () => processTileTap(idx));
-                board.appendChild(element);
-            });
+        function startNetPractice() {
+            sixesScored = 0;
+            updateGameStatus();
+            document.getElementById('gameResult').innerText = '\\u00A0';
+            document.getElementById('gameResult').className = 'game-result';
+            newRound();
         }
 
-        function processTileTap(idx) {
-            const items = document.getElementsByClassName('tile');
-            if(baseSelectedIdx === null) {
-                baseSelectedIdx = idx;
-                items[idx].classList.add('active-pick');
-            } else {
-                const primary = baseSelectedIdx;
-                items[primary].classList.remove('active-pick');
-                if(primary !== idx) {
-                    [matrixOrder[primary], matrixOrder[idx]] = [matrixOrder[idx], matrixOrder[primary]];
-                    renderMatrix();
-                    evaluateResolution();
+        function newRound() {
+            gameActive = true;
+            // randomize the green "sweet spot" zone a little each round for variety
+            zoneWidth = 0.22 - (sixesScored * 0.02); // gets slightly tighter each six
+            if (zoneWidth < 0.14) zoneWidth = 0.14;
+            zoneStart = 0.15 + Math.random() * (0.85 - zoneWidth - 0.15);
+            const zoneEl = document.getElementById('meterZone');
+            zoneEl.style.left = (zoneStart * 100) + '%';
+            zoneEl.style.width = (zoneWidth * 100) + '%';
+
+            ballPos = 0; ballDir = 1;
+            meterPos = 0; meterDir = 1;
+            document.getElementById('gameBall').classList.remove('smashed');
+            animateBall();
+            animateMeter();
+        }
+
+        function animateBall() {
+            if (ballAnimId) cancelAnimationFrame(ballAnimId);
+            function step() {
+                if (!gameActive) return;
+                ballPos += 0.012 * ballDir;
+                if (ballPos >= 1) { ballPos = 1; ballDir = -1; }
+                if (ballPos <= 0) { ballPos = 0; ballDir = 1; }
+                const top = BALL_TOP_MIN + ballPos * (BALL_TOP_MAX - BALL_TOP_MIN);
+                document.getElementById('gameBall').style.top = top + 'px';
+                ballAnimId = requestAnimationFrame(step);
+            }
+            step();
+        }
+
+        function animateMeter() {
+            if (meterAnimId) cancelAnimationFrame(meterAnimId);
+            function step() {
+                if (!gameActive) return;
+                meterPos += 0.014 * meterDir;
+                if (meterPos >= 1) { meterPos = 1; meterDir = -1; }
+                if (meterPos <= 0) { meterPos = 0; meterDir = 1; }
+                document.getElementById('meterIndicator').style.left = (meterPos * 100) + '%';
+                meterAnimId = requestAnimationFrame(step);
+            }
+            step();
+        }
+
+        function swingBat() {
+            if (!gameActive) return;
+            const resultEl = document.getElementById('gameResult');
+            const hit = meterPos >= zoneStart && meterPos <= (zoneStart + zoneWidth);
+
+            gameActive = false;
+            if (ballAnimId) cancelAnimationFrame(ballAnimId);
+            if (meterAnimId) cancelAnimationFrame(meterAnimId);
+
+            if (hit) {
+                sixesScored++;
+                document.getElementById('gameBall').classList.add('smashed');
+                resultEl.innerText = 'SIX! 🏆';
+                resultEl.className = 'game-result six';
+                if (typeof confetti === 'function') {
+                    confetti({ particleCount: 60, spread: 55, origin: { y: 0.55 }, colors: ['#EC1C24', '#FFC72C', '#ffffff'] });
                 }
-                baseSelectedIdx = null;
+                updateGameStatus();
+                if (sixesScored >= SIXES_NEEDED) {
+                    setTimeout(finishGame, 900);
+                    return;
+                }
+            } else {
+                resultEl.innerText = 'Missed! Try again';
+                resultEl.className = 'game-result miss';
             }
+            setTimeout(newRound, 800);
         }
 
-        function bypassPuzzle() {
-            matrixOrder = [0,1,2,3,4,5,6,7,8];
-            renderMatrix();
-            setTimeout(evaluateResolution, 300);
+        function updateGameStatus() {
+            document.getElementById('gameStatus').innerText = 'SIXES: ' + sixesScored + ' / ' + SIXES_NEEDED;
         }
 
-        function evaluateResolution() {
-            if(matrixOrder.every((v, i) => v === i)) {
-                confetti({ particleCount: 150, spread: 80, origin: { y: 0.4 }, colors: ['#EC1C24', '#FFC72C', '#ffffff'] });
-                document.getElementById('puzzleView').style.display = 'none';
-                document.getElementById('showcaseView').style.display = 'flex';
-                
-                triggerCascadeReveal();
-            }
+        function bypassGame() {
+            gameActive = false;
+            if (ballAnimId) cancelAnimationFrame(ballAnimId);
+            if (meterAnimId) cancelAnimationFrame(meterAnimId);
+            finishGame();
+        }
+
+        function finishGame() {
+            document.getElementById('gameView').style.display = 'none';
+            document.getElementById('showcaseView').style.display = 'flex';
+            confetti({ particleCount: 150, spread: 80, origin: { y: 0.4 }, colors: ['#EC1C24', '#FFC72C', '#ffffff'] });
+            triggerCascadeReveal();
         }
 
         function triggerCascadeReveal() {
             const cards = document.querySelectorAll('.flip-card');
             cards.forEach((card, index) => {
-                // Step 1: Flip to the back (text side)
                 setTimeout(() => {
                     card.classList.add('flipped');
-                    
-                    // Step 2: Automatically flip back to the front (photo side) after 1.5 seconds
                     setTimeout(() => {
                         card.classList.remove('flipped');
-                    }, 1500); 
-
+                    }, 1500);
                 }, 600 + (index * 400));
             });
         }
