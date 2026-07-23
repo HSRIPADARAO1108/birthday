@@ -13,6 +13,10 @@ PUZZLE_IMAGE = f"https://raw.githubusercontent.com/{GITHUB_USERNAME}/{GITHUB_REP
 FINAL_PROFILE_IMAGE = f"https://raw.githubusercontent.com/{GITHUB_USERNAME}/{GITHUB_REPO}/{GITHUB_BRANCH}/FINAL_PROFILE_IMAGE.jpeg"
 BONUS_MEMORY_IMAGE = f"https://raw.githubusercontent.com/{GITHUB_USERNAME}/{GITHUB_REPO}/{GITHUB_BRANCH}/BONUS_MEMORY_IMAGE.jpeg"
 
+# Optional: a wide stadium/team photo you drop in your repo for the new "Dugout Roll Call" section.
+# If you don't have one yet, it gracefully falls back to a gradient crest so nothing breaks.
+DUGOUT_TEAM_IMAGE = f"https://raw.githubusercontent.com/{GITHUB_USERNAME}/{GITHUB_REPO}/{GITHUB_BRANCH}/DUGOUT_TEAM_IMAGE.jpeg"
+
 # --- Birthday Anthem / Audio Track Mapping ---
 SONG_FILENAME = "januma-dinavidu-birthday-song-in-kannada-anuradha-bhat-pramod-aravind-vi_lk1Ob9t4.mp3"
 SONG_URL = f"https://raw.githubusercontent.com/{GITHUB_USERNAME}/{GITHUB_REPO}/{GITHUB_BRANCH}/{SONG_FILENAME.replace(' ', '%20')}"
@@ -25,7 +29,6 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 
-# Deep inject core Streamlit UI frame removals and enforce complete full-screen behavior
 st.markdown("""
     <style>
     [data-testid="stHeader"] { display: none !important; }
@@ -41,7 +44,7 @@ st.markdown("""
     iframe {
         position: fixed !important;
         top: 0 !important; left: 0 !important;
-        width: 100vw !important; 
+        width: 100vw !important;
         height: 100vh !important;
         border: none !important; margin: 0 !important;
         padding: 0 !important; z-index: 999999 !important;
@@ -78,7 +81,7 @@ html_layout = """<!DOCTYPE html>
             white-space: nowrap;
         }
 
-        /* ===== STADIUM AMBIENCE LAYER (floodlights + ground strip + scoreboard) ===== */
+        /* ===== STADIUM AMBIENCE LAYER ===== */
         .floodlights { position: fixed; inset: 0; z-index: 1; pointer-events: none; }
         .floodlights span {
             position: absolute; width: 340px; height: 340px; border-radius: 50%;
@@ -104,8 +107,23 @@ html_layout = """<!DOCTYPE html>
         }
         .scoreboard-badge .sb-label { color: #FFC72C; text-shadow: 0 0 8px rgba(255,199,44,0.6); }
 
-        /* All primary screens sit above the ambience layer */
-        .screen-login, .screen-stage, .screen-game, .screen-showcase { position: relative; z-index: 3; }
+        .screen-login, .screen-stage, .screen-game, .screen-showcase, .screen-dugout { position: relative; z-index: 3; }
+
+        /* --- Fan-made crest (CSS only, no logo image) --- */
+        .fan-crest {
+            width: 92px; height: 92px; border-radius: 50%; margin: 0 auto 14px;
+            background: radial-gradient(circle at 35% 30%, #ff5a5f 0%, #EC1C24 45%, #7a0d10 100%);
+            border: 3px solid #FFC72C; display: flex; align-items: center; justify-content: center;
+            box-shadow: 0 0 25px rgba(236,28,36,0.55), inset 0 0 12px rgba(0,0,0,0.4);
+            position: relative; animation: crestSpinIn 1.2s cubic-bezier(0.34,1.56,0.64,1);
+        }
+        .fan-crest::before {
+            content: ""; position: absolute; inset: -8px; border-radius: 50%;
+            border: 2px dashed rgba(255,199,44,0.5); animation: crestRing 12s linear infinite;
+        }
+        .fan-crest span { font-family: 'Bebas Neue', sans-serif; font-size: 30px; color: #FFC72C; letter-spacing: 1px; text-shadow: 0 0 8px rgba(0,0,0,0.5); }
+        @keyframes crestSpinIn { 0% { transform: rotate(-200deg) scale(0.3); opacity: 0; } 100% { transform: rotate(0) scale(1); opacity: 1; } }
+        @keyframes crestRing { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
         /* SCREEN 1: STADIUM FLOODLIGHT LOGIN AREA */
         .screen-login {
@@ -128,11 +146,11 @@ html_layout = """<!DOCTYPE html>
             100% { box-shadow: 0 0 50px rgba(236, 28, 36, 0.4); border-color: rgba(255, 199, 44, 0.4); }
         }
         .neon-login-box h2 {
-            font-family: 'Bebas Neue', sans-serif; font-size: 48px; letter-spacing: 2px; color: #EC1C24;
+            font-family: 'Bebas Neue', sans-serif; font-size: 46px; letter-spacing: 2px; color: #EC1C24;
             margin-bottom: 12px; text-shadow: 0 0 15px rgba(236,28,36,0.6);
         }
         .neon-login-box p { font-size: 13px; color: #e5ddd0; margin-bottom: 25px; font-family: 'Montserrat', sans-serif; line-height: 1.4; }
-        
+
         .input-wrapper { position: relative; margin-bottom: 20px; }
         .input-wrapper input {
             width: 100%; padding: 14px 20px 14px 45px;
@@ -142,7 +160,7 @@ html_layout = """<!DOCTYPE html>
         }
         .input-wrapper input:focus { border-color: #FFC72C; background: rgba(255,255,255,0.12); box-shadow: 0 0 15px rgba(255,199,44,0.4); }
         .input-wrapper i { position: absolute; left: 18px; top: 50%; transform: translateY(-50%); color: #FFC72C; font-size: 16px; }
-        
+
         .neon-btn {
             width: 100%; padding: 14px; background: linear-gradient(45deg, #EC1C24, #FF4C4C);
             border: none; border-radius: 50px; color: white; font-size: 15px; font-weight: 800;
@@ -152,6 +170,18 @@ html_layout = """<!DOCTYPE html>
         .neon-btn:active { transform: scale(0.98); filter: brightness(1.1); }
         .error-hint { color: #FF4C4C; font-size: 13px; margin-top: 12px; display: none; font-weight: bold; }
 
+        /* Live chant marquee across the top on the login screen */
+        .chant-marquee {
+            position: absolute; top: 0; left: 0; width: 100%; z-index: 6; overflow: hidden;
+            background: rgba(0,0,0,0.35); border-bottom: 1px solid rgba(255,199,44,0.3);
+            padding: 6px 0; white-space: nowrap;
+        }
+        .chant-marquee span {
+            display: inline-block; padding-left: 100%; animation: marqueeScroll 16s linear infinite;
+            font-family: 'Share Tech Mono', monospace; font-size: 12px; letter-spacing: 2px; color: #FFC72C;
+        }
+        @keyframes marqueeScroll { 0% { transform: translateX(0); } 100% { transform: translateX(-100%); } }
+
         /* SCREEN 2: STADIUM TUNNEL SLIDE CURTAINS */
         .screen-stage { position: absolute; width: 100%; height: 100%; display: none; z-index: 5; }
         .theater-bg {
@@ -159,7 +189,7 @@ html_layout = """<!DOCTYPE html>
             background: radial-gradient(circle at center, #1c0808 0%, #0a0505 100%);
             display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 16px;
         }
-        
+
         .glass-photo-frame {
             background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255,199,44,0.15);
             backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
@@ -168,13 +198,13 @@ html_layout = """<!DOCTYPE html>
             transition: all 1.2s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
         .glass-photo-frame.reveal { opacity: 1; transform: translateY(0); }
-        
-        .frame-img { 
+
+        .frame-img {
             width: 100%; height: 280px; object-fit: contain; object-position: center center;
             background: rgba(255,255,255,0.02);
-            border-radius: 14px; margin-bottom: 15px; border: 1px solid rgba(255,255,255,0.15); 
+            border-radius: 14px; margin-bottom: 15px; border: 1px solid rgba(255,255,255,0.15);
         }
-        
+
         .glass-photo-frame h3 { font-family: 'Bebas Neue', sans-serif; font-size: 32px; letter-spacing: 1px; color: #FFC72C; margin-bottom: 8px; }
         .glass-photo-frame p { font-family: 'Montserrat', sans-serif; font-size: 13px; color: #e5ddd0; margin-bottom: 20px; line-height: 1.5; }
 
@@ -193,7 +223,7 @@ html_layout = """<!DOCTYPE html>
         .curtains-parted .curtain-right { transform: translateX(100%); }
         .curtains-parted .curtain-trigger { opacity: 0; pointer-events: none; transform: translate(-50%, -50%) scale(0.7); }
 
-        /* SCREEN 3: KNIGHT'S SIX — CHESS-KNIGHT NAVIGATION ON A CRICKET PITCH */
+        /* SCREEN 3: KNIGHT'S SIX */
         .screen-game {
             position: absolute; width:100%; height:100%; display:none;
             background: radial-gradient(ellipse at center, #123018 0%, #0a0505 75%);
@@ -235,6 +265,39 @@ html_layout = """<!DOCTYPE html>
         .game-btn-row { display: flex; gap: 10px; max-width: 380px; margin: 6px auto 0; }
         .game-btn-row .neon-btn { font-size: 13px; padding: 12px 10px; }
 
+        /* SCREEN 3.5: DUGOUT ROLL CALL — the whole squad hyping him up */
+        .screen-dugout {
+            position: absolute; width:100%; height:100%; display:none; z-index: 40;
+            background: radial-gradient(circle at top, #1c0808 0%, #0a0505 80%);
+            align-items: center; justify-content: center; padding: 20px 16px; overflow-y: auto;
+        }
+        .dugout-box { max-width: 560px; width: 100%; text-align: center; margin: auto; }
+        .dugout-box h2 { font-family: 'Bebas Neue', sans-serif; font-size: 40px; letter-spacing: 1px; color: #FFC72C; margin-bottom: 6px; text-shadow: 0 0 14px rgba(255,199,44,0.5); }
+        .dugout-box .dugout-sub { font-size: 13px; color: #e5ddd0; margin-bottom: 18px; line-height: 1.5; }
+        .dugout-photo {
+            width: 100%; max-height: 220px; object-fit: cover; border-radius: 16px;
+            border: 1px solid rgba(255,199,44,0.3); margin-bottom: 18px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.5);
+        }
+        .jersey-row { display: flex; flex-wrap: wrap; justify-content: center; gap: 14px; margin-bottom: 20px; }
+        .jersey {
+            width: 78px; height: 92px; border-radius: 10px;
+            background: linear-gradient(160deg, #EC1C24, #7a0d10);
+            border: 1.5px solid rgba(255,199,44,0.5); display: flex; flex-direction: column;
+            align-items: center; justify-content: center; box-shadow: 0 8px 18px rgba(0,0,0,0.4);
+            transform: translateY(0); animation: jerseyBob 3s ease-in-out infinite;
+        }
+        .jersey:nth-child(2n) { animation-delay: 0.4s; }
+        .jersey:nth-child(3n) { animation-delay: 0.8s; }
+        @keyframes jerseyBob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
+        .jersey .num { font-family: 'Bebas Neue', sans-serif; font-size: 26px; color: #FFC72C; }
+        .jersey .tag { font-size: 8px; letter-spacing: 1px; color: #f4e9d8; margin-top: 2px; }
+        .dugout-quote {
+            font-family: 'Montserrat', sans-serif; font-size: 13px; color: #e5ddd0; line-height: 1.6;
+            background: rgba(255,255,255,0.04); border: 1px solid rgba(255,199,44,0.15);
+            border-radius: 14px; padding: 16px; margin-bottom: 18px;
+        }
+
         /* SCREEN 4: PREMIUM INTERACTIVE ALBUM SHOWCASE */
         .screen-showcase {
             position: absolute; width:100%; height:100%; display:none; z-index: 100;
@@ -245,7 +308,6 @@ html_layout = """<!DOCTYPE html>
             max-width: 800px; width: 100%; display: flex; flex-direction: column; gap: 24px; align-items: center; margin: 0 auto 40px auto;
         }
 
-        /* ALBUM HEADER CORE CARD */
         .hero-profile-card {
             background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255,199,44,0.15);
             backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
@@ -258,15 +320,14 @@ html_layout = """<!DOCTYPE html>
             box-shadow: 0 10px 25px rgba(236,28,36,0.4);
             display: flex; align-items: center; justify-content: center; overflow: hidden;
         }
-        .circle-avatar img { 
+        .circle-avatar img {
             width: 100%; height: 100%; object-fit: cover; object-position: center 20%;
-            border-radius: 50%; border: 3px solid #0a0505; 
+            border-radius: 50%; border: 3px solid #0a0505;
         }
         .hero-profile-card h1 { font-family: 'Bebas Neue', sans-serif; font-size: 46px; letter-spacing: 2px; color: #EC1C24; margin-bottom: 5px; }
         .hero-profile-card .subtitle { font-size: 18px; color: #FFC72C; margin-bottom: 12px; font-weight: 800; letter-spacing: 0.5px; }
         .hero-profile-card p.wishes { font-family: 'Montserrat', sans-serif; font-size: 13px; line-height: 1.7; color: #e5ddd0; max-width: 600px; }
 
-        /* THE CHIC 3D FLIP PHOTO GALLERY */
         .gallery-grid {
             display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; width: 100%;
         }
@@ -276,20 +337,20 @@ html_layout = """<!DOCTYPE html>
             transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275); transform-style: preserve-3d;
         }
         .flip-card.flipped .flip-card-inner { transform: rotateY(180deg); }
-        
+
         .flip-front, .flip-back {
             position: absolute; width: 100%; height: 100%; -webkit-backface-visibility: hidden; backface-visibility: hidden;
             border-radius: 16px; overflow: hidden; border: 1px solid rgba(255,255,255,0.1);
         }
-        
+
         .flip-front {
             background: rgba(255, 255, 255, 0.02);
             display: flex; align-items: center; justify-content: center;
         }
-        .flip-front img { 
-            width: 100%; height: 100%; object-fit: contain; object-position: center center; 
+        .flip-front img {
+            width: 100%; height: 100%; object-fit: contain; object-position: center center;
         }
-        
+
         .flip-back {
             background: linear-gradient(135deg, #300b0b 0%, #140303 100%);
             color: white; display: flex; flex-direction: column; align-items: center; justify-content: center;
@@ -297,10 +358,10 @@ html_layout = """<!DOCTYPE html>
         }
         .flip-back h4 { font-family: 'Bebas Neue', sans-serif; font-size: 20px; letter-spacing: 1px; color: #FFC72C; margin-bottom: 6px; }
         .flip-back p { font-family: 'Montserrat', sans-serif; font-size: 11px; color: #e5ddd0; line-height: 1.4; }
-        
-        .hint-touch { 
-            position: absolute; bottom: 12px; right: 12px; 
-            background: rgba(236, 28, 36, 0.85); padding: 4px 10px; 
+
+        .hint-touch {
+            position: absolute; bottom: 12px; right: 12px;
+            background: rgba(236, 28, 36, 0.85); padding: 4px 10px;
             border-radius: 20px; font-size: 10px; font-weight: bold; color: #fff;
             box-shadow: 0 0 10px rgba(236,28,36,0.5);
             animation: pulseBadge 1.5s infinite alternate; z-index: 5;
@@ -310,7 +371,6 @@ html_layout = """<!DOCTYPE html>
             100% { transform: scale(1.06); opacity: 1; box-shadow: 0 0 15px rgba(236,28,36,0.8); }
         }
 
-        /* FLOATING MUSIC STATUS CAPSULE */
         .music-bar {
             position: fixed; top: 12px; right: 12px; z-index: 10000;
             background: rgba(10,5,5,0.85); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
@@ -325,7 +385,6 @@ html_layout = """<!DOCTYPE html>
         .wave-bar:nth-child(3) { animation-delay: 0.6s; }
         @keyframes jumpWave { 0% { transform: scaleY(0.2); } 100% { transform: scaleY(1); } }
 
-        /* CELEBRATION FALLING ANIMATION */
         .petal { position: absolute; pointer-events: none; z-index: 99; opacity: 0.8; animation: dropPetal 7s linear infinite; }
         @keyframes dropPetal {
             0% { transform: translateY(-10vh) translateX(0) rotate(0deg); opacity: 0; }
@@ -334,18 +393,29 @@ html_layout = """<!DOCTYPE html>
             100% { transform: translateY(105vh) translateX(30px) rotate(360deg); opacity: 0; }
         }
 
-        /* RESPONSIVE RETINA SCALING */
+        /* Fireworks burst layer used on the final showcase */
+        .firework-dot {
+            position: absolute; width: 6px; height: 6px; border-radius: 50%;
+            pointer-events: none; z-index: 98; animation: fireworkPop 1.1s ease-out forwards;
+        }
+        @keyframes fireworkPop {
+            0% { transform: translate(0,0) scale(1); opacity: 1; }
+            100% { transform: translate(var(--fx), var(--fy)) scale(0.2); opacity: 0; }
+        }
+
         @media(max-width: 600px) {
             .gallery-grid { grid-template-columns: 1fr; }
             .flip-card { height: 280px; }
             .hero-profile-card { padding: 25px 16px; }
             .hero-profile-card h1 { font-size: 38px; }
             .neon-login-box { padding: 35px 20px; }
-            .neon-login-box h2 { font-size: 40px; }
+            .neon-login-box h2 { font-size: 38px; }
             .watermark { font-size: 9px; bottom: 8px; }
             .frame-img { height: 230px; }
             .scoreboard-badge { font-size: 9px; padding: 5px 9px; }
             .game-btn-row { flex-direction: column; }
+            .jersey { width: 64px; height: 78px; }
+            .dugout-box h2 { font-size: 32px; }
         }
     </style>
 </head>
@@ -370,7 +440,9 @@ html_layout = """<!DOCTYPE html>
     </div>
 
     <div class="screen-login" id="loginView">
+        <div class="chant-marquee"><span>🔴 THE DUGOUT IS ROARING FOR PAVAMAN &nbsp;•&nbsp; HAPPY BIRTHDAY CHAMP &nbsp;•&nbsp; PLAY BOLD, PLAY LOUD &nbsp;•&nbsp; 🔴 THE DUGOUT IS ROARING FOR PAVAMAN &nbsp;•&nbsp; HAPPY BIRTHDAY CHAMP &nbsp;•&nbsp;</span></div>
         <div class="neon-login-box">
+            <div class="fan-crest"><span>RCB</span></div>
             <h2>WELCOME PAVAMAN 🏏</h2>
             <p>Unlock your premium custom-curated cricket stadium birthday experience.</p>
             <div class="input-wrapper">
@@ -422,10 +494,25 @@ html_layout = """<!DOCTYPE html>
         </div>
     </div>
 
+    <div class="screen-dugout" id="dugoutView">
+        <div class="dugout-box">
+            <div class="fan-crest"><span>RCB</span></div>
+            <h2>THE WHOLE DUGOUT IS UP! 🙌</h2>
+            <p class="dugout-sub">Every jersey in the squad, every fan in the stands — all on their feet for one reason today.</p>
+            <img src="__DUGOUT_TEAM_URL__" class="dugout-photo" alt="Team Huddle" onerror="this.style.display='none'">
+            <div class="jersey-row" id="jerseyRow"></div>
+            <div class="dugout-quote">
+                🎙️ <b>Stadium Announcer:</b> "Ladies and gentlemen, put your hands together — today the whole ground is here to wish a very special member of our extended squad, <b>Pavaman</b>, a rocking birthday! May your year ahead be full of sixes, not out innings, and trophy-lifting moments!" 🏆
+            </div>
+            <button class="neon-btn" style="background: linear-gradient(45deg, #FFC72C, #FF9E1B); color:#1a0505;" onclick="moveToShowcase()">Walk Out to the Crowd 🎉</button>
+        </div>
+    </div>
+
     <div class="screen-showcase" id="showcaseView">
         <div class="album-layout">
-            
+
             <div class="hero-profile-card">
+                <div class="fan-crest"><span>RCB</span></div>
                 <div class="circle-avatar">
                     <img src="__FINAL_PROFILE_URL__" alt="Pavaman Profile">
                 </div>
@@ -439,7 +526,7 @@ html_layout = """<!DOCTYPE html>
             </div>
 
             <div class="gallery-grid">
-                
+
                 <div class="flip-card" onclick="toggleFlip(this)">
                     <div class="flip-card-inner">
                         <div class="flip-front">
@@ -512,8 +599,21 @@ html_layout = """<!DOCTYPE html>
                 });
             }
             adaptBoardLayout();
+            buildJerseyRow();
         });
         window.addEventListener('resize', adaptBoardLayout);
+
+        function buildJerseyRow() {
+            // Generic squad numbers cheering him on — no real names attached, just team spirit.
+            const numbers = [1, 7, 11, 18, 24, 99];
+            const row = document.getElementById('jerseyRow');
+            numbers.forEach((n, i) => {
+                const div = document.createElement('div');
+                div.className = 'jersey';
+                div.innerHTML = '<div class="num">#' + n + '</div><div class="tag">CHEERING</div>';
+                row.appendChild(div);
+            });
+        }
 
         function adaptBoardLayout() {
             const maxBoardWidth = Math.min(window.innerWidth - 48, 320);
@@ -566,6 +666,17 @@ html_layout = """<!DOCTYPE html>
                 adaptBoardLayout();
                 initKnightGame();
             }, 800);
+        }
+
+        function moveToShowcase() {
+            document.getElementById('dugoutView').style.opacity = '0';
+            setTimeout(() => {
+                document.getElementById('dugoutView').style.display = 'none';
+                document.getElementById('showcaseView').style.display = 'flex';
+                confetti({ particleCount: 150, spread: 80, origin: { y: 0.4 }, colors: ['#EC1C24', '#FFC72C', '#ffffff'] });
+                triggerCascadeReveal();
+                launchFireworks();
+            }, 600);
         }
 
         /* ===================== KNIGHT'S SIX MINI GAME ===================== */
@@ -732,9 +843,8 @@ html_layout = """<!DOCTYPE html>
 
         function finishGame() {
             document.getElementById('gameView').style.display = 'none';
-            document.getElementById('showcaseView').style.display = 'flex';
-            confetti({ particleCount: 150, spread: 80, origin: { y: 0.4 }, colors: ['#EC1C24', '#FFC72C', '#ffffff'] });
-            triggerCascadeReveal();
+            document.getElementById('dugoutView').style.display = 'flex';
+            confetti({ particleCount: 120, spread: 70, origin: { y: 0.4 }, colors: ['#EC1C24', '#FFC72C', '#ffffff'] });
         }
 
         function triggerCascadeReveal() {
@@ -768,6 +878,29 @@ html_layout = """<!DOCTYPE html>
                 }, i * 400);
             }
         }
+
+        function launchFireworks() {
+            const colors = ['#EC1C24', '#FFC72C', '#7CFF6B', '#ffffff'];
+            for (let burst = 0; burst < 6; burst++) {
+                setTimeout(() => {
+                    const originX = Math.random() * window.innerWidth;
+                    const originY = Math.random() * (window.innerHeight * 0.5);
+                    for (let i = 0; i < 18; i++) {
+                        const dot = document.createElement('div');
+                        dot.className = 'firework-dot';
+                        const angle = (Math.PI * 2 * i) / 18;
+                        const dist = 60 + Math.random() * 60;
+                        dot.style.setProperty('--fx', Math.cos(angle) * dist + 'px');
+                        dot.style.setProperty('--fy', Math.sin(angle) * dist + 'px');
+                        dot.style.left = originX + 'px';
+                        dot.style.top = originY + 'px';
+                        dot.style.background = colors[Math.floor(Math.random() * colors.length)];
+                        document.body.appendChild(dot);
+                        setTimeout(() => dot.remove(), 1200);
+                    }
+                }, burst * 350);
+            }
+        }
     </script>
 </body>
 </html>"""
@@ -778,6 +911,7 @@ final_layout_rendered = html_layout.replace("__LOGIN_BG_URL__", LOGIN_BACKGROUND
                                   .replace("__PUZZLE_IMG_URL__", PUZZLE_IMAGE)\
                                   .replace("__FINAL_PROFILE_URL__", FINAL_PROFILE_IMAGE)\
                                   .replace("__BONUS_MEMORY_URL__", BONUS_MEMORY_IMAGE)\
+                                  .replace("__DUGOUT_TEAM_URL__", DUGOUT_TEAM_IMAGE)\
                                   .replace("__SONG_URL__", SONG_URL)
 
 # Mount the layout engine into components frame
