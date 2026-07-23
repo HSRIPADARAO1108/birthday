@@ -11,16 +11,16 @@ LOGIN_BACKGROUND_IMAGE = f"https://raw.githubusercontent.com/{GITHUB_USERNAME}/{
 BEHIND_CURTAIN_IMAGE = f"https://raw.githubusercontent.com/{GITHUB_USERNAME}/{GITHUB_REPO}/{GITHUB_BRANCH}/BEHIND_CURTAIN_IMAGE.jpeg"
 PUZZLE_IMAGE = f"https://raw.githubusercontent.com/{GITHUB_USERNAME}/{GITHUB_REPO}/{GITHUB_BRANCH}/PUZZLE_IMAGE.jpeg"
 FINAL_PROFILE_IMAGE = f"https://raw.githubusercontent.com/{GITHUB_USERNAME}/{GITHUB_REPO}/{GITHUB_BRANCH}/FINAL_PROFILE_IMAGE.jpeg"
-BONUS_MEMORY_IMAGE = f"https://raw.githubusercontent.com/{GITHUB_USERNAME}/{GITHUB_REPO}/{GITHUB_BRANCH}/BONUS_MEMORY_IMAGE.jpeg" 
+BONUS_MEMORY_IMAGE = f"https://raw.githubusercontent.com/{GITHUB_USERNAME}/{GITHUB_REPO}/{GITHUB_BRANCH}/BONUS_MEMORY_IMAGE.jpeg"
 
-# --- Kannada Audio Track Mapping ---
+# --- Birthday Anthem / Audio Track Mapping ---
 SONG_FILENAME = "januma-dinavidu-birthday-song-in-kannada-anuradha-bhat-pramod-aravind-vi_lk1Ob9t4.mp3"
 SONG_URL = f"https://raw.githubusercontent.com/{GITHUB_USERNAME}/{GITHUB_REPO}/{GITHUB_BRANCH}/{SONG_FILENAME.replace(' ', '%20')}"
 
 # --- Page Setup configuration ---
 st.set_page_config(
-    page_title="Happy Birthday, Shirlu! 💖✨",
-    page_icon="💖",
+    page_title="Happy Birthday, Pavaman! 🏏🎉",
+    page_icon="🏏",
     layout="wide",
     initial_sidebar_state="collapsed"
 )
@@ -55,54 +55,54 @@ html_layout = """<!DOCTYPE html>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>Sreelakshmi's Birthday Special</title>
+    <title>Pavaman's Birthday Special</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght=500;700&family=Great+Vibes&family=Montserrat:wght=400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Montserrat:wght@400;600;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <style>
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
         body, html {
             width: 100%; height: 100%; overflow: hidden;
-            font-family: 'Comfortaa', cursive;
-            background-color: #06020b; color: #fff;
+            font-family: 'Montserrat', sans-serif;
+            background-color: #0a0505; color: #fff;
             -webkit-tap-highlight-color: transparent;
         }
 
         .watermark {
             position: fixed; bottom: 12px; left: 50%; transform: translateX(-50%);
             z-index: 99999; font-size: 11px; font-weight: bold;
-            color: rgba(255, 107, 157, 0.6); letter-spacing: 1.5px;
-            text-shadow: 0 0 10px rgba(255,107,157,0.4); pointer-events: none;
+            color: rgba(255, 199, 44, 0.6); letter-spacing: 1.5px;
+            text-shadow: 0 0 10px rgba(255,199,44,0.4); pointer-events: none;
             white-space: nowrap;
         }
 
-        /* SCREEN 1: GLOWING LOGIN AREA */
+        /* SCREEN 1: STADIUM FLOODLIGHT LOGIN AREA */
         .screen-login {
             position: absolute; width: 100%; height: 100%;
-            background: linear-gradient(135deg, rgba(6,2,11,0.65), rgba(20,5,25,0.85)), url("__LOGIN_BG_URL__") no-repeat center center;
+            background: linear-gradient(135deg, rgba(10,5,5,0.7), rgba(28,8,8,0.88)), url("__LOGIN_BG_URL__") no-repeat center center;
             background-size: cover; display: flex; align-items: center; justify-content: center;
             z-index: 10; transition: all 1.2s cubic-bezier(0.4, 0, 0.2, 1); padding: 16px;
         }
         .neon-login-box {
-            background: rgba(6, 2, 11, 0.45);
+            background: rgba(10, 5, 5, 0.5);
             backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            padding: 40px 24px; border-radius: 30px; text-align: center;
+            border: 1px solid rgba(255, 199, 44, 0.2);
+            padding: 40px 24px; border-radius: 24px; text-align: center;
             max-width: 400px; width: 100%;
-            box-shadow: 0 0 40px rgba(255, 107, 157, 0.2), inset 0 0 20px rgba(255,255,255,0.05);
+            box-shadow: 0 0 40px rgba(236, 28, 36, 0.25), inset 0 0 20px rgba(255,255,255,0.05);
             animation: pulseGlow 4s infinite alternate;
         }
         @keyframes pulseGlow {
-            0% { box-shadow: 0 0 30px rgba(255, 107, 157, 0.15); }
-            100% { box-shadow: 0 0 50px rgba(255, 107, 157, 0.35); border-color: rgba(255, 107, 157, 0.4); }
+            0% { box-shadow: 0 0 30px rgba(236, 28, 36, 0.2); }
+            100% { box-shadow: 0 0 50px rgba(236, 28, 36, 0.4); border-color: rgba(255, 199, 44, 0.4); }
         }
         .neon-login-box h2 {
-            font-family: 'Great Vibes', cursive; font-size: 42px; color: #ff6b9d;
-            margin-bottom: 12px; text-shadow: 0 0 15px rgba(255,107,157,0.6);
+            font-family: 'Bebas Neue', sans-serif; font-size: 48px; letter-spacing: 2px; color: #EC1C24;
+            margin-bottom: 12px; text-shadow: 0 0 15px rgba(236,28,36,0.6);
         }
-        .neon-login-box p { font-size: 13px; color: #dcd1e5; margin-bottom: 25px; font-family: 'Montserrat', sans-serif; line-height: 1.4; }
+        .neon-login-box p { font-size: 13px; color: #e5ddd0; margin-bottom: 25px; font-family: 'Montserrat', sans-serif; line-height: 1.4; }
         
         .input-wrapper { position: relative; margin-bottom: 20px; }
         .input-wrapper input {
@@ -111,30 +111,30 @@ html_layout = """<!DOCTYPE html>
             border-radius: 50px; color: #fff; font-size: 16px; outline: none;
             transition: all 0.3s; font-family: 'Montserrat', sans-serif;
         }
-        .input-wrapper input:focus { border-color: #ff6b9d; background: rgba(255,255,255,0.12); box-shadow: 0 0 15px rgba(255,107,157,0.4); }
-        .input-wrapper i { position: absolute; left: 18px; top: 50%; transform: translateY(-50%); color: #ff6b9d; font-size: 16px; }
+        .input-wrapper input:focus { border-color: #FFC72C; background: rgba(255,255,255,0.12); box-shadow: 0 0 15px rgba(255,199,44,0.4); }
+        .input-wrapper i { position: absolute; left: 18px; top: 50%; transform: translateY(-50%); color: #FFC72C; font-size: 16px; }
         
         .neon-btn {
-            width: 100%; padding: 14px; background: linear-gradient(45deg, #ff6b9d, #ff85a2);
-            border: none; border-radius: 50px; color: white; font-size: 15px; font-weight: bold;
-            cursor: pointer; letter-spacing: 1px; box-shadow: 0 4px 20px rgba(255,107,157,0.4);
-            transition: all 0.3s; font-family: 'Comfortaa', cursive;
+            width: 100%; padding: 14px; background: linear-gradient(45deg, #EC1C24, #FF4C4C);
+            border: none; border-radius: 50px; color: white; font-size: 15px; font-weight: 800;
+            cursor: pointer; letter-spacing: 1px; box-shadow: 0 4px 20px rgba(236,28,36,0.4);
+            transition: all 0.3s; font-family: 'Montserrat', sans-serif;
         }
         .neon-btn:active { transform: scale(0.98); filter: brightness(1.1); }
-        .error-hint { color: #ff4b72; font-size: 13px; margin-top: 12px; display: none; font-weight: bold; }
+        .error-hint { color: #FF4C4C; font-size: 13px; margin-top: 12px; display: none; font-weight: bold; }
 
-        /* SCREEN 2: MODERN MINIMALIST SLIDE CURTAINS */
+        /* SCREEN 2: STADIUM TUNNEL SLIDE CURTAINS */
         .screen-stage { position: absolute; width: 100%; height: 100%; display: none; z-index: 5; }
         .theater-bg {
             position: absolute; width: 100%; height: 100%;
-            background: radial-gradient(circle at center, #1b0a21 0%, #06020b 100%);
+            background: radial-gradient(circle at center, #1c0808 0%, #0a0505 100%);
             display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 16px;
         }
         
         .glass-photo-frame {
-            background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255,255,255,0.1);
+            background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255,199,44,0.15);
             backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
-            padding: 20px; border-radius: 24px; max-width: 400px; width: 100%; text-align: center;
+            padding: 20px; border-radius: 20px; max-width: 400px; width: 100%; text-align: center;
             box-shadow: 0 20px 40px rgba(0,0,0,0.6); opacity: 0; transform: translateY(30px);
             transition: all 1.2s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
@@ -143,50 +143,50 @@ html_layout = """<!DOCTYPE html>
         .frame-img { 
             width: 100%; height: 280px; object-fit: contain; object-position: center center;
             background: rgba(255,255,255,0.02);
-            border-radius: 16px; margin-bottom: 15px; border: 1px solid rgba(255,255,255,0.15); 
+            border-radius: 14px; margin-bottom: 15px; border: 1px solid rgba(255,255,255,0.15); 
         }
         
-        .glass-photo-frame h3 { font-family: 'Great Vibes', cursive; font-size: 36px; color: #ff6b9d; margin-bottom: 8px; }
-        .glass-photo-frame p { font-family: 'Montserrat', sans-serif; font-size: 13px; color: #e2d9eb; margin-bottom: 20px; line-height: 1.5; }
+        .glass-photo-frame h3 { font-family: 'Bebas Neue', sans-serif; font-size: 32px; letter-spacing: 1px; color: #FFC72C; margin-bottom: 8px; }
+        .glass-photo-frame p { font-family: 'Montserrat', sans-serif; font-size: 13px; color: #e5ddd0; margin-bottom: 20px; line-height: 1.5; }
 
-        .curtain-panel { position: absolute; top:0; width:50%; height:100%; background:#130206; z-index:10; transition: transform 2.5s cubic-bezier(0.77, 0, 0.175, 1); display:flex; align-items:center; }
-        .curtain-left { left:0; border-right: 2px solid #ff6b9d; background: linear-gradient(to right, #0a0103, #26040c); }
-        .curtain-right { right:0; border-left: 2px solid #ff6b9d; background: linear-gradient(to left, #0a0103, #26040c); }
+        .curtain-panel { position: absolute; top:0; width:50%; height:100%; background:#130606; z-index:10; transition: transform 2.5s cubic-bezier(0.77, 0, 0.175, 1); display:flex; align-items:center; }
+        .curtain-left { left:0; border-right: 2px solid #EC1C24; background: linear-gradient(to right, #0a0303, #260808); }
+        .curtain-right { right:0; border-left: 2px solid #EC1C24; background: linear-gradient(to left, #0a0303, #260808); }
         .curtain-trigger {
             position: absolute; top:50%; left:50%; transform: translate(-50%, -50%); z-index: 15;
-            background: rgba(6, 2, 11, 0.9); border: 2px solid #ff6b9d; padding: 16px 24px; border-radius: 50px;
-            text-align:center; cursor:pointer; box-shadow: 0 0 30px rgba(255,107,157,0.4); transition: all 0.4s;
+            background: rgba(10, 5, 5, 0.9); border: 2px solid #EC1C24; padding: 16px 24px; border-radius: 16px;
+            text-align:center; cursor:pointer; box-shadow: 0 0 30px rgba(236,28,36,0.4); transition: all 0.4s;
             width: 85%; max-width: 340px;
         }
-        .curtain-trigger h4 { font-size: 15px; color: #ff6b9d; letter-spacing: 0.5px; margin-bottom: 4px; }
-        .curtain-trigger p { font-size: 11px; color: #aaa; font-family: 'Montserrat', sans-serif; }
+        .curtain-trigger h4 { font-family: 'Bebas Neue', sans-serif; font-size: 20px; letter-spacing: 1px; color: #FFC72C; margin-bottom: 4px; }
+        .curtain-trigger p { font-size: 11px; color: #bbb; font-family: 'Montserrat', sans-serif; }
         .curtains-parted .curtain-left { transform: translateX(-100%); }
         .curtains-parted .curtain-right { transform: translateX(100%); }
         .curtains-parted .curtain-trigger { opacity: 0; pointer-events: none; transform: translate(-50%, -50%) scale(0.7); }
 
         /* SCREEN 3: HIGH TECH PIXEL PUZZLE */
-        .screen-puzzle { position: absolute; width:100%; height:100%; display:none; background:#06020b; align-items:center; justify-content:center; padding:16px; }
+        .screen-puzzle { position: absolute; width:100%; height:100%; display:none; background:#0a0505; align-items:center; justify-content:center; padding:16px; }
         .puzzle-box { max-width: 400px; width: 100%; text-align: center; }
-        .puzzle-box h2 { font-family: 'Great Vibes', cursive; font-size: 38px; color: #ff6b9d; margin-bottom: 6px; }
-        .puzzle-box p { font-size: 13px; color: #aaa; margin-bottom: 20px; font-family: 'Montserrat', sans-serif; }
+        .puzzle-box h2 { font-family: 'Bebas Neue', sans-serif; font-size: 40px; letter-spacing: 1px; color: #EC1C24; margin-bottom: 6px; }
+        .puzzle-box p { font-size: 13px; color: #bbb; margin-bottom: 20px; font-family: 'Montserrat', sans-serif; }
         
         .grid-container {
             display: grid; grid-template-columns: repeat(3, var(--tile-dim, 85px)); grid-template-rows: repeat(3, var(--tile-dim, 85px));
             gap: 5px; justify-content: center; background: rgba(255,255,255,0.03); padding: 8px; border-radius: 16px;
-            border: 1px solid rgba(255,255,255,0.1); margin: 0 auto 20px; width: fit-content;
+            border: 1px solid rgba(255,199,44,0.15); margin: 0 auto 20px; width: fit-content;
         }
         .tile {
             width: var(--tile-dim, 85px); height: var(--tile-dim, 85px); border-radius: 8px; cursor: pointer;
             background-image: url("__PUZZLE_IMG_URL__"); background-size: calc(var(--tile-dim, 85px) * 3) calc(var(--tile-dim, 85px) * 3);
             position: relative; transition: all 0.2s ease; border: 1px solid rgba(255,255,255,0.1);
         }
-        .tile.active-pick { transform: scale(0.94); border-color: #ff6b9d; box-shadow: 0 0 15px #ff6b9d; filter: brightness(1.2); }
+        .tile.active-pick { transform: scale(0.94); border-color: #FFC72C; box-shadow: 0 0 15px #FFC72C; filter: brightness(1.2); }
         .tile-hint-num { position: absolute; bottom: 4px; right: 4px; font-size: 9px; background: rgba(0,0,0,0.6); padding: 1px 4px; border-radius: 3px; font-weight: bold; color: #fff; }
 
         /* SCREEN 4: PREMIUM INTERACTIVE ALBUM SHOWCASE */
         .screen-showcase {
             position: absolute; width:100%; height:100%; display:none; z-index: 100;
-            background: linear-gradient(150deg, #090314 0%, #150722 50%, #05010a 100%);
+            background: linear-gradient(150deg, #140505 0%, #220a0a 50%, #0a0202 100%);
             align-items: flex-start; justify-content: center; padding: 20px 16px; overflow-y: auto; -webkit-overflow-scrolling: touch;
         }
         .album-layout {
@@ -195,24 +195,24 @@ html_layout = """<!DOCTYPE html>
 
         /* ALBUM HEADER CORE CARD */
         .hero-profile-card {
-            background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255,255,255,0.1);
+            background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255,199,44,0.15);
             backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
-            border-radius: 24px; padding: 30px 20px; text-align: center; width: 100%;
+            border-radius: 20px; padding: 30px 20px; text-align: center; width: 100%;
             box-shadow: 0 20px 50px rgba(0,0,0,0.4); display: flex; flex-direction: column; align-items: center;
         }
         .circle-avatar {
             width: 140px; height: 140px; border-radius: 50%; padding: 4px;
-            background: linear-gradient(45deg, #ff6b9d, #bb6bff); margin-bottom: 16px;
-            box-shadow: 0 10px 25px rgba(255,107,157,0.4);
+            background: linear-gradient(45deg, #EC1C24, #FFC72C); margin-bottom: 16px;
+            box-shadow: 0 10px 25px rgba(236,28,36,0.4);
             display: flex; align-items: center; justify-content: center; overflow: hidden;
         }
         .circle-avatar img { 
             width: 100%; height: 100%; object-fit: cover; object-position: center 20%;
-            border-radius: 50%; border: 3px solid #06020b; 
+            border-radius: 50%; border: 3px solid #0a0505; 
         }
-        .hero-profile-card h1 { font-family: 'Great Vibes', cursive; font-size: 38px; color: #ff6b9d; margin-bottom: 5px; }
-        .hero-profile-card .subtitle { font-size: 16px; color: #bb6bff; margin-bottom: 12px; font-weight: bold; letter-spacing: 0.5px; }
-        .hero-profile-card p.wishes { font-family: 'Montserrat', sans-serif; font-size: 13px; line-height: 1.7; color: #e2d9eb; max-width: 600px; }
+        .hero-profile-card h1 { font-family: 'Bebas Neue', sans-serif; font-size: 46px; letter-spacing: 2px; color: #EC1C24; margin-bottom: 5px; }
+        .hero-profile-card .subtitle { font-size: 18px; color: #FFC72C; margin-bottom: 12px; font-weight: 800; letter-spacing: 0.5px; }
+        .hero-profile-card p.wishes { font-family: 'Montserrat', sans-serif; font-size: 13px; line-height: 1.7; color: #e5ddd0; max-width: 600px; }
 
         /* THE CHIC 3D FLIP PHOTO GALLERY */
         .gallery-grid {
@@ -239,46 +239,46 @@ html_layout = """<!DOCTYPE html>
         }
         
         .flip-back {
-            background: linear-gradient(135deg, #200b30 0%, #0c0314 100%);
+            background: linear-gradient(135deg, #300b0b 0%, #140303 100%);
             color: white; display: flex; flex-direction: column; align-items: center; justify-content: center;
-            transform: rotateY(180deg); padding: 16px; border: 1px solid rgba(255, 107, 157, 0.3);
+            transform: rotateY(180deg); padding: 16px; border: 1px solid rgba(236, 28, 36, 0.3);
         }
-        .flip-back h4 { font-size: 15px; color: #ff6b9d; margin-bottom: 6px; }
-        .flip-back p { font-family: 'Montserrat', sans-serif; font-size: 11px; color: #dcd1e5; line-height: 1.4; }
+        .flip-back h4 { font-family: 'Bebas Neue', sans-serif; font-size: 20px; letter-spacing: 1px; color: #FFC72C; margin-bottom: 6px; }
+        .flip-back p { font-family: 'Montserrat', sans-serif; font-size: 11px; color: #e5ddd0; line-height: 1.4; }
         
         .hint-touch { 
             position: absolute; bottom: 12px; right: 12px; 
-            background: rgba(255, 107, 157, 0.85); padding: 4px 10px; 
+            background: rgba(236, 28, 36, 0.85); padding: 4px 10px; 
             border-radius: 20px; font-size: 10px; font-weight: bold; color: #fff;
-            box-shadow: 0 0 10px rgba(255,107,157,0.5);
+            box-shadow: 0 0 10px rgba(236,28,36,0.5);
             animation: pulseBadge 1.5s infinite alternate; z-index: 5;
         }
         @keyframes pulseBadge {
             0% { transform: scale(1); opacity: 0.9; }
-            100% { transform: scale(1.06); opacity: 1; box-shadow: 0 0 15px rgba(255,107,157,0.8); }
+            100% { transform: scale(1.06); opacity: 1; box-shadow: 0 0 15px rgba(236,28,36,0.8); }
         }
 
         /* FLOATING MUSIC STATUS CAPSULE */
         .music-bar {
             position: fixed; top: 12px; right: 12px; z-index: 10000;
-            background: rgba(6,2,11,0.85); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
-            border: 1px solid rgba(255,107,157,0.3); padding: 8px 14px; border-radius: 50px;
+            background: rgba(10,5,5,0.85); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,199,44,0.3); padding: 8px 14px; border-radius: 50px;
             display: flex; align-items: center; gap: 8px; box-shadow: 0 8px 25px rgba(0,0,0,0.5);
         }
-        .music-bar span { font-size: 10px; font-weight: bold; color: #e2d9eb; }
+        .music-bar span { font-size: 10px; font-weight: bold; color: #e5ddd0; }
         .wave-container { display: flex; align-items: flex-end; gap: 2px; height: 11px; width: 16px; }
         .wave-active .wave-bar { animation: jumpWave 1.2s ease-in-out infinite alternate; }
-        .wave-bar { width: 3px; height: 100%; background-color: #ff6b9d; border-radius: 2px; transform-origin: bottom; }
+        .wave-bar { width: 3px; height: 100%; background-color: #EC1C24; border-radius: 2px; transform-origin: bottom; }
         .wave-bar:nth-child(2) { animation-delay: 0.3s; }
         .wave-bar:nth-child(3) { animation-delay: 0.6s; }
         @keyframes jumpWave { 0% { transform: scaleY(0.2); } 100% { transform: scaleY(1); } }
 
-        /* CELEBRATION FALLING ANIMATION BLOSSOMS */
-        .petal { position: absolute; pointer-events: none; z-index: 99; opacity: 0.7; animation: dropPetal 7s linear infinite; }
+        /* CELEBRATION FALLING ANIMATION */
+        .petal { position: absolute; pointer-events: none; z-index: 99; opacity: 0.8; animation: dropPetal 7s linear infinite; }
         @keyframes dropPetal {
             0% { transform: translateY(-10vh) translateX(0) rotate(0deg); opacity: 0; }
-            10% { opacity: 0.7; }
-            90% { opacity: 0.7; }
+            10% { opacity: 0.8; }
+            90% { opacity: 0.8; }
             100% { transform: translateY(105vh) translateX(30px) rotate(360deg); opacity: 0; }
         }
 
@@ -287,9 +287,9 @@ html_layout = """<!DOCTYPE html>
             .gallery-grid { grid-template-columns: 1fr; }
             .flip-card { height: 280px; }
             .hero-profile-card { padding: 25px 16px; }
-            .hero-profile-card h1 { font-size: 32px; }
+            .hero-profile-card h1 { font-size: 38px; }
             .neon-login-box { padding: 35px 20px; }
-            .neon-login-box h2 { font-size: 36px; }
+            .neon-login-box h2 { font-size: 40px; }
             .watermark { font-size: 9px; bottom: 8px; }
             .frame-img { height: 230px; }
         }
@@ -313,42 +313,42 @@ html_layout = """<!DOCTYPE html>
 
     <div class="screen-login" id="loginView">
         <div class="neon-login-box">
-            <h2>Welcome Shirlu ✨</h2>
-            <p>Unlock your premium custom-curated cinematic dynamic birthday showcase room.</p>
+            <h2>WELCOME PAVAMAN 🏏</h2>
+            <p>Unlock your premium custom-curated cricket stadium birthday experience.</p>
             <div class="input-wrapper">
                 <i class="fa-solid fa-key"></i>
-                <input type="password" id="passCode" placeholder="Enter Magic Password (shirlu)" autocomplete="off">
+                <input type="password" id="passCode" placeholder="Enter Magic Password (pavaman)" autocomplete="off">
             </div>
-            <button class="neon-btn" onclick="validateKey()">Unlock Scrapbook ⚡</button>
-            <p class="error-hint" id="errHint">❌ Incorrect entry! Give it another shot, Shirlu.</p>
+            <button class="neon-btn" onclick="validateKey()">Enter the Stadium ⚡</button>
+            <p class="error-hint" id="errHint">❌ Not out yet! Give it another shot, Pavaman.</p>
         </div>
     </div>
 
     <div class="screen-stage" id="stageView">
         <div class="theater-bg">
             <div class="glass-photo-frame" id="glassFrame">
-                <h3>Behind the Scenes</h3>
+                <h3>BEFORE THE TOSS</h3>
                 <img src="__BEHIND_CURTAIN_URL__" class="frame-img" alt="Stage Reveal">
-                <p>Life is an incredible journey, and having you around makes it infinitely more colorful. Cheers to another year of grace, beauty, and happiness! ✨</p>
-                <button class="neon-btn" style="background: linear-gradient(45deg, #a26bff, #bb6bff);" onclick="moveNextToPuzzle()">Go to Special Challenge 🧩</button>
+                <p>Life is an incredible innings, and having you around makes every match more exciting. Cheers to another year of big hits, bold shots, and total victory! 🏏</p>
+                <button class="neon-btn" style="background: linear-gradient(45deg, #FFC72C, #FF9E1B); color:#1a0505;" onclick="moveNextToPuzzle()">Face the Final Over 🧩</button>
             </div>
         </div>
         <div id="curtainShell">
             <div class="curtain-panel curtain-left"></div>
             <div class="curtain-panel curtain-right"></div>
             <div class="curtain-trigger" onclick="partCurtains()">
-                <h4>🎭 Tap to Pull Back Curtains 🎭</h4>
-                <p>Step inside your mini theatre showcase room</p>
+                <h4>🏟️ Tap to Enter the Stadium 🏟️</h4>
+                <p>Step inside your personal RCB dugout</p>
             </div>
         </div>
     </div>
 
     <div class="screen-puzzle" id="puzzleView">
         <div class="puzzle-box">
-            <h2>The Special Challenge</h2>
-            <p>Arrange the scrambled blocks into correct sequential structure to unleash the prize album.</p>
+            <h2>THE FINAL OVER CHALLENGE</h2>
+            <p>Arrange the scrambled blocks into correct sequential order to unlock the winning trophy album.</p>
             <div class="grid-container" id="puzzGrid"></div>
-            <button class="neon-btn" style="background: transparent; border: 1.5px solid #ff6b9d;" onclick="bypassPuzzle()">Instant Auto-Solve Layout ✨</button>
+            <button class="neon-btn" style="background: transparent; border: 1.5px solid #EC1C24;" onclick="bypassPuzzle()">Quick Single (Auto-Solve) ✨</button>
         </div>
     </div>
 
@@ -357,14 +357,14 @@ html_layout = """<!DOCTYPE html>
             
             <div class="hero-profile-card">
                 <div class="circle-avatar">
-                    <img src="__FINAL_PROFILE_URL__" alt="Sreelakshmi Profile">
+                    <img src="__FINAL_PROFILE_URL__" alt="Pavaman Profile">
                 </div>
-                <h1>Happy Birthday,</h1>
-                <div class="subtitle">Beautiful Girl Sreelakshmi! 🌸</div>
+                <h1>HAPPY BIRTHDAY,</h1>
+                <div class="subtitle">Champion Pavaman! 🏆🏏</div>
                 <p class="wishes">
-                    May every little path you step on open up into beautifully rewarding journeys. 
-                    You carry an incredibly elegant charm and positive spark that lights up environments effortlessly. 
-                    Have a completely mesmerizing, beautiful, and blissful year ahead, Shirlu! ❤️
+                    May every ball you face turn into a boundary and every challenge feel like a home game.
+                    You carry the confidence of an opener and the calm of a finisher — a true match-winner in every way.
+                    Have a completely blockbuster, high-scoring, and unforgettable year ahead, Pavaman! ❤️
                 </p>
             </div>
 
@@ -377,8 +377,8 @@ html_layout = """<!DOCTYPE html>
                             <div class="hint-touch"><i class="fa-solid fa-rotate"></i> Flip Me</div>
                         </div>
                         <div class="flip-back">
-                            <h4>Enchanted Beginnings 🌟</h4>
-                            <p>Every milestone begins with an exceptional spark. May your brand new age bring unexpected beautiful miracles and infinite joy!</p>
+                            <h4>First Boundary 🏏</h4>
+                            <p>Every great innings begins with a solid start. May this new age bring you fours, sixes, and unstoppable momentum!</p>
                         </div>
                     </div>
                 </div>
@@ -390,8 +390,8 @@ html_layout = """<!DOCTYPE html>
                             <div class="hint-touch"><i class="fa-solid fa-rotate"></i> Flip Me</div>
                         </div>
                         <div class="flip-back">
-                            <h4>Radiant Moments 💫</h4>
-                            <p>Keep that breathtaking smile completely active all year round. It possesses the gorgeous ability to brighten up anyone's day!</p>
+                            <h4>Century Moments 💯</h4>
+                            <p>Keep chasing every target with that same fearless energy. It's the kind of spirit that wins matches and hearts!</p>
                         </div>
                     </div>
                 </div>
@@ -403,8 +403,8 @@ html_layout = """<!DOCTYPE html>
                             <div class="hint-touch"><i class="fa-solid fa-rotate"></i> Flip Me</div>
                         </div>
                         <div class="flip-back">
-                            <h4>The Perfect Picture 🧩</h4>
-                            <p>Life is like a complex puzzle, but pieces magically fit perfectly when you live with pure joy, grace, and confidence.</p>
+                            <h4>Perfect Yorker 🎯</h4>
+                            <p>Life is like a tricky over, but every delivery lands right when you play it with focus, grit, and a big smile.</p>
                         </div>
                     </div>
                 </div>
@@ -416,15 +416,15 @@ html_layout = """<!DOCTYPE html>
                             <div class="hint-touch"><i class="fa-solid fa-rotate"></i> Flip Me</div>
                         </div>
                         <div class="flip-back">
-                            <h4>Endless Celebrations 🎉</h4>
-                            <p>Here's to a future filled with laughter, great coffee, wonderful stories, and precious memories. Have the best day ever, Shirlu!</p>
+                            <h4>Victory Lap 🏆</h4>
+                            <p>Here's to a season full of trophies, loud cheers, great friends, and unforgettable memories. Play on, Pavaman!</p>
                         </div>
                     </div>
                 </div>
 
             </div>
 
-            <button class="neon-btn" style="max-width: 250px; margin-top:10px;" onclick="location.reload()">Reset & Replay Layout 🔄</button>
+            <button class="neon-btn" style="max-width: 250px; margin-top:10px; background: linear-gradient(45deg, #FFC72C, #FF9E1B); color:#1a0505;" onclick="location.reload()">Replay the Innings 🔄</button>
         </div>
     </div>
 
@@ -466,7 +466,7 @@ html_layout = """<!DOCTYPE html>
 
         function validateKey() {
             const code = document.getElementById('passCode').value.trim().toLowerCase();
-            if(code === 'shirlu' || code === 'srilakshmi' || code === 'sreelakshmi') {
+            if(code === 'pavaman' || code === 'rcb' || code === 'champion') {
                 document.getElementById('loginView').style.opacity = '0';
                 forcePlayStream();
                 setTimeout(() => {
@@ -549,7 +549,7 @@ html_layout = """<!DOCTYPE html>
 
         function evaluateResolution() {
             if(matrixOrder.every((v, i) => v === i)) {
-                confetti({ particleCount: 150, spread: 80, origin: { y: 0.4 } });
+                confetti({ particleCount: 150, spread: 80, origin: { y: 0.4 }, colors: ['#EC1C24', '#FFC72C', '#ffffff'] });
                 document.getElementById('puzzleView').style.display = 'none';
                 document.getElementById('showcaseView').style.display = 'flex';
                 
@@ -578,7 +578,7 @@ html_layout = """<!DOCTYPE html>
         }
 
         function generateBlossoms() {
-            const shapes = ["🌸","✨","💖","🎈","🍁"];
+            const shapes = ["🏏","🏆","⚡","🎉","⭐"];
             for (let i = 0; i < 20; i++) {
                 setTimeout(() => {
                     const leaf = document.createElement("div");
