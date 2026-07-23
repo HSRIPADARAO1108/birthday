@@ -19,8 +19,8 @@ SONG_URL = f"https://raw.githubusercontent.com/{GITHUB_USERNAME}/{GITHUB_REPO}/{
 
 # --- Page Setup configuration ---
 st.set_page_config(
-    page_title="Happy Birthday, Pavaman! 🏏🎉",
-    page_icon="🏏",
+    page_title="Happy Birthday, Pavaman! 🏏♞",
+    page_icon="♞",
     layout="wide",
     initial_sidebar_state="collapsed"
 )
@@ -193,68 +193,47 @@ html_layout = """<!DOCTYPE html>
         .curtains-parted .curtain-right { transform: translateX(100%); }
         .curtains-parted .curtain-trigger { opacity: 0; pointer-events: none; transform: translate(-50%, -50%) scale(0.7); }
 
-        /* SCREEN 3: NET PRACTICE — HIT THE SIX MINI GAME */
+        /* SCREEN 3: KNIGHT'S SIX — CHESS-KNIGHT NAVIGATION ON A CRICKET PITCH */
         .screen-game {
             position: absolute; width:100%; height:100%; display:none;
             background: radial-gradient(ellipse at center, #123018 0%, #0a0505 75%);
-            align-items:center; justify-content:center; padding:16px 16px 40px;
+            align-items:center; justify-content:center; padding:16px 16px 40px; overflow-y: auto;
         }
-        .game-box { max-width: 420px; width: 100%; text-align: center; }
-        .game-box h2 { font-family: 'Bebas Neue', sans-serif; font-size: 40px; letter-spacing: 1px; color: #EC1C24; margin-bottom: 4px; }
-        .game-box .game-sub { font-size: 12.5px; color: #cfcfcf; margin-bottom: 16px; font-family: 'Montserrat', sans-serif; }
+        .game-box { max-width: 440px; width: 100%; text-align: center; margin: auto; }
+        .game-box h2 { font-family: 'Bebas Neue', sans-serif; font-size: 38px; letter-spacing: 1px; color: #EC1C24; margin-bottom: 4px; }
+        .game-box .game-sub { font-size: 12.5px; color: #cfcfcf; margin-bottom: 14px; font-family: 'Montserrat', sans-serif; line-height: 1.5; }
 
-        .pitch-wrap {
-            position: relative; width: 100%; height: 200px; margin: 0 auto 18px;
-            background: linear-gradient(180deg, #2f7a35 0%, #245e29 100%);
-            border-radius: 14px; overflow: hidden;
-            border: 1px solid rgba(255,199,44,0.25);
-            box-shadow: inset 0 0 40px rgba(0,0,0,0.35), 0 10px 24px rgba(0,0,0,0.4);
+        .knight-board {
+            display: grid; grid-template-columns: repeat(5, var(--cell-dim, 58px)); grid-template-rows: repeat(5, var(--cell-dim, 58px));
+            gap: 4px; justify-content: center; margin: 0 auto 14px; padding: 8px;
+            background: rgba(0,0,0,0.35); border-radius: 14px; border: 1px solid rgba(255,199,44,0.25);
+            box-shadow: inset 0 0 30px rgba(0,0,0,0.4), 0 10px 24px rgba(0,0,0,0.4);
         }
-        .pitch-lane {
-            position: absolute; left: 50%; top: 0; bottom: 0; width: 34%; transform: translateX(-50%);
-            background: repeating-linear-gradient(180deg, rgba(212,177,106,0.9) 0px, rgba(212,177,106,0.9) 3px, rgba(196,158,88,0.9) 3px, rgba(196,158,88,0.9) 26px);
+        .cell {
+            width: var(--cell-dim, 58px); height: var(--cell-dim, 58px); border-radius: 8px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: calc(var(--cell-dim, 58px) * 0.5); position: relative;
+            transition: all 0.2s ease; border: 1px solid rgba(0,0,0,0.25);
         }
-        .crease-line { position: absolute; left: 50%; width: 46%; height: 2px; background: rgba(255,255,255,0.85); transform: translateX(-50%); }
-        .crease-top { top: 14px; }
-        .crease-bottom { bottom: 14px; }
-        .stump-set { position: absolute; left: 50%; transform: translateX(-50%); display: flex; gap: 3px; }
-        .stump-set span { width: 3px; height: 20px; background: #f3e4c0; border-radius: 1px; box-shadow: 0 0 4px rgba(0,0,0,0.5); }
-        .stump-top { top: 4px; }
-        .stump-bottom { bottom: 4px; }
-        .bowler-emoji, .batter-emoji { position: absolute; left: 50%; transform: translateX(-50%); font-size: 26px; filter: drop-shadow(0 2px 3px rgba(0,0,0,0.6)); }
-        .bowler-emoji { top: 10px; }
-        .batter-emoji { bottom: 6px; }
-        #gameBall {
-            position: absolute; left: 50%; top: 40px; width: 12px; height: 12px; border-radius: 50%;
-            background: radial-gradient(circle at 35% 35%, #ff6b5b, #b3121f); transform: translateX(-50%);
-            box-shadow: 0 0 8px rgba(255,80,60,0.7); transition: top 0.05s linear;
-        }
-        #gameBall.smashed { animation: ballFly 0.6s ease-out forwards; }
-        @keyframes ballFly {
-            0% { transform: translateX(-50%) scale(1); opacity: 1; }
-            100% { transform: translateX(140%) translateY(-90px) scale(0.4); opacity: 0; }
-        }
+        .cell.light { background: #2f7a35; }
+        .cell.dark { background: #245e29; }
+        .cell.valid-move { cursor: pointer; box-shadow: 0 0 0 2px #7CFF6B inset, 0 0 12px rgba(124,255,107,0.8); }
+        .cell.valid-move:active { transform: scale(0.92); }
+        .cell.target-cell { box-shadow: 0 0 0 2px #FFC72C inset, 0 0 14px rgba(255,199,44,0.8); }
+        .cell .piece-knight { color: #FFC72C; text-shadow: 0 0 10px rgba(255,199,44,0.8); }
+        .cell .piece-fielder { filter: drop-shadow(0 1px 2px rgba(0,0,0,0.6)); }
+        .cell .piece-target { animation: targetPulse 1.4s infinite alternate; }
+        @keyframes targetPulse { 0% { transform: scale(1); } 100% { transform: scale(1.15); } }
 
-        .power-meter { margin: 0 auto 16px; max-width: 340px; }
-        .meter-label { font-size: 11px; color: #FFC72C; font-family: 'Montserrat', sans-serif; margin-bottom: 6px; letter-spacing: 0.5px; }
-        .meter-track {
-            position: relative; height: 16px; border-radius: 10px; background: rgba(255,255,255,0.08);
-            border: 1px solid rgba(255,255,255,0.15); overflow: hidden;
+        .game-status-row {
+            display: flex; justify-content: space-between; max-width: 300px; margin: 0 auto 10px;
+            font-family: 'Share Tech Mono', monospace; font-size: 12px; color: #7CFF6B; letter-spacing: 0.5px;
         }
-        .meter-zone { position: absolute; top: 0; bottom: 0; background: rgba(124,255,107,0.55); border-left: 1px solid #7CFF6B; border-right: 1px solid #7CFF6B; }
-        .meter-indicator {
-            position: absolute; top: -3px; width: 4px; height: 22px; background: #fff;
-            box-shadow: 0 0 8px rgba(255,255,255,0.9); border-radius: 2px;
-        }
-
-        .swing-btn { max-width: 260px; margin: 0 auto 14px; display: block; font-size: 16px; }
-        .game-status {
-            font-family: 'Share Tech Mono', monospace; font-size: 13px; color: #7CFF6B;
-            letter-spacing: 1px; margin-bottom: 10px; min-height: 18px;
-        }
-        .game-result { font-family: 'Bebas Neue', sans-serif; font-size: 26px; letter-spacing: 1px; min-height: 32px; margin-bottom: 6px; }
+        .game-result { font-family: 'Bebas Neue', sans-serif; font-size: 26px; letter-spacing: 1px; min-height: 32px; margin-bottom: 4px; }
         .game-result.six { color: #FFC72C; text-shadow: 0 0 12px rgba(255,199,44,0.7); }
-        .game-result.miss { color: #FF4C4C; }
+
+        .game-btn-row { display: flex; gap: 10px; max-width: 380px; margin: 6px auto 0; }
+        .game-btn-row .neon-btn { font-size: 13px; padding: 12px 10px; }
 
         /* SCREEN 4: PREMIUM INTERACTIVE ALBUM SHOWCASE */
         .screen-showcase {
@@ -365,8 +344,8 @@ html_layout = """<!DOCTYPE html>
             .neon-login-box h2 { font-size: 40px; }
             .watermark { font-size: 9px; bottom: 8px; }
             .frame-img { height: 230px; }
-            .pitch-wrap { height: 170px; }
             .scoreboard-badge { font-size: 9px; padding: 5px 9px; }
+            .game-btn-row { flex-direction: column; }
         }
     </style>
 </head>
@@ -409,7 +388,7 @@ html_layout = """<!DOCTYPE html>
                 <h3>BEFORE THE TOSS</h3>
                 <img src="__BEHIND_CURTAIN_URL__" class="frame-img" alt="Stage Reveal">
                 <p>Life is an incredible innings, and having you around makes every match more exciting. Cheers to another year of big hits, bold shots, and total victory! 🏏</p>
-                <button class="neon-btn" style="background: linear-gradient(45deg, #FFC72C, #FF9E1B); color:#1a0505;" onclick="moveNextToGame()">Head to the Nets 🏏</button>
+                <button class="neon-btn" style="background: linear-gradient(45deg, #FFC72C, #FF9E1B); color:#1a0505;" onclick="moveNextToGame()">Take Strategic Guard ♞</button>
             </div>
         </div>
         <div id="curtainShell">
@@ -424,32 +403,22 @@ html_layout = """<!DOCTYPE html>
 
     <div class="screen-game" id="gameView">
         <div class="game-box">
-            <h2>NET PRACTICE</h2>
-            <p class="game-sub">Time your swing as the ball reaches the crease. Land the white marker in the green zone to smash a SIX. Get 3 sixes to unlock the trophy album!</p>
+            <h2>KNIGHT'S SIX ♞🏏</h2>
+            <p class="game-sub">Move like a chess knight — an L-shaped hop each turn. Weave past the fielders 🧤 and land on the boundary flag 🏆 to smash the six. Tap any glowing green square to move there.</p>
 
-            <div class="pitch-wrap">
-                <div class="pitch-lane"></div>
-                <div class="crease-line crease-top"></div>
-                <div class="crease-line crease-bottom"></div>
-                <div class="stump-set stump-top"><span></span><span></span><span></span></div>
-                <div class="stump-set stump-bottom"><span></span><span></span><span></span></div>
-                <div class="bowler-emoji">🤾</div>
-                <div class="batter-emoji">🏏</div>
-                <div id="gameBall"></div>
-            </div>
+            <div class="knight-board" id="knightBoard"></div>
 
-            <div class="power-meter">
-                <div class="meter-label">TIMING METER</div>
-                <div class="meter-track">
-                    <div class="meter-zone" id="meterZone"></div>
-                    <div class="meter-indicator" id="meterIndicator"></div>
-                </div>
+            <div class="game-status-row">
+                <span id="movesCounter">MOVES: 0</span>
+                <span id="fieldersCounter">FIELDERS: 0</span>
             </div>
 
             <div class="game-result" id="gameResult">&nbsp;</div>
-            <button class="neon-btn swing-btn" id="swingBtn" onclick="swingBat()">🏏 SWING!</button>
-            <div class="game-status" id="gameStatus">SIXES: 0 / 3</div>
-            <button class="neon-btn" style="background: transparent; border: 1.5px solid #EC1C24; max-width:260px; margin: 4px auto 0;" onclick="bypassGame()">Retire Not Out (Skip) ✨</button>
+
+            <div class="game-btn-row">
+                <button class="neon-btn" style="background: transparent; border: 1.5px solid #FFC72C;" onclick="regenerateBoard()">New Field 🔄</button>
+                <button class="neon-btn" style="background: transparent; border: 1.5px solid #EC1C24;" onclick="bypassGame()">Retire Not Out (Skip) ✨</button>
+            </div>
         </div>
     </div>
 
@@ -464,7 +433,7 @@ html_layout = """<!DOCTYPE html>
                 <div class="subtitle">Champion Pavaman! 🏆🏏</div>
                 <p class="wishes">
                     May every ball you face turn into a boundary and every challenge feel like a home game.
-                    You carry the confidence of an opener and the calm of a finisher — a true match-winner in every way.
+                    You carry the confidence of an opener, the calm of a finisher, and the mind of a grandmaster — a true match-winner in every way.
                     Have a completely blockbuster, high-scoring, and unforgettable year ahead, Pavaman! ❤️
                 </p>
             </div>
@@ -542,7 +511,15 @@ html_layout = """<!DOCTYPE html>
                     }
                 });
             }
+            adaptBoardLayout();
         });
+        window.addEventListener('resize', adaptBoardLayout);
+
+        function adaptBoardLayout() {
+            const maxBoardWidth = Math.min(window.innerWidth - 48, 320);
+            const cell = Math.max(38, Math.floor((maxBoardWidth - 16 - 16) / 5));
+            document.documentElement.style.setProperty('--cell-dim', cell + 'px');
+        }
 
         function forcePlayStream() {
             const player = document.getElementById('bgAudio');
@@ -586,115 +563,170 @@ html_layout = """<!DOCTYPE html>
             setTimeout(() => {
                 document.getElementById('stageView').style.display = 'none';
                 document.getElementById('gameView').style.display = 'flex';
-                startNetPractice();
+                adaptBoardLayout();
+                initKnightGame();
             }, 800);
         }
 
-        /* ===================== NET PRACTICE MINI GAME ===================== */
-        const SIXES_NEEDED = 3;
-        const PITCH_HEIGHT = 200;      // must roughly match .pitch-wrap height
-        const BALL_TOP_MIN = 32;
-        const BALL_TOP_MAX = 168;
-        let sixesScored = 0;
-        let ballAnimId = null;
-        let ballDir = 1;
-        let ballPos = 0; // 0..1
-        let meterAnimId = null;
-        let meterDir = 1;
-        let meterPos = 0; // 0..1
-        let zoneStart = 0.4;
-        let zoneWidth = 0.2;
-        let gameActive = false;
+        /* ===================== KNIGHT'S SIX MINI GAME ===================== */
+        const BOARD_N = 5;
+        const KNIGHT_MOVES = [
+            [-2,-1],[-2,1],[-1,-2],[-1,2],
+            [1,-2],[1,2],[2,-1],[2,1]
+        ];
+        let knightPos = { r: 4, c: 0 };
+        let targetPos = { r: 0, c: 4 };
+        let fielderCells = [];
+        let movesPlayed = 0;
+        let gameWon = false;
 
-        function startNetPractice() {
-            sixesScored = 0;
-            updateGameStatus();
-            document.getElementById('gameResult').innerText = '\\u00A0';
+        function initKnightGame() {
+            gameWon = false;
+            movesPlayed = 0;
+            document.getElementById('gameResult').innerHTML = '&nbsp;';
             document.getElementById('gameResult').className = 'game-result';
-            newRound();
+            regenerateBoard();
         }
 
-        function newRound() {
-            gameActive = true;
-            // randomize the green "sweet spot" zone a little each round for variety
-            zoneWidth = 0.22 - (sixesScored * 0.02); // gets slightly tighter each six
-            if (zoneWidth < 0.14) zoneWidth = 0.14;
-            zoneStart = 0.15 + Math.random() * (0.85 - zoneWidth - 0.15);
-            const zoneEl = document.getElementById('meterZone');
-            zoneEl.style.left = (zoneStart * 100) + '%';
-            zoneEl.style.width = (zoneWidth * 100) + '%';
+        function cellsEqual(a, b) { return a.r === b.r && a.c === b.c; }
 
-            ballPos = 0; ballDir = 1;
-            meterPos = 0; meterDir = 1;
-            document.getElementById('gameBall').classList.remove('smashed');
-            animateBall();
-            animateMeter();
+        function isFielder(r, c) {
+            return fielderCells.some(f => f.r === r && f.c === c);
         }
 
-        function animateBall() {
-            if (ballAnimId) cancelAnimationFrame(ballAnimId);
-            function step() {
-                if (!gameActive) return;
-                ballPos += 0.012 * ballDir;
-                if (ballPos >= 1) { ballPos = 1; ballDir = -1; }
-                if (ballPos <= 0) { ballPos = 0; ballDir = 1; }
-                const top = BALL_TOP_MIN + ballPos * (BALL_TOP_MAX - BALL_TOP_MIN);
-                document.getElementById('gameBall').style.top = top + 'px';
-                ballAnimId = requestAnimationFrame(step);
-            }
-            step();
-        }
-
-        function animateMeter() {
-            if (meterAnimId) cancelAnimationFrame(meterAnimId);
-            function step() {
-                if (!gameActive) return;
-                meterPos += 0.014 * meterDir;
-                if (meterPos >= 1) { meterPos = 1; meterDir = -1; }
-                if (meterPos <= 0) { meterPos = 0; meterDir = 1; }
-                document.getElementById('meterIndicator').style.left = (meterPos * 100) + '%';
-                meterAnimId = requestAnimationFrame(step);
-            }
-            step();
-        }
-
-        function swingBat() {
-            if (!gameActive) return;
-            const resultEl = document.getElementById('gameResult');
-            const hit = meterPos >= zoneStart && meterPos <= (zoneStart + zoneWidth);
-
-            gameActive = false;
-            if (ballAnimId) cancelAnimationFrame(ballAnimId);
-            if (meterAnimId) cancelAnimationFrame(meterAnimId);
-
-            if (hit) {
-                sixesScored++;
-                document.getElementById('gameBall').classList.add('smashed');
-                resultEl.innerText = 'SIX! 🏆';
-                resultEl.className = 'game-result six';
-                if (typeof confetti === 'function') {
-                    confetti({ particleCount: 60, spread: 55, origin: { y: 0.55 }, colors: ['#EC1C24', '#FFC72C', '#ffffff'] });
+        function validKnightTargets(from) {
+            const out = [];
+            KNIGHT_MOVES.forEach(([dr, dc]) => {
+                const nr = from.r + dr, nc = from.c + dc;
+                if (nr >= 0 && nr < BOARD_N && nc >= 0 && nc < BOARD_N && !isFielder(nr, nc)) {
+                    out.push({ r: nr, c: nc });
                 }
-                updateGameStatus();
-                if (sixesScored >= SIXES_NEEDED) {
-                    setTimeout(finishGame, 900);
-                    return;
+            });
+            return out;
+        }
+
+        function pathExists(start, target, blocked) {
+            const visited = new Set();
+            const key = (p) => p.r + '_' + p.c;
+            const queue = [start];
+            visited.add(key(start));
+            while (queue.length) {
+                const cur = queue.shift();
+                if (cellsEqual(cur, target)) return true;
+                for (const [dr, dc] of KNIGHT_MOVES) {
+                    const nr = cur.r + dr, nc = cur.c + dc;
+                    if (nr < 0 || nr >= BOARD_N || nc < 0 || nc >= BOARD_N) continue;
+                    const isBlocked = blocked.some(f => f.r === nr && f.c === nc);
+                    if (isBlocked) continue;
+                    const k = nr + '_' + nc;
+                    if (!visited.has(k)) {
+                        visited.add(k);
+                        queue.push({ r: nr, c: nc });
+                    }
                 }
+            }
+            return false;
+        }
+
+        function regenerateBoard() {
+            gameWon = false;
+            knightPos = { r: 4, c: 0 };
+            targetPos = { r: 0, c: 4 };
+            movesPlayed = 0;
+            document.getElementById('gameResult').innerHTML = '&nbsp;';
+            document.getElementById('gameResult').className = 'game-result';
+
+            let attempts = 0;
+            let candidate = [];
+            const fielderCount = 4;
+            do {
+                candidate = [];
+                while (candidate.length < fielderCount) {
+                    const r = Math.floor(Math.random() * BOARD_N);
+                    const c = Math.floor(Math.random() * BOARD_N);
+                    const cell = { r, c };
+                    const clash = cellsEqual(cell, knightPos) || cellsEqual(cell, targetPos) ||
+                                  candidate.some(f => f.r === r && f.c === c);
+                    if (!clash) candidate.push(cell);
+                }
+                attempts++;
+            } while (!pathExists(knightPos, targetPos, candidate) && attempts < 60);
+
+            fielderCells = candidate;
+            updateStatusRow();
+            renderKnightBoard();
+        }
+
+        function renderKnightBoard() {
+            const board = document.getElementById('knightBoard');
+            board.innerHTML = '';
+            const moves = gameWon ? [] : validKnightTargets(knightPos);
+
+            for (let r = 0; r < BOARD_N; r++) {
+                for (let c = 0; c < BOARD_N; c++) {
+                    const div = document.createElement('div');
+                    const isLight = (r + c) % 2 === 0;
+                    div.className = 'cell ' + (isLight ? 'light' : 'dark');
+
+                    const isKnightHere = cellsEqual({ r, c }, knightPos);
+                    const isTarget = cellsEqual({ r, c }, targetPos);
+                    const isFielderHere = isFielder(r, c);
+                    const isMovable = moves.some(m => m.r === r && m.c === c);
+
+                    if (isTarget) div.classList.add('target-cell');
+                    if (isMovable) div.classList.add('valid-move');
+
+                    if (isKnightHere) {
+                        div.innerHTML = '<span class="piece-knight">&#9822;</span>';
+                    } else if (isTarget) {
+                        div.innerHTML = '<span class="piece-target">🏆</span>';
+                    } else if (isFielderHere) {
+                        div.innerHTML = '<span class="piece-fielder">🧤</span>';
+                    }
+
+                    if (isMovable) {
+                        div.addEventListener('click', () => moveKnightTo(r, c));
+                    }
+                    board.appendChild(div);
+                }
+            }
+        }
+
+        function moveKnightTo(r, c) {
+            if (gameWon) return;
+            const target = { r, c };
+            const legal = validKnightTargets(knightPos).some(m => m.r === r && m.c === c);
+            if (!legal) return;
+
+            knightPos = target;
+            movesPlayed++;
+            updateStatusRow();
+
+            if (cellsEqual(knightPos, targetPos)) {
+                winGame();
             } else {
-                resultEl.innerText = 'Missed! Try again';
-                resultEl.className = 'game-result miss';
+                renderKnightBoard();
             }
-            setTimeout(newRound, 800);
         }
 
-        function updateGameStatus() {
-            document.getElementById('gameStatus').innerText = 'SIXES: ' + sixesScored + ' / ' + SIXES_NEEDED;
+        function updateStatusRow() {
+            document.getElementById('movesCounter').innerText = 'MOVES: ' + movesPlayed;
+            document.getElementById('fieldersCounter').innerText = 'FIELDERS: ' + fielderCells.length;
+        }
+
+        function winGame() {
+            gameWon = true;
+            renderKnightBoard();
+            const resultEl = document.getElementById('gameResult');
+            resultEl.innerText = 'SIX! CHECKMATE! 🏆';
+            resultEl.className = 'game-result six';
+            if (typeof confetti === 'function') {
+                confetti({ particleCount: 140, spread: 75, origin: { y: 0.5 }, colors: ['#EC1C24', '#FFC72C', '#ffffff'] });
+            }
+            setTimeout(finishGame, 1100);
         }
 
         function bypassGame() {
-            gameActive = false;
-            if (ballAnimId) cancelAnimationFrame(ballAnimId);
-            if (meterAnimId) cancelAnimationFrame(meterAnimId);
             finishGame();
         }
 
